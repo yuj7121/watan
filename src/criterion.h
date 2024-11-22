@@ -30,7 +30,8 @@ public:
     CompletionType getCompletionType() const;
     Student getOwner() const;
     
-    bool isAdjacent(); 
+    bool isAdjacentEdge(); 
+    bool isAdjacentVertex(); 
     bool isOwnedBy(Student* player) const;
     void improve(Student* player); 
     bool canUpgrade(Student* player) const; 
