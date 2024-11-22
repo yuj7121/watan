@@ -4,7 +4,7 @@ BoardSetup::BoardSetup() {}
 
 void BoardSetup::setup(shared_ptr<Board> b){
     setupResources();
-    for(int i = 0; i < DEFUALT_TILES; i++) {
+    for(int i = 0; i < NUM_TILES; i++) {
         string currType;
         switch (resourceTypes[i]) {
             case 0:

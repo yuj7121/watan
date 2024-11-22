@@ -2,13 +2,13 @@
 #define BOARD_H
 
 #include "boardSetup.h"
+#include "constants.h"
 
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <string>
 
-enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
 class Tile;
 class Goal;

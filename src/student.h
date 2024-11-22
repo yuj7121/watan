@@ -1,34 +1,40 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#include "constants.h"
+#include "tile.h"
+#include "goal.h"
+#include "criteria.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <memory>
 
-enum class Colour { BLUE, RED, ORANGE, YELLOW };
-enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
-
 //remvoe these and replace with including header files once done!!
-class Tile;
-class Goal;
-class Criteria;
 
 class Student {
+    int index;
     Colour colour;
-    vector<Criteria*> criterion;
-    vector<Goal*> goals;
+    Colour colour;
+    std::vector<std::shared_ptr<Criteria>> criterion; 
+    std::vector<std::shared_ptr<Goal>> goals;
     unoredered_map<ResourceType, int> resources;
     int victoryPotins;
 
   public:
+    //ctor
+    Student(Colour colour);
+
+    //get functions
     int getIndex();
     Colour getColour();
+    int getColour();
     int getVictoryPoints();
     unordered_map<String, int> getResource();
-    int getColour();
-    int* getCriterion();
+    std::vector<std::shared_ptr<Goal>> getGoals();
+    std::vector<std::shared_ptr<Criteria>> getCriterion();
 
+    //other functions
     void addResource(ResourceType type);
     void removeResourcec(ResourceType type);
     void addGoal(int index);
