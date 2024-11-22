@@ -1,5 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
+// BOARD.H: The Board in which the game is played on, storing data about its Tiles.
 
 #include <vector>
 #include <memory>
