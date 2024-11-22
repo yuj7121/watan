@@ -2,6 +2,8 @@
 #define CONSTANTS_H
 
 #include <vector>
+#include <map>
+#include <string>
 
 enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
