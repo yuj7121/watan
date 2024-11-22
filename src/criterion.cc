@@ -12,19 +12,23 @@ int Criteria::getIndex() const { return index; }
 
 CompletionType Criteria::getCompletionType() const { return level; }
 
-// string Criteria::getOwner() const { return
+string Criteria::getOwner() const {
+    // TODO: do this function
+}
 
 bool Criteria::isOwnedBy(Student* player) const {
     return owner==player;
 }
 
-bool isAdjacent(); 
+bool isAdjacent() {
+    // TODO: do this function
+}
 
 void Criteria::setOwner(Student* player) {
     owner = player; 
 } 
 
 void improve(Student* player) {
-
+    // TODO: do this function    
 }
 
