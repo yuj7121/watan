@@ -13,4 +13,4 @@ void Subject::notify() const {
     for (const auto& observer : observers) {
         observer->update();
     }
-}
+}Ï
