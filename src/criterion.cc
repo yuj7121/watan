@@ -22,7 +22,11 @@ bool Criteria::isOwnedBy(Student* player) const {
     return owner==player;
 }
 
-bool isAdjacent() {
+bool Criteria::isAdjacentEdge() {
+    // TODO: do this function
+}
+
+bool Criteria::isAdjacentVertex() {
     // TODO: do this function
 }
 
@@ -33,8 +37,14 @@ bool Criteria::canUpgrade(Student* player) const  {
     return true; 
 }
 
+/*
+For a student to complete a criterion, the following two conditions must be met:
+• No adjacent criterion is completed.
+• It is either the beginning of the game, or they have achieved a goal that is adjacent to the criterion.
+*/
+
 void Criteria::improve(Student* player) {
-    if (!owner) { 
+    if (!owner && !isAdjacentEdge && isAdjacentGoal) { 
         owner = player; 
         completionType = CompletionType::ASSIGNMENT; 
     }
