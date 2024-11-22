@@ -1,10 +1,14 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "boardSetup.h"
+
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <string>
+
+enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
 class Tile;
 class Goal;
@@ -15,6 +19,7 @@ class Board {
     std::vector<std::shared_ptr<Goal>> goals;
     std::vector<std::shared_ptr<Criteria>> criterion;
     int geesePosition;
+    friend class BoardSetup;
 
     public:
         Board();

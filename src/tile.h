@@ -25,6 +25,6 @@ public:
     bool checkGoose() const; 
     // TODO: Destructor Needed?
 
-}
+};
 
 #endif 
