@@ -28,11 +28,10 @@ public:
 
     int getIndex() const;
     CompletionType getCompletionType() const;
-    string getOwner() const;
+    Student getOwner() const;
     
     bool isAdjacent(); 
     bool isOwnedBy(Student* player) const;
-    void setOwner(Student* player); 
     void improve(Student* player); 
 
     // IMPLEMENT DESTRUCTOR

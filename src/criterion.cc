@@ -12,11 +12,13 @@ int Criteria::getIndex() const { return index; }
 
 CompletionType Criteria::getCompletionType() const { return level; }
 
-string Criteria::getOwner() const {
-    // TODO: do this function
+Student Criteria::getOwner() const {
+    // CHECK: this function needed?
+    return owner; 
 }
 
 bool Criteria::isOwnedBy(Student* player) const {
+    // CHECK: this function needed?
     return owner==player;
 }
 
@@ -24,11 +26,17 @@ bool isAdjacent() {
     // TODO: do this function
 }
 
-void Criteria::setOwner(Student* player) {
-    owner = player; 
-} 
-
 void improve(Student* player) {
-    // TODO: do this function    
+    // CHECK: where to deal with trying to upgrade if already EXAM
+    if (!owner) { 
+        owner = player; 
+        completionType = CompletionType::ASSIGNMENT; 
+    }
+    
+    if (completionType == CompletionType::ASSIGNMENT) {
+        completionType = CompletionType::MIDTERM;
+    } else if (completionType == CompletionType::MIDTERM) {
+        completionType = CompletionType::EXAM;
+    }
 }
 
