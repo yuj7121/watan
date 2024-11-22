@@ -11,7 +11,7 @@ void RandomSetup::setupResources() {
     int random;
     
     //set up the resource types and values for each tile
-    for(int i = 0; i < DEFUALT_TILES; ++i){
+    for(int i = 0; i < NUM_TILES; ++i){
         random = typeMin + (std::rand() % (typeMax - typeMin + 1));
         resourceTypes[i] = random;
         random = valMin + (std::rand() % (valMax - valMin + 1));

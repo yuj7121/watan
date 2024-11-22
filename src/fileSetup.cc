@@ -22,7 +22,7 @@ void FileSetup::setupResources() {
 
         int input;
 
-        for(int i = 0; i < DEFUALT_TILES; ++i){
+        for(int i = 0; i < NUM_TILES; ++i){
             file >> input;
             if(input < 0 || input > 5) {
                 throw new FileFormatException(fileName);

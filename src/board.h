@@ -1,19 +1,18 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "boardSetup.h"
+#include "constants.h"
+
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <string>
 
-#include "boardSetup.h"
-#include "subject.h"
-#include "constants.h"
-#include "tile.h"
-#include "criterion.h"
-#include "goal.h"
 
-using namespace std;
+class Tile;
+class Goal;
+class Criteria;
 
 class Board : public Subject {
     vector<shared_ptr<Tile>> tiles;
