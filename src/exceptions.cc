@@ -32,5 +32,6 @@ InsufficientResourcesException::InsufficientResourcesException(const string& not
 InvalidCriterionImprovementException::InvalidCriterionImprovementException(const string& note)
 : logic_error("EXCEPTION: Criteria cannot be improved: " + note) {}
 
-InvalidGeesePlacementException::InvalidGeesePlacementException(const string& note)
-: logic_error("EXCEPTION: Geese cannot be placed there: " + note) {}
+// (d) Miscellaneous
+ResourceTypeConversionException::ResourceTypeConversionException(const string& note)
+: out_of_range("EXCEPTION: Trouble converting ResourceType to string: " + note) {}

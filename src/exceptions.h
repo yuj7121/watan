@@ -59,4 +59,10 @@ public:
     explicit InvalidGeesePlacementException(const string &note);
 };
 
+// (d) Miscellaneous
+class ResourceTypeConversionException : public out_of_range {
+public:
+    explicit ResourceTypeConversionException(const string &note);
+};
+
 #endif
