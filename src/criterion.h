@@ -33,7 +33,7 @@ public:
     bool isAdjacent(); 
     bool isOwnedBy(Student* player) const;
     void improve(Student* player); 
-
+    bool canUpgrade(Student* player) const; 
     // IMPLEMENT DESTRUCTOR
 
 }; 

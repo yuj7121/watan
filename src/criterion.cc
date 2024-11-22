@@ -26,17 +26,27 @@ bool isAdjacent() {
     // TODO: do this function
 }
 
-void improve(Student* player) {
-    // CHECK: where to deal with trying to upgrade if already EXAM
+bool Criteria::canUpgrade(Student* player) const  {
+    if (!isOwnedBy(player)) {
+        return false; 
+    } 
+    return true; 
+}
+
+void Criteria::improve(Student* player) {
     if (!owner) { 
         owner = player; 
         completionType = CompletionType::ASSIGNMENT; 
     }
     
-    if (completionType == CompletionType::ASSIGNMENT) {
-        completionType = CompletionType::MIDTERM;
-    } else if (completionType == CompletionType::MIDTERM) {
-        completionType = CompletionType::EXAM;
+    if (canUpgrade(player)) {
+        if (completionType == CompletionType::ASSIGNMENT) {
+            completionType = CompletionType::MIDTERM;
+        } else if (completionType == CompletionType::MIDTERM) {
+            completionType = CompletionType::EXAM;
+        }
+    } else { 
+//TODO: trying to upgrade exam, then what to do? throw?
     }
 }
 
