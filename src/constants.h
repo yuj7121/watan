@@ -22,6 +22,8 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
 const int NUM_TILES = 19;
+const int NUM_GOALS = 72;
+const int NUM_CRITERION = 54;
 const int NOT_IN_PLAY = -1;
 
 const std::vector<std::vector<int>> TILE_ROWS = {
