@@ -1,6 +1,5 @@
 #ifndef LOADEDDICE_H
 #define LOADEDDICE_H
-// LOADEDDICE.H: A Factory child from Dice that returns an int based on user input.
 
 #include <iostream>
 #include "dice.h"

@@ -23,7 +23,7 @@ public:
     string getResourceType() const;
     bool isVertex() const; 
     bool checkGoose() const; 
-    // destructor needed?
+    // TODO: Destructor Needed?
 
 }
 

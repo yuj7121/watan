@@ -1,7 +1,5 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
-// EXCEPTIONS.H: A series of in-game exceptions as defined by three categories:
-// (a) File I/O Errors, (b) Invalid User Input, and (c) Insufficient Conditions.
 
 #include <stdexcept>
 #include <string>
