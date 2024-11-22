@@ -36,9 +36,9 @@ class OutOfRangeInputException : public out_of_range {
 };
 
 // (c) Insufficient Conditions
-class CriterionAlreadyPurchasedException : public logic_error {
+class AlreadyOwnedException : public logic_error {
 public:
-    explicit CriterionAlreadyPurchasedException(const string &note);
+    explicit AlreadyOwnedException(const string &note);
 };
 
 class NonAdjacentPlacementException : public logic_error {
@@ -49,11 +49,6 @@ public:
 class InsufficientResourcesException : public logic_error {
 public:
     explicit InsufficientResourcesException(const string &note);
-};
-
-class GoalAlreadyAchievedException : public logic_error {
-public:
-    explicit GoalAlreadyAchievedException(const string &note);
 };
 
 class InvalidCriterionImprovementException : public logic_error {
