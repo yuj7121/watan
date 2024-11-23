@@ -33,9 +33,22 @@ bool Goal::checkCriteriaExist() const {
     return false;
 }
 
-void buildGoal(Student *player) {
-    if (!owner) {
-        bool connected = false; 
+bool Goal::buildGoal(Student *player) {
+    bool adjacent = false; 
+
+    if (owner) { 
+        return false; 
     }
+
+    for (auto c : adjCriteria) { 
+        if (c->isOwnedBy(player) || c->adjacentGoalOwner(player)) {
+            adjacent = true;
+            break; 
+        }
+    }
+    if (connected == false) return false; // no adjacent -> cant build goal
+    
+    owner = player;
+    return true;  
 }
 
