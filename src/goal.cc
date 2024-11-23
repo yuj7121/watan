@@ -10,16 +10,6 @@ using namespace std;
 
 Goal::Goal(int index, Student* owner) : index{index}, owner{nullptr} {}
 
-void Goal::attachCriteria(Criteria *c) {
-    adjCriteria.push_back(c);
-}
-
-void Goal::detachCriteria(Criteria *c) {
-    for(auto it = myCriteria.begin(); *it != crit; ++it) { 
-        myCriteria.erase(it);
-    }
-}
-
 int Goal::getIndex() const { return index; }
 
 bool Goal::isOwnedBy(Student *player) const { return owner==player; }
@@ -47,7 +37,7 @@ bool Goal::buildGoal(Student *player) {
         }
     }
     if (connected == false) return false; // no adjacent -> cant build goal
-    
+
     owner = player;
     return true;  
 }

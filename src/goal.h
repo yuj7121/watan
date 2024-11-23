@@ -20,10 +20,7 @@ public:
     Student getOwner() const; 
     void buildGoal(Student *player); 
     bool isOwnedBy(Student *player) const; 
-
     bool checkCriteriaExist() const;
-    void attachCriteria(Criteria *c);
-    void detachCriteria(Criteria *c);
 
     ~Goal() override = default;
 };
