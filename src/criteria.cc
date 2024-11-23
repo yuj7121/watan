@@ -43,6 +43,7 @@ For a student to complete a criterion, the following two conditions must be met:
 • It is either the beginning of the game, or they have achieved a goal that is adjacent to the criterion.
 */
 
+// maybe if upgraded, then it returns true, so board knows that it needs to print new edge -> require print method here
 void Criteria::improve(Student* player) {
     if (!owner && !isAdjacentEdge && isAdjacentGoal) { 
         owner = player; 
