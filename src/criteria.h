@@ -22,11 +22,11 @@ enum class CompletionType {
 class Criteria { 
     int index; 
     CompletionType level; 
-    vector<Goal *> myGoals;
+    vector<Goal *> adjGoals;
     Student *owner; 
     bool startOfGame;
 public: 
-    Criteria(int index, CompletionType level, vector<Goal *> &myGoals, Student *owner);
+    Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner);
     bool playCriteria(Student *player, bool startOfGame);
 
     int getIndex() const;
@@ -37,6 +37,8 @@ public:
 
     virtual ~Criteria() = default;
 private: 
+    bool adjacentCriteriaExist() const;
+    bool adjacentGoalOwner(Student *player) const;
     bool complete(Student *player, bool startOfGame); 
     bool canImprove(Student *player) const;
     bool improve(); 

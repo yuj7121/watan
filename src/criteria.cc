@@ -6,8 +6,8 @@
 
 using namespace std; 
 
-Criteria::Criteria(int index, CompletionType level, vector<Goal *> &myGoals, Student *owner) 
-    : index{index}, level{CompletionType::NONE}, myGoals{myGoals}, owner{nullptr} {}
+Criteria::Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner) 
+    : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) { 
     if (getCompletionType() == NONE) { 
@@ -45,6 +45,24 @@ bool Criteria::improve() {
         completionType = CompletionType::EXAM;
         return true;
     }
+    return false;
+}
+
+bool Criteria::adjacentCriteriaExist() const {
+    for(auto g : adjGoals) {
+        if(goal->checkCriteriaExist()) {
+            return true; 
+        }
+    }
+    return false; 
+}
+
+bool Criteria::adjacentGoalOwner(Student *player) const { 
+    for (auto g : adjGoals) {
+        if (g->isOwnedBy(player)) {
+            return true;
+        }
+    } 
     return false;
 }
 
