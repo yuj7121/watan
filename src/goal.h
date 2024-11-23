@@ -12,7 +12,7 @@ class Player;
 class Goal {
     int index; 
     Student* owner; 
-    vector<shared_ptr <Criteria *>> adjCriteria;
+    vector<shared_ptr <Criteria>> adjCriteria;
 public: 
     Goal(int index, Student* owner, vector<shared_ptr <Criteria *>> adjCriteria);
 
