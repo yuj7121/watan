@@ -16,11 +16,11 @@ class Tile;
 class Criteria { 
     int index; 
     CompletionType level; 
-    vector<Goal *> adjGoals;
+    vector<shared_ptr<Goal *>> adjGoals;
     Student *owner; 
     bool startOfGame;
 public: 
-    Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner);
+    Criteria(int index, CompletionType level, vector<shared_ptr<Goal *>> &adjGoals, Student *owner);
     bool playCriteria(Student *player, bool startOfGame);
 
     int getIndex() const;
