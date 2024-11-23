@@ -24,6 +24,7 @@ bool Goal::checkCriteriaExist() const {
 }
 
 bool Goal::buildGoal(Student *player) {
+    // TODO: incoporate cost of building a goal
     bool adjacent = false; 
 
     if (owner) { 
