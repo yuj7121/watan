@@ -16,4 +16,4 @@ Student getOwner() const { return owner; }
 
 void buildGoal(Student *player); 
 
-bool isOwnedBy(Student *player); 
+bool isOwnedBy(Student *player) const { return owner==player; }
