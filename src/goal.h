@@ -25,6 +25,4 @@ public:
     ~Goal() override = default;
 };
 
-
-
 #endif
