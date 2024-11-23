@@ -18,7 +18,6 @@ Student Criteria::getOwner() const {
 }
 
 bool Criteria::isOwnedBy(Student* player) const {
-    // CHECK: this function needed?
     return owner==player;
 }
 
