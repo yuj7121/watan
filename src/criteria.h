@@ -1,5 +1,5 @@
-#ifndef CRITERION_H
-#define CRITERION_H
+#ifndef CRITERIA_H
+#define CRITERIA_H
 
 #include <iostream> 
 #include <vector>
@@ -9,7 +9,8 @@
 using namespace std; 
 
 class Student; 
-class Goals; 
+class Goal; 
+class Tile; 
 
 enum class CompletionType {
     NONE,
@@ -21,7 +22,8 @@ enum class CompletionType {
 class Criteria { 
     int index; 
     CompletionType level; 
-    std::vector<int> AdjacentCriteria; // just need int, since only used to see if adjacent, dont need actual Criteria
+    vector<Goal *> myGoals;
+// vector<int> AdjacentCriteria; // just need int, since only used to see if adjacent, dont need actual Criteria
     Student *owner; 
 public: 
     Criteria(int index);  
