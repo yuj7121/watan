@@ -14,7 +14,7 @@ class Goal {
     Student* owner; 
     vector<shared_ptr <Criteria *>> adjCriteria;
 public: 
-    Goal(int index, Student* owner);
+    Goal(int index, Student* owner, vector<shared_ptr <Criteria *>> adjCriteria);
 
     int getIndex() const; 
     Student getOwner() const; 

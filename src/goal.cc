@@ -8,7 +8,8 @@
 
 using namespace std; 
 
-Goal::Goal(int index, Student* owner) : index{index}, owner{nullptr} {}
+Goal::Goal(int index, Student* owner, vector<shared_ptr<Criteria *>> &adjCriteria) : 
+    index{index}, owner{nullptr}, adjCriteria{adjCriteria} {}
 
 int Goal::getIndex() const { return index; }
 
