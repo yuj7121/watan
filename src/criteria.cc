@@ -12,14 +12,9 @@ int Criteria::getIndex() const { return index; }
 
 CompletionType Criteria::getCompletionType() const { return level; }
 
-Student Criteria::getOwner() const {
-    // CHECK: this function needed?
-    return owner; 
-}
+Student Criteria::getOwner() const { return owner; }
 
-bool Criteria::isOwnedBy(Student* player) const {
-    return owner==player;
-}
+bool Criteria::isOwnedBy(Student* player) const { return owner==player; }
 
 bool Criteria::isAdjacentEdge() {
     // TODO: do this function
