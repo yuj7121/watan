@@ -7,7 +7,7 @@
 
 using namespace std; 
 
-Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal *>> &adjGoals, Student *owner) 
+Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner) 
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) { 
