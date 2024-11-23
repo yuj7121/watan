@@ -5,19 +5,13 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "constants.h"
 
 using namespace std; 
 
 class Student; 
 class Goal; 
 class Tile; 
-
-enum class CompletionType {
-    NONE, 
-    ASSIGNMENT,
-    MIDTERM,
-    EXAM
-};
 
 class Criteria { 
     int index; 

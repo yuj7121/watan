@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "criterion.h"
+#include "constants.h"
 
 using namespace std; 
 
