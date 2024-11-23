@@ -14,6 +14,10 @@ int getIndex() const { return index; }
 
 Student getOwner() const { return owner; }
 
-void buildGoal(Student *player); 
+void buildGoal(Student *player) {
+    if (!owner) {
+        bool connected = false; 
+    }
+}
 
 bool isOwnedBy(Student *player) const { return owner==player; }
