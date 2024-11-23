@@ -16,7 +16,7 @@ class Tile;
 class Criteria { 
     int index; 
     CompletionType level; 
-    vector<shared_ptr<Goal *>> adjGoals;
+    vector<shared_ptr<Goal>> adjGoals;
     Student *owner; 
     bool startOfGame;
 public: 
