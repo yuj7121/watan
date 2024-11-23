@@ -5,6 +5,13 @@
 #include <map>
 #include <string>
 
+enum class CompletionType {
+    NONE, 
+    ASSIGNMENT,
+    MIDTERM,
+    EXAM
+};
+
 enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
 const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
