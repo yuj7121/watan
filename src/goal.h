@@ -12,17 +12,20 @@ class Player;
 class Goal {
     int index; 
     Student* owner; 
-    vector<int> Adjacent;
+    vector<Criteria *> adjCriteria;
 public: 
-    Goal(int index); 
+    Goal(int index, Student* owner);
+
     int getIndex() const; 
     Student getOwner() const; 
     void buildGoal(Student *player); 
     bool isOwnedBy(Student *player) const; 
 
+    bool checkCriteriaExist() const;
     void attachCriteria(Criteria *c);
     void detachCriteria(Criteria *c);
 
+    ~Goal() override = default;
 };
 
 

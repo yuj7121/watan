@@ -8,11 +8,30 @@
 
 using namespace std; 
 
-Goal::Goal(int index) : index{index}, owner{nullptr} {}
+Goal::Goal(int index, Student* owner) : index{index}, owner{nullptr} {}
 
-int getIndex() const { return index; }
+void Goal::attachCriteria(Criteria *c) {
+    adjCriteria.push_back(c);
+}
 
-Student getOwner() const { return owner; }
+void Goal::detachCriteria(Criteria *c) {
+    for(auto it = myCriteria.begin(); *it != crit; ++it) { 
+        myCriteria.erase(it);
+    }
+}
+
+int Goal::getIndex() const { return index; }
+
+bool Goal::isOwnedBy(Student *player) const { return owner==player; }
+
+bool Goal::checkCriteriaExist() const {
+    for (auto c : adjCriteria) { 
+        if(c->getCompletionType() != CompletionType::NONE) {
+            return true;
+        }
+    }
+    return false;
+}
 
 void buildGoal(Student *player) {
     if (!owner) {
@@ -20,4 +39,3 @@ void buildGoal(Student *player) {
     }
 }
 
-bool isOwnedBy(Student *player) const { return owner==player; }
