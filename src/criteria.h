@@ -13,7 +13,7 @@ class Goal;
 class Tile; 
 
 enum class CompletionType {
-    NONE,
+    NONE, 
     ASSIGNMENT,
     MIDTERM,
     EXAM
@@ -23,22 +23,23 @@ class Criteria {
     int index; 
     CompletionType level; 
     vector<Goal *> myGoals;
-// vector<int> AdjacentCriteria; // just need int, since only used to see if adjacent, dont need actual Criteria
     Student *owner; 
+    bool startOfGame;
 public: 
-    Criteria(int index);  
+    Criteria(int index, CompletionType level, vector<Goal *> &myGoals, Student *owner);
+    bool playCriteria(Student *player, bool startOfGame);
 
     int getIndex() const;
     CompletionType getCompletionType() const;
-    Student getOwner() const;
-    
-    bool isAdjacentEdge(); 
-    bool isAdjacentVertex(); 
-    bool isOwnedBy(Student* player) const;
-    void improve(Student* player); 
-    bool canUpgrade(Student* player) const; 
-    // IMPLEMENT DESTRUCTOR
+    bool isOwnedBy(Student *player) const;
+    bool nbrGoalOwnedBy(Student *player) const;
+    void addOwner(Student *player); 
 
+    virtual ~Criteria() = default;
+private: 
+    bool complete(Student *player, bool startOfGame); 
+    bool canImprove(Student *player) const;
+    bool improve(); 
 }; 
 
 #endif
