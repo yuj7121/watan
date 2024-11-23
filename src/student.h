@@ -3,8 +3,8 @@
 
 #include "constants.h"
 #include "tile.h"
-//#include "goal.h"
-//#include "criteria.h"
+#include "goal.h"
+#include "criteria.h"
 #include <string>
 #include <vector>
 #include <unordered_map>

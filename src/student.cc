@@ -25,7 +25,7 @@ int Student::getVictoryPoints(){ return victoryPotins; }
 int Student::getResource(ResourceType type) {
   return resources.count(type);
 }
-std::vector<std::shared_ptr<Goals>> Student::getGoals() { return goals; }
+std::vector<std::shared_ptr<Goal>> Student::getGoals() { return goals; }
 std::vector<std::shared_ptr<Criteria>> Student::getCriterion() { return criterion; }
 
 //other functions
