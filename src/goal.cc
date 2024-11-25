@@ -8,11 +8,16 @@
 
 using namespace std; 
 
-Goal::Goal(int index, Student* owner) : index{index}, owner{nullptr} {}
+Goal::Goal(int index, Student* owner) : 
+    index{index}, owner{nullptr} {}
 
 int Goal::getIndex() const { return index; }
 
 bool Goal::isOwnedBy(Student *player) const { return owner==player; }
+
+void Goal::attachCriteria(Criteria *c) {
+    adjCriteria.push_back(c);
+}
 
 bool Goal::checkCriteriaExist() const {
     for (auto c : adjCriteria) { 

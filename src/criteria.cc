@@ -3,10 +3,11 @@
 #include <memory>
 #include <string>
 #include "criterion.h"
+#include "constants.h"
 
 using namespace std; 
 
-Criteria::Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner) 
+Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner) 
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) { 
@@ -19,11 +20,14 @@ bool Criteria::playCriteria(Student *player, bool startOfGame) {
 }
 
 bool Criteria::complete(Student *player, bool startOfGame) {
-// TODO: check if adjacent criteria's owner == player
+    if (adjacentCriteriaExist()) {
+        return false; 
+    }
 
     if (!startOfGame) { 
-// TODO: check if achieved adjacent goal's owner == player
-//      - subtract resources used
+        if (!adjacentGoalOwner(player)) {
+            return false; 
+        }
     }
     addOwner(player); 
     completionType = CompletionType::ASSIGNMENT;

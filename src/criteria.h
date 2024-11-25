@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include "constants.h"
 
 using namespace std; 
 
@@ -12,31 +13,24 @@ class Student;
 class Goal; 
 class Tile; 
 
-enum class CompletionType {
-    NONE, 
-    ASSIGNMENT,
-    MIDTERM,
-    EXAM
-};
-
 class Criteria { 
     int index; 
     CompletionType level; 
-    vector<Goal *> adjGoals;
+    vector<shared_ptr<Goal>> adjGoals;
     Student *owner; 
     bool startOfGame;
 public: 
-    Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner);
+    Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner);
     bool playCriteria(Student *player, bool startOfGame);
 
     int getIndex() const;
     CompletionType getCompletionType() const;
     bool isOwnedBy(Student *player) const;
     bool nbrGoalOwnedBy(Student *player) const;
-    void addOwner(Student *player); 
 
     virtual ~Criteria() = default;
 private: 
+    void addOwner(Student *player); 
     bool adjacentCriteriaExist() const;
     bool adjacentGoalOwner(Student *player) const;
     bool complete(Student *player, bool startOfGame); 
