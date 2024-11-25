@@ -31,31 +31,15 @@ void BoardSetup::setup(shared_ptr<Board> b){
     }
     
     //TODO: ACC IMPLEMENT SOME WAY TO FIGURE OUT ADJACENCY
-    int tileAdjGoals[NUM_TILES][6];
-    int tileAdjCriterions[NUM_TILES][6];
+    int tileAdjGoals[NUM_TILES][6] = 
+    int tileAdjCriterions[NUM_TILES][6] = {{0,1,3,4,8,9},{2,3,7,8,13,14},{4,5,9,10,15,16},
+    {6,7,12,13,18,19},{8,9,14,15,20,21},{10,11,16,17,22,23},{13,14,19,20,25,26},{15,16,21,22,27,28},
+    {18,19,24,25,30,31},{20,21,26,27,32,33},{22,23,28,29,34,35},{25,26,31,32,37,38},{27,28,33,34,39,40},
+    {20,31,36,37,42,43},{32,33,38,39,44,45},{34,35,40,41,46,47},{37,38,43,44,48,49},{39,40,45,46,50,51},
+    {44,45,49,50,52,53}};
     int goalsAdjCriteria[NUM_GOALS][3];
     int criterionAdjgoals[NUM_CRITERION][3];
-    for(int i = 0; i < NUM_TILES; ++i) {
-        int g0, g1, g2, g3, g4, g5 = -1;
-        int c0, c1, c2, c3, c4, c5 = -1;
-        int row;
-        if(i == 0) {
-            row = 0;
-        } else if (i == 1 || i == 1) {
-            row = 1;
-        } else if(i == 16 || i = 17) {
-            row = 8;
-        } else if(i == 18) {
-            row = 9;
-        } else if(i ==)
-
-        c0 = factor;
-        c1 = c0 + 1;
-        c2 = lfksdjf;
-        c3 = c3 + 1;
-        c4 = dfsld;
-        c5 = c4 + 1;
-    }
+    
 
     //create goals
     for(int i = 0; i < NUM_GOALS) {
