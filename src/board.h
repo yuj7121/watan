@@ -3,6 +3,10 @@
 
 #include "boardSetup.h"
 #include "constants.h"
+#include "subject.h"
+#include "tile.h"
+#include "criteria.h"
+#include "goal.h"
 
 #include <vector>
 #include <memory>
@@ -10,18 +14,14 @@
 #include <string>
 
 
-class Tile;
-class Goal;
-class Criteria;
-
 class Board : public Subject {
-    vector<shared_ptr<Tile>> tiles;
-    vector<shared_ptr<Goal>> goals;
-    vector<shared_ptr<Criteria>> criterion;
+    std::vector<std::shared_ptr<Tile>> tiles;
+    std::vector<std::shared_ptr<Goal>> goals;
+    std::vector<std::shared_ptr<Criteria>> criterion;
     int geesePosition;
     friend class BoardSetup;
 
-public:
+  public:
     Board();
 
     const vector<shared_ptr<Tile>>& getTiles() const;

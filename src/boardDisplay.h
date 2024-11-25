@@ -1,12 +1,11 @@
 #ifndef BOARDDISPLAY_H
 #define BOARDDISPLAY_H
 
+#include "observer.h"
+#include "board.h"
+
 #include <iostream>
 #include <memory>
-
-#include "observer.h"
-
-class Board;
 
 class BoardDisplay : public Observer {
 public:

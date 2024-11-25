@@ -13,7 +13,7 @@ Goal::Goal(int index, Student* owner) :
 
 int Goal::getIndex() const { return index; }
 
-bool Goal::isOwnedBy(Student *player) const { return owner==player; }
+bool Goal::isOwnedBy(shared_ptr<Student> player) const { return owner==player; }
 
 void Goal::attachCriteria(Criteria *c) {
     adjCriteria.push_back(c);
@@ -28,7 +28,7 @@ bool Goal::checkCriteriaExist() const {
     return false;
 }
 
-bool Goal::buildGoal(Student *player) {
+bool Goal::buildGoal(shared_ptr<Student> player) {
     // TODO: incoporate cost of building a goal
     bool adjacent = false; 
 
@@ -47,4 +47,5 @@ bool Goal::buildGoal(Student *player) {
     owner = player;
     return true;  
 }
+
 
