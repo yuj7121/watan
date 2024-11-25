@@ -78,7 +78,7 @@ void BoardSetup::setup(shared_ptr<Board> b){
                 goalsAdjCriterion[currGoal].insert(tileAdjCriterions[i][j]);
                 goalsAdjCriterion[currGoal].insert(tileAdjCriterions[i][j + 1]);
             }
-            //for criteria
+            //for criteria s
             if(j == 0) {
                 criterionAdjGoals[currCriteria].insert(tileAdjGoals[i][5]);
                 criterionAdjGoals[currCriteria].insert(tileAdjGoals[i][j]);
