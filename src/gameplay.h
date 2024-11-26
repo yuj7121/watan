@@ -15,7 +15,7 @@
 #include "constants.h"
 #include "student.h"
 #include "textDisplay.h"
-#include "fileSetup.h"
+#include "boardSetup.h"
 
 using namespace std; 
 
@@ -25,6 +25,7 @@ class Gameplay {
     std::make_shared<Board> theBoard;
     std::vector<std::unique_ptr<Student>> students;
     std::unique_ptr<Dice> dice;
+    std::unique_ptr<BoardSetup> setup;
     std::unique_ptr<default_random_engine> eng;
 
     int whoseTurn; 

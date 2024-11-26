@@ -38,9 +38,8 @@ void Gameplay::newGame() {
     // TODO: transfer this information to the board/text display
 }
 
-void loadGame(const std::string file) { 
+void Gameplay::loadGame(const std::string file) { 
     ifstream f{file};
-    FileSetup fs; 
 	int curTurn;
     // TODO: check types 
     vector<vector<int>> studentResources(4, vector<int>(5));
@@ -90,8 +89,8 @@ void loadGame(const std::string file) {
                 studentCriteria.at(playerIndex) = criteria; 
             // board 
             } else if (i == 5) {
-                fs = FileSetup(fileName); 
-                fs.setup(theBoard); 
+                setup = std::make_unique<FileSetup>(file); 
+                setup->setup(); 
             } else {
                 geese = input; 
             }
@@ -99,6 +98,13 @@ void loadGame(const std::string file) {
     }
 
     // TODO: text display and board display
+}
+
+void Gameplay::loadBoard(const std::string file) {
+    setup = std::make_unique<FileSetup>(file); 
+    setup->setup(); 
+
+    // TODO: text display and board display 
 }
 
 void Gameplay::rollDice(int val = -1, bool isFairDice = false) {
