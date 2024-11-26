@@ -6,11 +6,17 @@
 #include "tile.h"
 #include "criteria.h"
 #include "goal.h"
+#include "student.h"
+#include "exceptions.h"
 
+#include <iostream>
+#include <algorithm>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <string>
+
+using namespace std;
 
 class BoardSetup;
 
