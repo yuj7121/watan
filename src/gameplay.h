@@ -10,20 +10,20 @@
 
 #include "board.h"
 #include "dice.h"
-#include "boardsetup.h"
+#include "boardSetup.h"
 #include "constants.h"
 #include "student.h"
-#include "textdisplay.h"
+#include "textDisplay.h"
 
 using namespace std; 
 
 class Gameplay {
-    const int winVictoryPoints = 10;
+    const int VICTORY_PTS_TO_WIN = 10;
     std::unique_ptr<TextDisplay> textDisplay;
     std::unique_ptr<Board> theBoard;
-    std::vector<std::unique_ptr<Student>> Students;
+    std::vector<std::unique_ptr<Student>> students;
     std::unique_ptr<Dice> dice;
-    std::default_random_engine *eng;
+    std::unique_ptr<default_random_engine> eng;
 
     int whoseTurn; 
     int winnerIndex; 
@@ -38,7 +38,7 @@ public:
 
     // val = loaded dice value (type == false)
     // type is true if fair, and false if loaded
-    void rollDice(int val = -1, bool type); 
+    void rollDice(int val = -1, bool isFairDice = false);
 
     string curTurn() const; 
     bool gameOver() const; 
@@ -51,7 +51,7 @@ public:
 	void achieve(int index);
 	void complete(int index);  
 	void improve(int index);
-	void trade(Student s, Resource give, Resource take); // user will input colour, and two resources, so check parameters?
+	void trade(Student s, ResourceType give, ResourceType take); // user will input colour, and two resources, so check parameters?
 	void next();
 	void save(const std::string file, const bool rolledAlready = true) const;
 	void help() const;

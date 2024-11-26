@@ -19,10 +19,10 @@ class Tile {
     bool hasGoose; 
 
 public: 
-    Tile(int index, int value, string resource, bool hasGoose);
+    Tile(int index, int value, ResourceType resource, bool hasGoose);
     int getIndex() const; 
     int getValue() const; 
-    string getResourceType() const;
+    ResourceType getResourceType() const;
     bool isVertex() const; 
     bool checkGoose() const; 
     // TODO: Destructor Needed?

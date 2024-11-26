@@ -25,6 +25,13 @@ const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
 
 enum class Colour { BLUE, RED, ORANGE, YELLOW };
 
+const std::map<Colour, std::string> COLOUR_TO_STRING = {
+    {Colour::BLUE, "Blue"},
+    {Colour::RED, "Red"},
+    {Colour::ORANGE, "Orange"},
+    {Colour::YELLOW, "Yellow"}
+};
+
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
@@ -41,7 +48,7 @@ const std::vector<std::vector<int>> TILE_ROWS = {
     {16, 17, 18}
 };
 
-const std::vector<std::vector<int>> criteriaPerTile {
+const std::vector<std::vector<int>> CRITERIA_PER_TILE {
     {0, 1, 3, 4, 8, 9}, {2, 3, 7, 8, 13, 14}, {4, 5, 9, 10, 15, 16},
     {6, 7, 12, 13, 18, 19}, {8, 9, 14, 15, 20, 21}, {10, 11, 16, 17, 22, 23},
     {13, 14, 19, 20, 25, 26}, {15, 16, 21, 22, 27, 28}, {18, 19, 24, 25, 30, 31},
@@ -50,7 +57,7 @@ const std::vector<std::vector<int>> criteriaPerTile {
     {34, 35, 40, 41, 46, 47}, {37, 38, 43, 44, 48, 49} , {39, 40, 45, 46, 50, 51},
     {44, 45, 49, 50, 52, 53} };
 
-const std::vector<std::vector<int>> adjGoalPerCriteria {
+const std::vector<std::vector<int>> ADJ_GOAL_PER_CRITERIA {
     {0, 1}, {0, 2}, {3, 5}, {1, 3, 6}, {2, 4, 7}, {4, 8}, {9, 12}, {5, 9, 13},
     {6, 10, 14}, {7, 10, 15}, {8, 11, 16}, {11, 17}, {12, 20}, {13, 18, 21},
     {14, 18, 22}, {15, 19, 23}, {16, 19, 24}, {17, 25}, {20, 26, 29},
@@ -63,7 +70,7 @@ const std::vector<std::vector<int>> adjGoalPerCriteria {
     {66, 68}, {69, 71}, {70, 71}
 };
 
-const std::vector<std::vector<int>> adjCriteriaPerGoal {
+const std::vector<std::vector<int>> ADJ_CRITERIA_PER_GOAL {
     {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9},
     {5, 10}, {6, 7}, {8, 9}, {10, 11}, {6, 12}, {7, 13}, {8, 14},
     {9, 15}, {10, 16}, {11, 17}, {13, 14}, {15, 16}, {12, 18},

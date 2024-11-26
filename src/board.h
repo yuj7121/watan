@@ -34,12 +34,13 @@ class Board : public Subject {
     const vector<shared_ptr<Tile>>& getTiles() const;
     int getGeese() const;
 
-    void tileRolled(int roll);
-    void buyGoal(int student, int index);
-    void buyCriteria(int student, int index);
-    void improveCriteria(int student, int index);
-    void moveGeese(int index);
-    void trade(int offeringStudent, int receivingStudent, ResourceType type);
+    void tileRolled(const int roll);
+    void buyGoal(shared_ptr<Student> student, const int index);
+    void buyCriteria(shared_ptr<Student> student, const int index);
+    void improveCriteria(shared_ptr<Student> student, const int index);
+    void moveGeese(const int index);
+    void trade(shared_ptr<Student> offeringStudent, shared_ptr<Student> receivingStudent,
+    const ResourceType offered, const ResourceType requested);
 };
 
 #endif

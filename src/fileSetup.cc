@@ -9,7 +9,7 @@ void FileSetup::setupResources() {
         if(file.fail()) {
             throw new FileNotFoundException(fileName);
         }
-    } catch (FileNotFoundException e) {
+    } catch (FileNotFoundException& e) {
         std::cerr << e.what() << endl;
         return;
     }
@@ -34,7 +34,7 @@ void FileSetup::setupResources() {
             }
             resourceValues[i] = input;
         }
-    } catch (FileFormatException e) {
+    } catch (FileFormatException& e) {
         std::cerr << e.what() << endl;
     }
 }

@@ -8,9 +8,9 @@
 using namespace std; 
 
 class FairDice : public Dice {
-    default_random_engine *generator;
+    unique_ptr<default_random_engine> generator;
 public: 
-    FairDice(default_random_engine *generator);
+    FairDice(unique_ptr<default_random_engine> generator);
     int roll() override; 
 }; 
 

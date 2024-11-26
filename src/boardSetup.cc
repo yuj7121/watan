@@ -2,31 +2,33 @@
 
 BoardSetup::BoardSetup() {}
 
-void BoardSetup::setup(shared_ptr<Board> b){
+void BoardSetup::setup(std::shared_ptr<Board> b) {
     setupResources();
-    for(int i = 0; i < NUM_TILES; i++) {
-        string currType;
+    for (int i = 0; i < NUM_TILES; i++) {
+        ResourceType currType;
         switch (resourceTypes[i]) {
             case 0:
-            currType = "CAFFEINE";
-            break;
+                currType = ResourceType::CAFFEINE;
+                break;
             case 1:
-            currType = "LAB";
-            break;
+                currType = ResourceType::LAB;
+                break;
             case 2:
-            currType = "LECTURE";
-            break;
+                currType = ResourceType::LECTURE;
+                break;
             case 3:
-            currType = "STUDY";
-            break;
+                currType = ResourceType::STUDY;
+                break;
             case 4:
-            currType = "TUTORIAL";
-            break;
+                currType = ResourceType::TUTORIAL;
+                break;
             case 5:
-            currType = "NETFLIX";
-            break;
-        }        
-        shared_ptr<Tile> curr {new Tile(i, resourceValues[i], currType, false)};
+                currType = ResourceType::NETFLIX;
+                break;
+            default:
+                throw ResourceTypeConversionException("Invalid resource type index!");
+        }
+        std::shared_ptr<Tile> curr = std::make_shared<Tile>(i, resourceValues[i], currType, false);
         b->tiles.emplace_back(curr);
     }
 
@@ -40,7 +42,7 @@ void BoardSetup::setup(shared_ptr<Board> b){
     for(int i = 0; i < NUM_CRITERION; ++i) {
         //create the criteria
         std::vector<std::shared_ptr<Goal>> adj;
-        for(auto it = (adjGoalPerCriteria.at(i)).begin(); it != (adjGoalPerCriteria.at(i)).end(); ++it) {
+        for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
             adj.emplace_back((b->goals).at(*it));
         }
         std::shared_ptr<Criteria> curr {new Criteria(i, CompletionType::NONE, adj, nullptr)};
@@ -50,7 +52,7 @@ void BoardSetup::setup(shared_ptr<Board> b){
 
     //attatch adjacent criterions to each goal
     for(int i = 0; i < NUM_GOALS; ++i) {
-        for(auto it = (adjGoalPerCriteria.at(i)).begin(); it != (adjGoalPerCriteria.at(i)).end(); ++it) {
+        for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
             (b->goals.at(i))->attachCriteria((b->criterion).at(*it));
         }
     }

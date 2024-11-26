@@ -14,7 +14,7 @@ int Tile::getIndex() const { return index; }
 
 int Tile::getValue() const { return value; }
 
-string Tile::getResourceType() const { return resource; }
+ResourceType Tile::getResourceType() const { return resource; }
 
 bool Tile::checkGoose() const { return hasGoose; } 
 

@@ -2,14 +2,16 @@
 
 using namespace std; 
 
-Goal::Goal(int index, Student* owner) : 
+Goal::Goal(int index, shared_ptr<Student> owner) :
     index{index}, owner{nullptr} {}
 
 int Goal::getIndex() const { return index; }
 
+shared_ptr<Student> Goal::getOwner() const { return owner; }
+
 bool Goal::isOwnedBy(shared_ptr<Student> player) const { return owner==player; }
 
-void Goal::attachCriteria(Criteria *c) {
+void Goal::attachCriteria(shared_ptr<Criteria> c) {
     adjCriteria.push_back(c);
 }
 

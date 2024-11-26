@@ -16,12 +16,12 @@ void Gameplay::newGame() {
 
 }
 
-void Gameplay::rollDice(int val = -1, bool type) {
+void Gameplay::rollDice(int val = -1, bool isFairDice = false) {
     int roll; 
-    if (type) { // fair dice
+    if (isFairDice) {
         dice = std::make_unique<FairDice>(eng); 
         roll = dice->roll(); 
-    } else { // loaded dice 
+    } else {
         dice = std::make_unique<LoadedDice>(val); 
         roll = dice->roll(); 
     }
