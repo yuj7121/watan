@@ -1,9 +1,11 @@
 #include <iostream>
 #include <vector>
 
+#include "board.h"
+
 #include "constants.h"
 #include "tile.h"
-#include "criterion.h"
+#include "criteria.h"
 #include "goal.h"
 
 using namespace std; 

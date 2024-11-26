@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "boardSetup.h"
 #include "constants.h"
 #include "subject.h"
 #include "tile.h"
@@ -13,6 +12,7 @@
 #include <unordered_map>
 #include <string>
 
+class BoardSetup;
 
 class Board : public Subject {
     std::vector<std::shared_ptr<Tile>> tiles;
@@ -24,6 +24,7 @@ class Board : public Subject {
   public:
     Board();
 
+    void printBoard() const;
     const vector<shared_ptr<Tile>>& getTiles() const;
     int getGeese() const;
 
