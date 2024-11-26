@@ -12,6 +12,12 @@ using namespace std;
 
 Gameplay::Gameplay() {}
 
+void Gameplay::newGame() {
+    array<pair<int, int>, 19> arg;
+	array<int, 6> availableResources{ {3, 3, 4, 4, 4, 1} };
+	array<int, 12> availableValues{ {0, 1, 2, 2, 2, 2, 0, 2, 2, 2, 2, 1} };
+}
+
 void Gameplay::rollDice(int val = -1, bool type) {
     int roll; 
     if (type) { // fair dice

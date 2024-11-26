@@ -26,6 +26,7 @@ class Gameplay {
 public: 
     Gameplay(); 
 
+    // TODO: need to implement
     void newGame();
     void loadGame(const std::string file);
     void loadBoard(const std::string file);
