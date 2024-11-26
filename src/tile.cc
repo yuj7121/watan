@@ -3,10 +3,11 @@
 #include <memory>
 #include "tile.h"
 #include "criteria.h"
+#include "constants.h"
 
 using namespace std; 
 
-Tile::Tile(int index, int value, string resource, bool hasGoose) :
+Tile::Tile(int index, int value, ResourceType resource, bool hasGoose) :
         index{index}, value{value}, resource{resource}, hasGoose{hasGoose} {} 
         
 int Tile::getIndex() const { return index; } 

@@ -5,6 +5,7 @@
 #include <string> 
 #include <vector>
 #include <memory>
+#include "constants.h"
 
 using namespace std; 
 
@@ -13,7 +14,7 @@ class Criterion;
 class Tile { 
     int index; 
     int value; 
-    string resource; 
+    ResourceType resource; 
     vector<std::shared_ptr<Criterion>> criterion;  
     bool hasGoose; 
 
