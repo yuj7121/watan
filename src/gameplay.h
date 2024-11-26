@@ -39,7 +39,7 @@ public:
     bool gameOver() const; 
     string whoWon() const; // TODO: NEEDED?
 
-    // end of turn commands 
+    // end of turn commands - NEED TO IMPLEMENT
     void board() const;
 	void status() const;
 	void criteria() const;
