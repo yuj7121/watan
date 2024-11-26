@@ -2,7 +2,7 @@
 #include "student.h"
 #include "criteria.h"
 
-Criteria::Criteria(int index, CompletionType level, vector<std::shared_ptr<Goal>> &adjGoals, Student *owner) 
+Criteria::Criteria(int index, CompletionType level, vector<Goal *> &adjGoals, Student *owner) 
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) { 

@@ -13,7 +13,7 @@ bool Goal::isOwnedBy(Student* player) const {
     return owner == player;
 }
 
-void Goal::attachCriteria(std::shared_ptr<Criteria> c) {
+void Goal::attachCriteria(Criteria *c) {
     adjCriteria.push_back(c);
 }
 

@@ -15,10 +15,10 @@ class Student;
 class Goal {
     int index; 
     Student* owner; 
-    vector<std::shared_ptr <Criteria>> adjCriteria;
+    vector<Criteria *> adjCriteria;
 public: 
     Goal(int index, Student* owner);
-    void attachCriteria(std::shared_ptr<Criteria> c);
+    void attachCriteria(Criteria * c);
 
     int getIndex() const; 
     Student getOwner() const; 
