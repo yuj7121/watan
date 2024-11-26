@@ -1,15 +1,19 @@
 #include "goal.h"
+#include "student.h"
+#include "criteria.h"
 
 using namespace std; 
 
 Goal::Goal(int index, Student* owner) : 
-    index{index}, owner{nullptr} {}
+    index{index}, owner{owner} {}
 
 int Goal::getIndex() const { return index; }
 
-bool Goal::isOwnedBy(shared_ptr<Student> player) const { return owner==player; }
+bool Goal::isOwnedBy(Student* player) const { 
+    return owner == player;
+}
 
-void Goal::attachCriteria(Criteria *c) {
+void Goal::attachCriteria(std::shared_ptr<Criteria> c) {
     adjCriteria.push_back(c);
 }
 
@@ -22,7 +26,7 @@ bool Goal::checkCriteriaExist() const {
     return false;
 }
 
-bool Goal::buildGoal(shared_ptr<Student> player) {
+bool Goal::buildGoal(Student* player) {
     // TODO: incoporate cost of building a goal
     bool adjacent = false; 
 
@@ -36,7 +40,7 @@ bool Goal::buildGoal(shared_ptr<Student> player) {
             break; 
         }
     }
-    if (connected == false) return false; // no adjacent -> cant build goal
+    if (adjacent == false) return false; // no adjacent -> cant build goal
 
     owner = player;
     return true;  
