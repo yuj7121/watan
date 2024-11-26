@@ -1,5 +1,4 @@
 #include "tile.h"
-#include "criteria.h"
 #include "constants.h"
 
 using namespace std; 
@@ -12,4 +11,6 @@ int Tile::getIndex() const { return index; }
 int Tile::getValue() const { return value; }
 
 ResourceType Tile::getResourceType() const { return resource; }
+
+bool isValue(int val) { return val = value; }
 

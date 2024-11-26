@@ -9,19 +9,17 @@
 
 using namespace std; 
 
-class Criterion; 
-
 class Tile { 
     int index; 
     int value; 
-    ResourceType resource; 
+    ResourceType resource; // TODO: check what exactly of the resource we want to return, the #? the type?
 
 public: 
     Tile(int index, int value, ResourceType resource);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;
-    bool isVertex() const; 
+    bool isValue(int val) const; 
 };
 
 #endif 
