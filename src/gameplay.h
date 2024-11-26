@@ -6,6 +6,7 @@
 #include <string> 
 #include <utility>
 #include <fstream>
+#include <sstream>
 #include <random>
 
 #include "board.h"
@@ -14,13 +15,14 @@
 #include "constants.h"
 #include "student.h"
 #include "textDisplay.h"
+#include "fileSetup.h"
 
 using namespace std; 
 
 class Gameplay {
     const int VICTORY_PTS_TO_WIN = 10;
     std::unique_ptr<TextDisplay> textDisplay;
-    std::unique_ptr<Board> theBoard;
+    std::make_shared<Board> theBoard;
     std::vector<std::unique_ptr<Student>> students;
     std::unique_ptr<Dice> dice;
     std::unique_ptr<default_random_engine> eng;
