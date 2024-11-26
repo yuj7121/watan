@@ -24,7 +24,7 @@ public:
 
     int getIndex() const;
     Student* getOwner() const;
-    void buildGoal(Student* player);
+    bool playGoal(Student* player);
     bool isOwnedBy(Student* player) const;
     bool checkCriteriaExist() const;
 

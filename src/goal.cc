@@ -26,7 +26,7 @@ bool Goal::checkCriteriaExist() const {
     return false;
 }
 
-bool Goal::buildGoal(Student* player) {
+bool Goal::playGoal(Student* player) {
     bool adjacent = false;
 
     if (owner) {

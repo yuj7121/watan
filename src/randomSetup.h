@@ -3,6 +3,7 @@
 
 #include "boardSetup.h"
 #include <algorithm>
+#include <random>
 #include <vector>
 
 class RandomSetup: public BoardSetup {

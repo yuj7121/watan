@@ -29,10 +29,10 @@ std::vector<std::shared_ptr<Goal>> Student::getGoals() const { return goals; }
 std::vector<std::shared_ptr<Criteria>> Student::getCriterion() const { return criterion; }
 
 bool Student::hasResources(std::vector<ResourceType> types) const {
-    for (ResourceType t : types) {
-        if (getResource(t) <= 0) return false;
-    }
-    return true;
+  for (ResourceType t : types) {
+      if (getResource(t) <= 0) return false;
+  }
+  return true;
 }
 
 //other functions
@@ -54,11 +54,26 @@ void Student::removeResources(std::vector<ResourceType> types) {
     }
 }
 
-void Student::addGoal(int index) {
+void Student::playGoal(shared_ptr<Goal> goal) {
+  if(goal->playGoal(this)){
+    goals.emplace_back(goal);
+  }
 }
 
-void Student::addCriterion(int index) {
-}
-
-void Student::updateCriteria(int index) {
+void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
+  //if they succeed in buying/updating the criteria
+  if(criteria->playCriteria(this, startOfGame)) {
+    int index = criteria->getIndex();
+    bool alreadyExists = false;
+    //checks if the criteria already exists or not and adds to vector if needed
+    for(auto it = criterion.begin(); it != criterion.end();){
+      if((*it)->getIndex() == index) {
+        alreadyExists = true;
+        break;
+      }
+    }
+    if(!alreadyExists) {
+      criterion.emplace_back(criteria);
+    }
+  }
 }

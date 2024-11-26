@@ -39,9 +39,8 @@ class Student {
     void addResource(ResourceType type);
     void removeResource(ResourceType type);
     void removeResources(std::vector<ResourceType> types);
-    void addGoal(int index);
-    void addCriterion(int index);
-    void updateCriteria(int index);
+    void playGoal(shared_ptr<Goal> goal);
+    void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
 };
 
 #endif
