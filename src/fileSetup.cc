@@ -16,12 +16,15 @@ void FileSetup::setupResources() {
 
     try{
         string str;
+
+        //skiping the sutden tinfo
         for(int i = 0; i < 5; ++i) {
             getline(file, str);
         }
 
         int input;
 
+        //reading in the board line
         for(int i = 0; i < NUM_TILES; ++i){
             file >> input;
             if(input < 0 || input > 5) {
@@ -34,6 +37,8 @@ void FileSetup::setupResources() {
             }
             resourceValues[i] = input;
         }
+
+        //read in geese
     } catch (FileFormatException& e) {
         std::cerr << e.what() << endl;
     }
