@@ -1,14 +1,19 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef GAMEPLAY_H
+#define GAMEPLAY_H
 
 #include <iostream>
 #include <sstream> 
 #include <string> 
+#include <utility>
+#include <fstream>
+#include <random>
+
 #include "board.h"
 #include "dice.h"
 #include "boardsetup.h"
 #include "constants.h"
 #include "student.h"
+#include "textdisplay.h"
 
 using namespace std; 
 

@@ -1,12 +1,5 @@
-#include <utility>
-#include <fstream>
-#include <sstream>
-#include <random>
-#include "controller.h"
-#include "board.h"
-#include "dice.h"
-#include "textdisplay.h"
-#include "student.h"
+#include "gameplay.h"
+
 
 using namespace std; 
 
