@@ -1,5 +1,5 @@
-#ifndef GAMEPLAY_H
-#define GAMEPLAY_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #include <iostream>
 #include <sstream> 
@@ -11,9 +11,11 @@
 
 using namespace std; 
 
-class Gameplay {
-    const int winVictoryPoints = 10; 
-
+class Controller {
+    const int winVictoryPoints = 10;
+public: 
+    Controller(); 
+    
 }; 
 
 #endif
