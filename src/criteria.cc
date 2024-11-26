@@ -1,20 +1,13 @@
-#include <iostream> 
-#include <vector>
-#include <memory>
-#include <string>
-#include "criterion.h"
-#include "constants.h"
-
-using namespace std; 
+#include "criteria.h"
 
 Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner) 
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) { 
-    if (getCompletionType() == NONE) { 
+    if (getCompletionType() == CompletionType::NONE) { 
         complete(player, startOfGame); 
     } else {
-        canUpgrade(player); 
+        canImprove(player); 
         improve(); 
     }
 }

@@ -4,6 +4,10 @@
 #include <iostream> 
 #include <vector> 
 #include <string>
+
+#include "criteria.h"
+#include "student.h"
+
 using namespace std; 
 
 class Criteria;

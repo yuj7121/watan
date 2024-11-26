@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "boarddisplay.h"
+#include "boardDisplay.h"
 #include "board.h"
 
 class TextDisplay : public BoardDisplay {

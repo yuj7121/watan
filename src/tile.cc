@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include "tile.h"
-#include "criterion.h"
+#include "criteria.h"
 
 using namespace std; 
 

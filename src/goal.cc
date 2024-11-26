@@ -1,10 +1,4 @@
-#include <iostream> 
-#include <vector> 
-#include <string>
-
 #include "goal.h"
-#include "criteria.h"
-#include "player.h"
 
 using namespace std; 
 

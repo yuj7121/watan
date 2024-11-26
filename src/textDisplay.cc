@@ -1,4 +1,4 @@
-#include "textdisplay.h"
+#include "textDisplay.h"
 
 TextDisplay::TextDisplay(std::shared_ptr<Board> board) : board(board) {
     board->attach(std::make_shared<TextDisplay>(*this));
