@@ -24,8 +24,6 @@ int Board::getGeese() const {
 }
 
 void Board::tileRolled(const int roll) {
-    cout << "Rolled: " << roll << endl;
-
     for (unsigned int i = 0; i < tiles.size(); i++) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
@@ -49,7 +47,6 @@ void Board::buyGoal(shared_ptr<Student> student, const int index) {
         goal->buildGoal(student);
         student->addGoal(index);
         student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
-        cout << "Goal " << index << " acquired by student " << student << endl;
     } else {
         throw InsufficientResourcesException("Not enough resources to buy goal!");
     }
@@ -66,7 +63,6 @@ void Board::buyCriteria(shared_ptr<Student> student, const int index) {
         student->addCriterion(index);
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
-        cout << "Criterion " << index << " acquired by student " << student << endl;
     } else {
         throw InsufficientResourcesException("Not enough resources to buy criterion!");
     }
@@ -91,7 +87,6 @@ void Board::improveCriteria(shared_ptr<Student> student, const int index) {
     if (student->hasResources(cost)) {
         crit->playCriteria(student, false);
         student->removeResources(cost);
-        cout << "Criterion " << index << " improved by student " << COLOUR_TO_STRING.at(student->getColour()) << endl;
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criterion!");
     }
@@ -102,7 +97,6 @@ void Board::moveGeese(const int index) {
         throw InvalidGeesePlacementException("Geese are already on this tile!");
     }
     geesePosition = index;
-    cout << "Geese moved to tile " << index << endl;
 }
 
 void Board::trade(shared_ptr<Student> offeringStudent, shared_ptr<Student> receivingStudent,
@@ -117,5 +111,4 @@ const ResourceType offered, const ResourceType requested) {
     offeringStudent->addResource(requested);
     receivingStudent->removeResource(requested);
     receivingStudent->addResource(offered);
-    cout << "Trade successful!" << endl;
 }
