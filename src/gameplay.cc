@@ -13,9 +13,14 @@ using namespace std;
 Gameplay::Gameplay() {}
 
 void Gameplay::newGame() {
-    array<pair<int, int>, 19> arg;
+    array<pair<int, int>, 19> tiles;
 	array<int, 6> availableResources{ {3, 3, 4, 4, 4, 1} };
 	array<int, 12> availableValues{ {0, 1, 2, 2, 2, 2, 0, 2, 2, 2, 2, 1} };
+
+    for (int i = 0; i < 19; ++i) {
+        
+    }
+
 }
 
 void Gameplay::rollDice(int val = -1, bool type) {
