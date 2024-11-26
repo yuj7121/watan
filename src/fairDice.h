@@ -2,7 +2,8 @@
 #define _FAIRDICE_H_
 
 #include <iostream>
-#include <random> 
+#include <random>
+#include <memory>
 #include "dice.h"
 
 using namespace std; 

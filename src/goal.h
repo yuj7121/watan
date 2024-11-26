@@ -11,18 +11,20 @@
 using namespace std; 
 
 class Criteria;
-class Student;
+class Player;
 
 class Goal {
     int index;
     Student* owner;
-    vector<Criteria*> adjCriteria;
+    vector<shared_ptr <Criteria>> adjCriteria;
+
+public:
     Goal(int index, Student* owner);
-    void attachCriteria(Criteria* c);
+    void attachCriteria(shared_ptr<Criteria> c);
 
     int getIndex() const;
     Student* getOwner() const;
-    bool buildGoal(Student* player);
+    void buildGoal(Student* player);
     bool isOwnedBy(Student* player) const;
     bool checkCriteriaExist() const;
 

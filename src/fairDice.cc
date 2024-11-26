@@ -1,7 +1,7 @@
 #include "fairDice.h"
 
 FairDice::FairDice(unique_ptr<default_random_engine> generator)
-    : generator(generator) {}
+    : generator(move(generator)) {}
 
 int FairDice::roll() {
     uniform_int_distribution<int> distribution(1, 6);

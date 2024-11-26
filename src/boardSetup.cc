@@ -45,7 +45,7 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
         for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
             adj.emplace_back((b->goals).at(*it));
         }
-        std::shared_ptr<Criteria> curr {new Criteria(i, CompletionType::NONE, adj, nullptr)};
+        Criteria* curr {new Criteria(i, CompletionType::NONE, adj, nullptr)};
         b->criterion.emplace_back(curr);
     }
     

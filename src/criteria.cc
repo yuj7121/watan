@@ -5,10 +5,10 @@ Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &ad
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) {
     if (getCompletionType() == CompletionType::NONE) {
-        complete(player, startOfGame);
+        return complete(player, startOfGame);
     } else {
         canImprove(player);
-        improve();
+        return improve();
     }
 }
 
@@ -23,23 +23,23 @@ bool Criteria::complete(Student *player, bool startOfGame) {
         }
     }
     addOwner(player);
-    completionType = CompletionType::ASSIGNMENT;
+    level = CompletionType::ASSIGNMENT;
     return true;
 }
 
 bool Criteria::canImprove(Student *player) const {
-    if (level == EXAM) return false;
+    if (level == CompletionType::EXAM) return false;
     if (!isOwnedBy(player)) return false;
 // TODO: check if player has enough resources to upgrade
     return true;
 }
 
 bool Criteria::improve() {
-    if (completionType == CompletionType::ASSIGNMENT) {
-        completionType = CompletionType::MIDTERM;
+    if (level == CompletionType::ASSIGNMENT) {
+        level = CompletionType::MIDTERM;
         return true;
-    } else if (completionType == CompletionType::MIDTERM) {
-        completionType = CompletionType::EXAM;
+    } else if (level == CompletionType::MIDTERM) {
+        level = CompletionType::EXAM;
         return true;
     }
     return false;
@@ -47,7 +47,7 @@ bool Criteria::improve() {
 
 bool Criteria::adjacentCriteriaExist() const {
     for(auto g : adjGoals) {
-        if(goal->checkCriteriaExist()) {
+        if(g->checkCriteriaExist()) {
             return true;
         }
     }

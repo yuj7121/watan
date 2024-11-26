@@ -35,11 +35,11 @@ class Board : public Subject {
     int getGeese() const;
 
     void tileRolled(const int roll);
-    void buyGoal(shared_ptr<Student> student, const int index);
-    void buyCriteria(shared_ptr<Student> student, const int index);
-    void improveCriteria(shared_ptr<Student> student, const int index);
+    void buyGoal(Student* student, const int index);
+    void buyCriteria(Student* student, const int index);
+    void improveCriteria(Student* student, const int index);
     void moveGeese(const int index);
-    void trade(shared_ptr<Student> offeringStudent, shared_ptr<Student> receivingStudent,
+    void trade(Student* offeringStudent, Student* receivingStudent,
     const ResourceType offered, const ResourceType requested);
 };
 
