@@ -2,7 +2,8 @@
 #define RANDOMSETUP_H
 
 #include "boardSetup.h"
-
+#include <algorithm>
+#include <vector>
 
 class RandomSetup: public BoardSetup {
   protected:
