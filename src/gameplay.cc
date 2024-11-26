@@ -43,3 +43,21 @@ bool Gameplay::gameOver() const {
 	    }
     }   
 }
+
+void Gameplay::board() const { 
+    cout << *textDisplay << endl;	
+}
+
+void Gameplay::help() const {
+    cout << "Valid commands:" << endl
+        << "board" << endl
+        << "status" << endl
+        << "criteria" << endl
+        << "achieve <goal>" << endl
+        << "complete <criterion>" << endl
+        << "improve <criterion>" << endl
+        << "trade <colour> <give> <take>" << endl
+        << "next" << endl
+        << "save <file>" << endl
+        << "help" << endl;
+}

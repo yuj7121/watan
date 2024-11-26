@@ -14,6 +14,7 @@ using namespace std;
 
 class Gameplay {
     const int winVictoryPoints = 10;
+    std::unique_ptr<TextDisplay> textDisplay;
     std::unique_ptr<Board> theBoard;
     std::vector<std::unique_ptr<Student>> Students;
     std::unique_ptr<Dice> dice;
