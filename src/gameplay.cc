@@ -6,12 +6,13 @@
 #include "board.h"
 #include "dice.h"
 #include "textdisplay.h"
+#include "student.h"
 
 using namespace std; 
 
-Controller::Controller() {}
+Gameplay::Gameplay() {}
 
-void Controller::rollDice(int val = -1, bool type) {
+void Gameplay::rollDice(int val = -1, bool type) {
     int roll; 
     if (type) { // fair dice
         dice = std::make_unique<FairDice>(eng); 
@@ -24,4 +25,21 @@ void Controller::rollDice(int val = -1, bool type) {
     if (roll == 7) {
         // TODO: GEESE
     }
+}
+
+string Gameplay::curTurn() const { 
+    if (whoseTurn == 0) return "Blue";
+    else if (whoseTurn == 1) return "Red";
+    else if (whoseTurn == 2) return "Orange";
+    else if (whoseTurn == 3) return "Yellow";
+    else return "";
+}
+
+bool Gameplay::gameOver() const { 
+    for (int i = 0; i < 4; ++i) {
+        if (Students[i]->getVictoryPoints() == 10) {
+            winnerIndex = i;
+            return true;
+	    }
+    }   
 }

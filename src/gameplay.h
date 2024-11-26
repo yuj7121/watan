@@ -20,6 +20,7 @@ class Gameplay {
     std::default_random_engine *eng;
 
     int whoseTurn; 
+    int winnerIndex; 
 
 public: 
     Gameplay(); 
@@ -32,8 +33,21 @@ public:
     // type is true if fair, and false if loaded
     void rollDice(int val = -1, bool type); 
 
-    string getWhoseTurn() const; 
+    string curTurn() const; 
     bool gameOver() const; 
+    string whoWon() const; // TODO: NEEDED?
+
+    // end of turn commands 
+    void board() const;
+	void status() const;
+	void criteria() const;
+	void achieve(int index);
+	void complete(int index);  
+	void improve(int index);
+	void trade(Student s, Resource give, Resource take); // user will input colour, and two resources, so check parameters?
+	void next();
+	void save(const std::string file, const bool rolledAlready = true) const;
+	void help() const;
 
 }; 
 
