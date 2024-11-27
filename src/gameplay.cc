@@ -66,6 +66,7 @@ void Gameplay::loadGame(const std::string file) {
 
     // TODO: text display and board display
 }
+
 void Gameplay::loadBoard(const std::string file) {
     setup = std::make_unique<FileSetup>(file); 
     setup->setupResources(); 
