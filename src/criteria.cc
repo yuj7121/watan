@@ -1,4 +1,7 @@
 #include "criteria.h"
+#include "goal.h"
+#include "tile.h"
+#include "player.h"
 
 Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner)
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
@@ -30,7 +33,6 @@ bool Criteria::complete(Student *player, bool startOfGame) {
 bool Criteria::canImprove(Student *player) const {
     if (level == CompletionType::EXAM) return false;
     if (!isOwnedBy(player)) return false;
-// TODO: check if player has enough resources to upgrade
     return true;
 }
 
@@ -67,7 +69,7 @@ int Criteria::getIndex() const { return index; }
 
 Student* Criteria::getOwner() const { return owner; }
 
-int Criteria::getCompletionLevel() const { \
+int Criteria::getCompletionLevel() const { 
     if (level == CompletionType::ASSIGNMENT) return 1; 
     if (level == CompletionType::MIDTERM) return 2; 
     if (level == CompletionType::EXAM) return 3; 

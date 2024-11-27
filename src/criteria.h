@@ -7,7 +7,6 @@
 #include <string>
 
 #include "constants.h"
-#include "goal.h"
 
 using namespace std;
 
