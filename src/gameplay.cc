@@ -73,32 +73,11 @@ void Gameplay::loadBoard(const std::string file) {
     // TODO: text display and board display 
 }
 
-loseToGeese(unique_ptr<Student> student) {
-    int numResources;
+void Gameplay::loseToGeese(unique_ptr<Student> student) {
+    int numResources; //total number of resources the student has
     //find the total number of resources
-    for(int i = 0; i < NUM_RESOURCE_TYPES; ++i) {
-        ResourceType::ResourceType type;
-        switch(i){
-            case 0:
-                type = ResourceType::CAFFEINE;
-                break;
-            case 1:
-                type = ResourceType::LAB;
-                break;
-            case 2:
-                type = ResourceType::LECTURE;
-                break;
-            case 3:
-                type = ResourceType::STUDY;
-                break;
-            case 4:
-                type = ResourceType::TUTORIAL;
-                break;
-            case 5:
-                type = ResourceType::NETFLIX;
-                break;
-        } //end of switch block
-        numResources += student.getResource(type);
+    for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+        numResources += student.getResource(it->second);
     }
 
     //output
@@ -107,7 +86,8 @@ loseToGeese(unique_ptr<Student> student) {
     << " loses " << numResources << "resources to the geese. They lose:" << endl;
 
     //make student lose resources
-    vector<bool> toLose;
+    vector<bool> toLose; //vector for which resoruces to lose
+    //figure out which resources to lose
     for(int i = 0; i < numResources; ++i) {
         if(i < numResources / 2){
             toLose.emplace_back(true);
@@ -116,12 +96,22 @@ loseToGeese(unique_ptr<Student> student) {
         }
     }
     std::random_shuffle(toLose.begin(), toLose.end());
-
-    for(int i = 0; i < NUM_RESOURCE_TYPES; ++i) {
-        
+    //call removeResource functions for appropriate resources
+    int index = 0; //index through the toLose vector
+    for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+        int count = student.getResource(it->second);
+        int howManyLost = 0;
+        for(int i = 0; i < count; ++i) {
+            if(toLose.at(index)) {
+                student->removeResource(it->second);
+                ++howManyLost;
+            }
+            ++index;
+        }
+        cout << howManyLost << " it->second" << endl;
     }
-
 }
+
 void Gameplay::rollDice(int val, bool type) {
     int roll; 
     if (type) { // fair dice

@@ -20,6 +20,7 @@ class Student {
     std::vector<std::shared_ptr<Criteria>> criterion; 
     std::vector<std::shared_ptr<Goal>> goals;
     std::unordered_map<ResourceType, int> resources;
+    void loseToGeese(unique_ptr<Student> student);
 
   public:
     //ctor
