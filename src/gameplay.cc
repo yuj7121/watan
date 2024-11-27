@@ -331,5 +331,51 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
 
 }//end of function
 
+void endTurn() {
+    while (!gameOver()) {
+        cout << ">"; 
+        string line; 
+        getline(cin, line); 
 
+        if (cin.eof()) {
+            save("backup.sv"); 
+            break; 
+        } 
+
+        istringstream iss{line}; 
+        string cmd; 
+        iss >> cmd; 
+
+        if (cmd == "board") {
+            board(); 
+        } else if (cmd == "status") {
+            status(); 
+        } else if (cmd == "criteria") {
+            criteria(); 
+        } else if (cmd == "achieve") {
+            int index; 
+            iss >> index; 
+        } // TODO: continue 
+    }
+}
+
+bool endGame() {
+    while (true) { 
+        cout << "Would you like to play again?" << endl;
+        cout << ">"; 
+        string response; 
+        cin >> response; 
+        if (cin.eof()) {
+            save("backup.sv"); 
+            break; 
+        } else if (response == "yes") {
+            return false; 
+        } else if (response == "no") {
+            return true; 
+        } else { 
+            cout << "Invalid command." << endl; 
+        }
+    }
+    return true; 
+}
 

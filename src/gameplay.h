@@ -64,6 +64,8 @@ public:
 
     void initialAssignments();
     void beginTurn(Student& s);
+    void endTurn(); 
+    bool endGame(); 
 }; 
 
 #endif
