@@ -79,7 +79,9 @@ void Gameplay::loseToGeese(unique_ptr<Student> student) {
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
         numResources += student.getResource(it->second);
     }
-
+    if(numResources < 10) {
+        return;
+    }
     //output
     cout << "Student"
     << COLOUR_TO_STRING.at(students[j]->getColour())
@@ -124,6 +126,36 @@ void Gameplay::rollDice(int val, bool type) {
 
     if (roll == 7) {
         // TODO: GEESE
+
+        //make each student with more than 10 resources lose to geese
+        for(auto it = students.begin(); it != students.end(); ++it) {
+            loseToGeese(it);
+        }
+        //move geese
+        int geeseHere;
+        bool invalid = true;
+        do{
+            try{
+                cout << "Choose where to place the GEESE." << endl;
+                if(!(cin >> geeseHere)) {
+                    throw new InvalidInputException("not an integer");
+                } else {
+                    if(geeseHere < 0 || geeseHere > 18) {
+                        throw new OutOfRangeInputException(geeseHere);
+                    } else {
+                        invalid = false;
+                    }
+                }
+            } catch (InvalidInputException& e) { // not an int
+                cerr << e.what() << endl;
+            } catch (OutOfRangeInputException& e) { //int out of range
+                cerr << e.what() << endl;
+            } //end of try catch
+        } while (invalid); //end of while loop
+        theBoard.moveGeese(geeseHere); //geese moved!
+
+        //TODO: steal       
+
 
     } else {
         theBoard.tileRolled(roll);
