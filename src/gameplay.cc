@@ -209,6 +209,7 @@ void Gameplay::trade(Colour receivingStudent, ResourceType give, ResourceType ta
     cout << "\nDoes " << colourToString(receivingStudent) << " accept this offer?" << endl; 
     
     string response;
+    cout << ">"; 
     cin >> response;
     if (response == "yes") { 
         theBoard->trade(curPlayer, receivingStudent, give, take);
@@ -229,6 +230,7 @@ void Gameplay::save(string file) {
         myFIle << "\n"; 
         for (auto &p : student) myFile << p->save() + "\n"; 
         myFile << theBoard->save() + "\n"; 
+    }
 }
 
 void Gameplay::help() const {
