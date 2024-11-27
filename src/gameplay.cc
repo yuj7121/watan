@@ -196,6 +196,7 @@ void Gameplay::achieve(int index) {
 }
 
 void Gameplay::complete(int index) {
+    // TODO: if start of game, 
     theBoard->buyCriteria(curPlayer, index); 
 }
 

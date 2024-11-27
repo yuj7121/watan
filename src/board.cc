@@ -48,6 +48,7 @@ void Board::buyGoal(Student* student, const int index) {
 //          if successful.
 void Board::buyCriteria(Student* student, const int index) {
     auto &crit = criterion[index];
+    // TODO: if its the start of the game, don't need to check resources
     if (crit->getOwner() != nullptr) {
         throw AlreadyOwnedException("Criterion is already owned!");
     }
