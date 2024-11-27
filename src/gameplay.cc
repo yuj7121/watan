@@ -7,7 +7,7 @@ Gameplay::Gameplay() {}
 
 void Gameplay::newGame() {
     setup = std::make_unique<RandomSetup>();
-    setup->setup(); 
+    setup->setupResources(); 
     // TODO: text display and board display
 }
 
@@ -57,7 +57,7 @@ void Gameplay::loadGame(const std::string file) {
             // board 
             } else if (i == 5) {
                 setup = std::make_unique<FileSetup>(file); 
-                setup->setup(); 
+                setup->setupResources(); 
             } else {
                 geese = input; 
             }
@@ -68,7 +68,7 @@ void Gameplay::loadGame(const std::string file) {
 }
 void Gameplay::loadBoard(const std::string file) {
     setup = std::make_unique<FileSetup>(file); 
-    setup->setup(); 
+    setup->setupResources(); 
     // TODO: text display and board display 
 }
 
