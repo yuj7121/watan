@@ -30,6 +30,7 @@ class Gameplay {
     std::unique_ptr<BoardSetup> setup;
     std::unique_ptr<default_random_engine> eng;
 
+    Student *curPlayer; 
     int whoseTurn; 
     int winnerIndex; 
 
@@ -56,9 +57,9 @@ public:
 	void achieve(int index);
 	void complete(int index);  
 	void improve(int index);
-	void trade(Student s, ResourceType give, ResourceType take); // user will input colour, and two resources, so check parameters?
+	void trade(Colour receivingStudent, ResourceType give, ResourceType take); // user will input colour, and two resources, so check parameters?
 	void next();
-	void save(const std::string file, const bool rolledAlready = true) const;
+	void save(string file); 
 	void help() const;
 
     void initialAssignments();

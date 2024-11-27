@@ -41,6 +41,7 @@ class Board : public Subject {
     void moveGeese(const int index);
     void trade(Student* offeringStudent, Student* receivingStudent,
     const ResourceType offered, const ResourceType requested);
+    string save(); 
 };
 
 #endif

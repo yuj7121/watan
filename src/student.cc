@@ -129,3 +129,30 @@ string Student::criteria() const {
   }
   return output; 
 }
+
+string Student::save() const {
+    string output;
+
+    for (int i = 0; i < 5; ++i) {
+        ostringstream val;
+        val << resources[i];
+        output += val.str() + " ";
+    }
+
+    output += "g ";
+    for (auto &g : goals) {
+        ostringstream goal;
+        goal << g;
+        output += " " + goal.str() + " ";
+    }
+
+    output += "c ";
+    for (auto &c : criterion) {
+        ostringstream criteria;
+        ostringstream level;
+        criteria << c.first;
+        level << c.second;
+        output += " " + criteria.str() + " " + level.str();
+    }
+    return output;
+}

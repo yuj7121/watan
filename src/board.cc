@@ -122,3 +122,16 @@ const ResourceType offered, const ResourceType requested) {
     receivingStudent->removeResource(requested);
     receivingStudent->addResource(offered);
 }
+
+string Board::save() { 
+    string output; 
+    for (auto &t : tiles) { 
+        output += t->save() + " "; 
+    } 
+    ostringstream goose; 
+    goose << gooseIndex; 
+    output += '\n'; 
+    output += oss.str();
+
+    return output; 
+}

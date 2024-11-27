@@ -192,7 +192,43 @@ void Gameplay::criteria() const {
 }
 
 void Gameplay::achieve(int index) {
-    theBoard->buyGoal(currentPlayer, index); 
+    theBoard->buyGoal(curPlayer, index); 
+}
+
+void Gameplay::complete(int index) {
+    theBoard->buyCriteria(curPlayer, index); 
+}
+
+void Gameplay::improve(int index) {
+    theBoard->improveCriteria(curPlayer, index); 
+}
+
+void Gameplay::trade(Colour receivingStudent, ResourceType give, ResourceType take) {
+    cout << colourToString(curPlayer.getColour()) << " offers " << colourToString(receivingStudent) << 
+        " one " << resourceTypeToString(give) << " for one " << resourceTypeToString(take) << ". "; 
+    cout << "\nDoes " << colourToString(receivingStudent) << " accept this offer?" << endl; 
+    
+    string response;
+    cin >> response;
+    if (response == "yes") { 
+        theBoard->trade(curPlayer, receivingStudent, give, take);
+        cout << "Trade Successful.\n";
+    }
+    else if (response == "no") cout << "Trade declined." << endl;
+}
+
+void Gameplay::next() {
+    whoseTurn = (whoseTurn + 1) % 4;
+    curPlayer = students[whoseTurn].get();
+}
+
+void Gameplay::save(string file) {
+    ofstream myFile(file); 
+    if (myFile.is_open()) {
+        myFile << whoseTurn; 
+        myFIle << "\n"; 
+        for (auto &p : student) myFile << p->save() + "\n"; 
+        myFile << theBoard->save() + "\n"; 
 }
 
 void Gameplay::help() const {

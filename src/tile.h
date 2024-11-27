@@ -25,9 +25,7 @@ public:
     ResourceType getResourceType() const;
     bool isVertex() const; 
     bool checkGoose() const; 
-    // TODO: Destructor Needed?
-    // ^^^ i don't think so since we're using smart pointers
-    //     which means there will be no delete statements
+    void save() const; 
 };
 
 #endif 

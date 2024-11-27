@@ -44,6 +44,7 @@ class Student {
     int calculatePoints() const; 
     string status() const; 
     string criteria() const; 
+    string save() const; 
 };
 
 #endif

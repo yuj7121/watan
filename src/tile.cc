@@ -14,3 +14,15 @@ ResourceType Tile::getResourceType() const { return resource; }
 
 bool isValue(int val) { return val = value; }
 
+void save() const {
+        string output; 
+        string resourceTypeNum; 
+        if (resource == ResourceType::CAFFEINE) resourceTypeNum = "0"; 
+        else if (resource == ResourceType::LAB) resourceTypeNum = "1"; 
+        else if (resource == ResourceType::LECTURE) resourceTypeNum = "2"; 
+        else if (resource == ResourceType::STUDY) resourceTypeNum = "3"; 
+        else if (resource == ResourceType::TUTORIAL) resourceTypeNum = "4";
+        else (resource == ResourceType::NETFLIX) resourceTypeNum = "5";
+        output += resourceTypeNum + " " + value; 
+        return output; 
+}

@@ -14,6 +14,17 @@ enum class CompletionType {
 
 enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
+std::string resourceTypeToString(ResourceType r) {
+    switch (r) {
+        case ResourceType::CAFFEINE: return "CAFFEINE";
+        case ResourceType::LAB: return "LAB";
+        case ResourceType::LECTURE: return "LECTURE";
+        case ResourceType::STUDY: return "STUDY";
+        case ResourceType::TUTORIAL: return "TUTORIAL";
+        case ResourceType::NETFLIX: return "NETFLIX";
+    }
+}
+
 const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
     {ResourceType::CAFFEINE, "CAFFEINE"},
     {ResourceType::LAB, "LAB"},
@@ -24,6 +35,15 @@ const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
 };
 
 enum class Colour { BLUE, RED, ORANGE, YELLOW };
+
+std::string colourToString(Colour c) {
+    switch (c) {
+        case Colour::Blue: return "Blue";
+        case Colour::Red: return "Red";
+        case Colour::Orange: return "Orange";
+        case Colour::Yellow: return "Yellow";
+    }
+}
 
 const std::map<Colour, std::string> COLOUR_TO_STRING = {
     {Colour::BLUE, "Blue"},
