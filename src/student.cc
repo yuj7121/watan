@@ -156,3 +156,7 @@ string Student::save() const {
     }
     return output;
 }
+
+string Student::steal(Student *from) {
+
+}

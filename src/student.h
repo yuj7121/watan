@@ -45,6 +45,7 @@ class Student {
     string status() const; 
     string criteria() const; 
     string save() const; 
+    string steal(Student * from); 
 };
 
 #endif
