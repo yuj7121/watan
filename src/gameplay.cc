@@ -154,7 +154,7 @@ void Gameplay::rollDice(int val, bool type) {
         } while (invalid); //end of while loop
         theBoard.moveGeese(geeseHere); //geese moved!
 
-        //TODO: steal       
+        //TODO: steal        
 
 
     } else {
