@@ -5,29 +5,26 @@
 #include <vector> 
 #include <string>
 
-#include "criteria.h"
-#include "student.h"
+class Criteria; 
+class Student; 
 
 using namespace std; 
-
-class Criteria;
-class Player;
 
 class Goal {
     int index;
     Student* owner;
-    vector<shared_ptr <Criteria>> adjCriteria;
+    vector<Criteria *> adjCriteria;
 
 public:
     Goal(int index, Student* owner);
-    void attachCriteria(shared_ptr<Criteria> c);
 
     int getIndex() const;
     Student* getOwner() const;
-    bool playGoal(Student* player);
     bool isOwnedBy(Student* player) const;
     bool checkCriteriaExist() const;
-
+    
+    void attachCriteria(Criteria *c);
+    bool playGoal(Student* player);
     ~Goal() = default;
 };
 

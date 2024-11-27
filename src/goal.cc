@@ -1,4 +1,6 @@
 #include "goal.h"
+#include "criteria.h"
+#include "student.h"
 
 using namespace std; 
 
@@ -13,10 +15,6 @@ bool Goal::isOwnedBy(Student* player) const {
     return owner == player;
 }
 
-void Goal::attachCriteria(Criteria* c) {
-    adjCriteria.push_back(c);
-}
-
 bool Goal::checkCriteriaExist() const {
     for (auto c : adjCriteria) {
         if (c->getCompletionType() != CompletionType::NONE) {
@@ -24,6 +22,10 @@ bool Goal::checkCriteriaExist() const {
         }
     }
     return false;
+}
+
+void Goal::attachCriteria(Criteria* c) {
+    adjCriteria.push_back(c);
 }
 
 bool Goal::playGoal(Student* player) {
