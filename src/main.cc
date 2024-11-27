@@ -1,47 +1,39 @@
 
 #include <iostream>
 #include <string>
+#include "gameplay.h"
 
 using namespace std;
 
 
 int main (int argc, char* argv[]) {
-    bool seed = false;
+    Gameplay game = Gameplay{};
 
-    try {
-        string xxx;
-        int seed;
-        bool loadGame;
-        bool loadBoard;
+    //get the command line and run appropriate functions from gameplay
+    try {       
         for(int i = 1; i < argc; ++i){
-            string curr = argv.at(i);
-            if(input == "-seed") {
-                seed = true;
+            string curr{argv[i]};
+            if(curr == "-seed") {
                 ++i;
                 try {
-                    int seed = stoi(argv.at(i));
+                    int seed = atoi(argv[i]);
+                    game.newGame(seed);
                 } catch (const invalid_argument& e) {
                     throw new InvalidCommandLineException("not an integer");
                 }
-            game.newGame(seed);
-
             } else if (input == "-load") {
-                loadGame = true;
+                ++i;
+                game.loadGame(argv[i]);
             } else if (input == "-board") {
-                loadBoard = true;
+                ++i;
+                game.loadBoard(argv[i]);
             } else {
-                xxx = input;
+                throw new InvalidCommandLineException("invalid commandline input");
             }
         }
-
-        if(seed) {
-        } else if(loadGame) {
-            game.loadGame(xxx);
-        } else if(loadBoard) {
-            game.loadBoard(xxx);
-        }
-
     } catch (InvalidCommandLineException& e) {
         cerr << e.what() << endl;
     }
+
+
 }
