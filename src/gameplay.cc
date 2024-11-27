@@ -4,6 +4,7 @@ using namespace std;
 
 Gameplay::Gameplay() {}
 
+
 void Gameplay::newGame() {
     vector<pair<int, int>> tiles(19); 
 	vector<int> availableResources = {3, 3, 4, 4, 4, 1};

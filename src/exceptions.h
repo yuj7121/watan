@@ -65,4 +65,9 @@ public:
     explicit ResourceTypeConversionException(const string &note);
 };
 
+class InvalidCommandLineException : public invalid_argument {
+public:
+    explicit InvalidCommandLineException(const string &note);
+};
+
 #endif

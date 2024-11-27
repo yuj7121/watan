@@ -35,3 +35,6 @@ InvalidCriterionImprovementException::InvalidCriterionImprovementException(const
 // (d) Miscellaneous
 ResourceTypeConversionException::ResourceTypeConversionException(const string& note)
 : out_of_range("EXCEPTION: Trouble converting ResourceType to string: " + note) {}
+
+InvalidCommandLineException::InvalidCommandLineException(const string& note)
+: out_of_range("EXCEPTION: Invalid command line input: " + note) {}
