@@ -35,6 +35,7 @@ const std::map<Colour, std::string> COLOUR_TO_STRING = {
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
+const int NUM_RESOURCE_TYPES = 6;
 const int NUM_STUDENTS = 4;
 const int NUM_TILES = 19;
 const int NUM_GOALS = 72;

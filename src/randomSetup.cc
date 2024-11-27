@@ -16,7 +16,7 @@ void RandomSetup::setupResources() {
     for(int i = 0; i < NUM_TILES; ++i){
         resourceTypes[i] = tilesTypes.at(i);
         if(tilesTypes.at(i) == 5){
-                netflixDone = 1;
+            netflixDone = 1;
         }
         resourceValues[i] = tilesValues.at(i + netflixDone);
     }

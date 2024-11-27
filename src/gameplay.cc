@@ -73,6 +73,55 @@ void Gameplay::loadBoard(const std::string file) {
     // TODO: text display and board display 
 }
 
+loseToGeese(unique_ptr<Student> student) {
+    int numResources;
+    //find the total number of resources
+    for(int i = 0; i < NUM_RESOURCE_TYPES; ++i) {
+        ResourceType::ResourceType type;
+        switch(i){
+            case 0:
+                type = ResourceType::CAFFEINE;
+                break;
+            case 1:
+                type = ResourceType::LAB;
+                break;
+            case 2:
+                type = ResourceType::LECTURE;
+                break;
+            case 3:
+                type = ResourceType::STUDY;
+                break;
+            case 4:
+                type = ResourceType::TUTORIAL;
+                break;
+            case 5:
+                type = ResourceType::NETFLIX;
+                break;
+        } //end of switch block
+        numResources += student.getResource(type);
+    }
+
+    //output
+    cout << "Student"
+    << COLOUR_TO_STRING.at(students[j]->getColour())
+    << " loses " << numResources << "resources to the geese. They lose:" << endl;
+
+    //make student lose resources
+    vector<bool> toLose;
+    for(int i = 0; i < numResources; ++i) {
+        if(i < numResources / 2){
+            toLose.emplace_back(true);
+        } else {
+            toLose.emplace_back(false);
+        }
+    }
+    std::random_shuffle(toLose.begin(), toLose.end());
+
+    for(int i = 0; i < NUM_RESOURCE_TYPES; ++i) {
+        
+    }
+
+}
 void Gameplay::rollDice(int val, bool type) {
     int roll; 
     if (type) { // fair dice
@@ -85,6 +134,9 @@ void Gameplay::rollDice(int val, bool type) {
 
     if (roll == 7) {
         // TODO: GEESE
+
+    } else {
+        theBoard.tileRolled(roll);
     }
 }
 
@@ -164,9 +216,9 @@ void Gameplay::initialAssignments() {
 }//end of fucntion
 
 
-void Gameplay::beginTurn(Student& s) {
-    cout << "Student " << COLOUR_TO_STRING.at(s->getColour()) << "'s turn." << endl;
-    cout << s;
+void Gameplay::beginTurn(unique_ptr<Student> student) {
+    cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
+    cout << student;
 
     string input;
     do {
@@ -204,6 +256,7 @@ void Gameplay::beginTurn(Student& s) {
             cerr << e.what() << endl;
         } //end of try catch
     } while (input != "roll"); //end of while loop
+
 }//end of function
 
 
