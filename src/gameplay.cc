@@ -183,6 +183,18 @@ void Gameplay::board() const {
     cout << *textDisplay << endl;	
 }
 
+void Gameplay::status() const {
+    cout << students->status() << endl; 
+}
+
+void Gameplay::criteria() const { 
+    cout << students->criteria() << endl; 
+}
+
+void Gameplay::achieve(int index) {
+    theBoard->buyGoal(currentPlayer, index); 
+}
+
 void Gameplay::help() const {
     cout << "Valid commands:" << endl
         << "board" << endl
