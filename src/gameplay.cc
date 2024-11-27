@@ -355,7 +355,37 @@ void endTurn() {
         } else if (cmd == "achieve") {
             int index; 
             iss >> index; 
-        } // TODO: continue 
+            achieve(curPlayer, index); 
+        } else if (cmd == "complete") {
+            int index; 
+            iss >> index; 
+            complete(curPlayer, index); 
+        } else if (cmd == "improve") {
+            int index; 
+            iss >> index; 
+            control->improve(index); 
+        } else if (cmd == "trade") {
+            string colour, give, take; 
+            iss >> colour; 
+            iss >> give; 
+            iss >> take; 
+            trade(stringToColour(curPlayer), stringToColour(colour), stringToResourceType(give), stringToResourceType(take)); 
+        } else if (cmd == "next") {
+            next(); 
+            break; 
+        } else if (cmd == "save") {
+            string fileName; 
+            iss >> fileName; 
+            if (file == "") {
+                // TODO: throw exception?
+            } else {
+                save(fileName); 
+            } 
+        } else if (cmd == "help") {
+            help(); 
+        } else { 
+            cout << "Invalid command" << endl; 
+        } 
     }
 }
 

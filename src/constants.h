@@ -25,6 +25,15 @@ std::string resourceTypeToString(ResourceType r) {
     }
 }
 
+ResourceType stringToResourceType(const std::string& str) {
+    if (str == "CAFFEINE") return ResourceType::CAFFEINE;
+    if (str == "LAB") return ResourceType::LAB;
+    if (str == "LECTURE") return ResourceType::LECTURE;
+    if (str == "STUDY") return ResourceType::STUDY;
+    if (str == "TUTORIAL") return ResourceType::TUTORIAL;
+    if (str == "NETFLIX") return ResourceType::NETFLIX;
+}
+
 const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
     {ResourceType::CAFFEINE, "CAFFEINE"},
     {ResourceType::LAB, "LAB"},
@@ -43,6 +52,13 @@ std::string colourToString(Colour c) {
         case Colour::Orange: return "Orange";
         case Colour::Yellow: return "Yellow";
     }
+}
+
+Colour stringToColour(const std::string& str) {
+    if (str == "Blue") return Colour::Blue;
+    if (str == "Red") return Colour::Red;
+    if (str == "Orange") return Colour::Orange;
+    if (str == "Yellow") return Colour::Yellow;
 }
 
 const std::map<Colour, std::string> COLOUR_TO_STRING = {
