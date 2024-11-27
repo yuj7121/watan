@@ -77,11 +77,11 @@ void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
   }
 }
 
-int Student::calculateScore() { 
-  int score = 0; 
+int Student::calculatePoints() { 
+  int point = 0; 
   for (auto &it : criterion) { 
-    score += criterion->getLevel();
+    point += criterion->getLevel();
   }
 
-  return score; 
+  return point; 
 }

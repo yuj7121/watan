@@ -40,7 +40,7 @@ class Student {
     void playGoal(shared_ptr<Goal> goal);
     void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
 
-    int calculateScore() const; 
+    int calculatePoints() const; 
 };
 
 #endif
