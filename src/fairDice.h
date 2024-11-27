@@ -1,5 +1,5 @@
-#ifndef _FAIRDICE_H_
-#define _FAIRDICE_H_
+#ifndef FAIRDICE_H_
+#define FAIRDICE_H_
 
 #include <iostream>
 #include <random>

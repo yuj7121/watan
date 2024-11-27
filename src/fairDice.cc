@@ -1,4 +1,5 @@
 #include "fairDice.h"
+using namespace std; 
 
 FairDice::FairDice(unique_ptr<default_random_engine> generator)
     : generator(move(generator)) {}
