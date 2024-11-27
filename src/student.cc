@@ -77,11 +77,55 @@ void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
   }
 }
 
-int Student::calculatePoints() { 
+int Student::calculatePoints() const { 
   int point = 0; 
   for (auto &it : criterion) { 
     point += criterion->getLevel();
   }
 
   return point; 
+}
+
+string Student::status() const {
+  string output; 
+  ostringstream oss; 
+  oss << calculatePoints(); 
+  output = colour + " has " + oss.str() + " victory points, "; 
+  for (int i = 0; i < 5; ++i) {
+    ostringstream val;
+    if (i == 0) {
+      val << resource.at(ResourceType::CAFFEINE); 
+      output += val.str(); 
+      output += " caffeines, ";
+    } else if (i == 1) {
+      val << resource.at(ResourceType::LAB); 
+      output += val.str(); 
+      output += " labs, ";
+    } else if (i == 2) {
+      val << resource.at(ResourceType::LECTURE); 
+      output += val.str(); 
+      output += " lectures, ";
+    } else if (i == 3) {
+      val << resource.at(ResourceType::TUTORIAL); 
+      output += val.str(); 
+      output += " tutorials, ";
+    } else if (i == 4) {
+      val << resource.at(ResourceType::STUDY); 
+      output += val.str(); 
+      output += " studies.";
+    } 
+  }
+  return output; 
+}
+
+string Student::criteria() const {
+	string output; 
+  output = colour + " has completed: "; 
+  for (auto c : criterion) {
+    ostringstream oss; 
+    oss << c->getIndex() << " "; 
+    oss << c->getCompletionLevel();
+    output += oss.str() + "\n";
+  }
+  return output; 
 }

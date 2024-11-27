@@ -41,6 +41,8 @@ class Student {
     void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
 
     int calculatePoints() const; 
+    string status() const; 
+    string criteria() const; 
 };
 
 #endif
