@@ -20,7 +20,6 @@ class Student {
     std::vector<std::shared_ptr<Criteria>> criterion; 
     std::vector<std::shared_ptr<Goal>> goals;
     std::unordered_map<ResourceType, int> resources;
-    int victoryPotins;
 
   public:
     //ctor
@@ -29,7 +28,6 @@ class Student {
     //get functions
     int getIndex() const;
     Colour getColour() const;
-    int getVictoryPoints() const;
     int getResource(ResourceType type) const;
     bool hasResources(std::vector<ResourceType> types) const;
     std::vector<std::shared_ptr<Goal>> getGoals() const;
@@ -41,6 +39,8 @@ class Student {
     void removeResources(std::vector<ResourceType> types);
     void playGoal(shared_ptr<Goal> goal);
     void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
+
+    int calculateScore() const; 
 };
 
 #endif

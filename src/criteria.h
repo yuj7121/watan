@@ -27,7 +27,7 @@ public:
 
     int getIndex() const;
     Student* getOwner() const;
-    CompletionType getCompletionType() const;
+    int getCompletionLevel() const;
     bool isOwnedBy(Student *player) const;
     bool nbrGoalOwnedBy(Student *player) const;
 

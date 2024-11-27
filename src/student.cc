@@ -21,7 +21,6 @@ Student::Student(Colour colour) : colour{colour} {
 //getter functions
 int Student::getIndex() const { return index; }
 Colour Student::getColour() const { return colour; }
-int Student::getVictoryPoints() const { return victoryPotins; }
 int Student::getResource(ResourceType type) const {
   return resources.count(type) ? resources.at(type) : 0;
 }
@@ -76,4 +75,13 @@ void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
       criterion.emplace_back(criteria);
     }
   }
+}
+
+int Student::calculateScore() { 
+  int score = 0; 
+  for (auto &it : criterion) { 
+    score += criterion->getLevel();
+  }
+
+  return score; 
 }

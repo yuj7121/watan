@@ -67,7 +67,11 @@ int Criteria::getIndex() const { return index; }
 
 Student* Criteria::getOwner() const { return owner; }
 
-CompletionType Criteria::getCompletionType() const { return level; }
+int Criteria::getCompletionLevel() const { \
+    if (level == CompletionType::ASSIGNMENT) return 1; 
+    if (level == CompletionType::MIDTERM) return 2; 
+    if (level == CompletionType::EXAM) return 3; 
+}
 
 bool Criteria::isOwnedBy(Student* player) const { return owner == player; }
 
