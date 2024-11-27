@@ -3,11 +3,11 @@
 
 using namespace std; 
 
-Gameplay::Gameplay() {}
+Gameplay::Gameplay() : theBoard{std::make_shared<Board>()} {}
 
-void Gameplay::newGame() {
-    setup = std::make_unique<RandomSetup>();
-    setup->setupResources(); 
+void Gameplay::newGame(int seed) {
+    setup = std::make_unique<RandomSetup>(seed);
+    setup->setup(theBoard); 
     // TODO: text display and board display
 }
 
@@ -57,7 +57,7 @@ void Gameplay::loadGame(const std::string file) {
             // board 
             } else if (i == 5) {
                 setup = std::make_unique<FileSetup>(file); 
-                setup->setupResources(); 
+                setup->setup(theBoard); 
             } else {
                 geese = input; 
             }
@@ -69,11 +69,11 @@ void Gameplay::loadGame(const std::string file) {
 
 void Gameplay::loadBoard(const std::string file) {
     setup = std::make_unique<FileSetup>(file); 
-    setup->setupResources(); 
+    setup->setup(theBoard); 
     // TODO: text display and board display 
 }
 
-void Gameplay::rollDice(int val = -1, bool type) {
+void Gameplay::rollDice(int val, bool type) {
     int roll; 
     if (type) { // fair dice
         dice = std::make_unique<FairDice>(eng); 
@@ -122,3 +122,89 @@ void Gameplay::help() const {
         << "save <file>" << endl
         << "help" << endl;
 }
+
+
+void Gameplay::initialAssignments() {
+    for(int i = 0; i < 2; ++i) {
+        int start, end;
+        if(i == 0) {
+            start = 0;
+            end = NUM_STUDENTS;
+        } else {
+            start = NUM_STUDENTS - 1;
+            end = 0;            
+        }
+        while(j < NUM_STUDENTS && j >= 0;) {
+            bool validInput = false;
+            do {
+                try {
+                    int input;
+                    cout << "Student " 
+                    << COLOUR_TO_STRING.at(students[j]->getColour());
+                    << ", where do you want to complete an Assignment?" << endl;
+                    if (!(cin >> input)) {
+                        throw new InvalidInputException("not an integer, try again.");
+                    } else {
+                        validInput = true;
+                        theBoard.buyCriteria(students[j], input);
+                    }
+                } catch (InvalidInputException& e) {
+                    cerr << e.what() << endl;
+                } //end of try catch block
+            } while (!validInput); //end of inner while
+
+            //increase or decrease j depending on if it's the first round or the second
+            if(i == 0) {
+                ++j;
+            } else {
+                --j;
+            }
+        } //end of outer while loop
+    } //end of outer for
+}//end of fucntion
+
+
+void Gameplay::beginTurn(Student& s) {
+    cout << "Student " << COLOUR_TO_STRING.at(s->getColour()) << "'s turn." << endl;
+    cout << s;
+
+    string input;
+    do {
+        try{
+            //if user wants loaded
+            if(input == "load") {
+                int invalid = true;
+                cout << "Input a roll between 2 and 12:" << endl;
+                int val;
+                while (invalid) {
+                    try {
+                        if(!(cin >> val)) {
+                            throw new InvalidInputException("not an integer");
+                        } else {
+                            if(val < 2 || val > 12) {
+                                throw new OutOfRangeInputException(val);
+                            } else {
+                                invalid = false;
+                            }
+                        } //end of if else block
+                    } catch (InvalidInputException& e) { // not an int
+                        cerr << e.what() << endl;
+                    } catch (OutOfRangeInputException& e) { //int out of range
+                        cerr << e.what() << endl;
+                    } //end of try catch
+                } //end of while
+                rollDice(, true);
+                //if user wants fair            
+            } else if (input == "fair") {
+                rollDice(-1, true);
+            } else {
+                throw new InvalidInputException(input);
+            }
+        } catch (InvalidInputException& e) { //invalid input for what to do
+            cerr << e.what() << endl;
+        } //end of try catch
+    } while (input != "roll"); //end of while loop
+}//end of function
+
+
+

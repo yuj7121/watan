@@ -12,6 +12,8 @@
 #include "board.h"
 #include "dice.h"
 #include "boardSetup.h"
+#include "randomSetup.h"
+#include "fileSetup.h"
 #include "constants.h"
 #include "student.h"
 #include "textDisplay.h"
@@ -22,7 +24,7 @@ using namespace std;
 class Gameplay {
     const int VICTORY_PTS_TO_WIN = 10;
     std::unique_ptr<TextDisplay> textDisplay;
-    std::make_shared<Board> theBoard;
+    std::shared_ptr<Board> theBoard;
     std::vector<std::unique_ptr<Student>> students;
     std::unique_ptr<Dice> dice;
     std::unique_ptr<BoardSetup> setup;
@@ -35,7 +37,7 @@ public:
     Gameplay(); 
 
     // TODO: need to implement
-    void newGame();
+    void newGame(int seed);
     void loadGame(const std::string file);
     void loadBoard(const std::string file);
 
@@ -59,6 +61,8 @@ public:
 	void save(const std::string file, const bool rolledAlready = true) const;
 	void help() const;
 
+    void initialAssignments();
+    void beginTurn(Student& s);
 }; 
 
 #endif
