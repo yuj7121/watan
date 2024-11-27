@@ -10,6 +10,7 @@ int main (int argc, char* argv[]) {
     Gameplay game = Gameplay{};
 
     //get the command line and run appropriate functions from gameplay
+    //  to set up the game
     try {       
         for(int i = 1; i < argc; ++i){
             string curr{argv[i]};
@@ -21,10 +22,10 @@ int main (int argc, char* argv[]) {
                 } catch (const invalid_argument& e) {
                     throw new InvalidCommandLineException("not an integer");
                 }
-            } else if (input == "-load") {
+            } else if (curr == "-load") {
                 ++i;
                 game.loadGame(argv[i]);
-            } else if (input == "-board") {
+            } else if (curr == "-board") {
                 ++i;
                 game.loadBoard(argv[i]);
             } else {
@@ -34,6 +35,8 @@ int main (int argc, char* argv[]) {
     } catch (InvalidCommandLineException& e) {
         cerr << e.what() << endl;
     }
+
+
 
 
 }
