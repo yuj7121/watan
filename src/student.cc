@@ -47,11 +47,6 @@ void Student::removeResource(ResourceType type) {
   resources.at(type) = resources.at(type) - 1;
 }
 
-void Student::removeResources(std::vector<ResourceType> types) {
-  for (ResourceType t : types) {
-    removeResource(t);
-  }
-}
 
 void Student::playGoal(shared_ptr<Goal> goal) {
   if(goal->playGoal(this)){
