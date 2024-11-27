@@ -10,7 +10,7 @@ class RandomSetup: public BoardSetup {
   protected:
     std::default_random_engine rng;
     int seed;
-    void setupResources() override;
+    void setup() override;
   public:
     RandomSetup(int seed);
 };
