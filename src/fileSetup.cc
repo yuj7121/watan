@@ -2,7 +2,7 @@
 
 FileSetup::FileSetup(string fileName) : fileName{fileName} {}
 
-void FileSetup::setup() {
+void FileSetup::setupResources() {
     ifstream file;
     try{
         file.open(fileName);
