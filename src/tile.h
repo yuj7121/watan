@@ -6,12 +6,13 @@
 #include <vector>
 #include <memory>
 #include "constants.h"
+#include "subject.h"
 
 using namespace std; 
 
 class Criteria; 
 
-class Tile { 
+class Tile : public Subject { 
     int index; 
     int value; 
     ResourceType resource; 
