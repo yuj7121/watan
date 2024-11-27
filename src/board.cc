@@ -1,15 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <memory>
-#include <algorithm>
-
 #include "board.h"
-#include "constants.h"
-#include "tile.h"
-#include "criteria.h"
-#include "goal.h"
-#include "student.h"
-#include "exceptions.h"
 
 using namespace std;
 

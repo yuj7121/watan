@@ -5,12 +5,7 @@
 #include <map>
 #include <string>
 
-enum class CompletionType {
-    NONE, 
-    ASSIGNMENT,
-    MIDTERM,
-    EXAM
-};
+enum class CompletionType { NONE, ASSIGNMENT, MIDTERM, EXAM };
 
 enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
 
@@ -47,18 +42,18 @@ enum class Colour { BLUE, RED, ORANGE, YELLOW };
 
 std::string colourToString(Colour c) {
     switch (c) {
-        case Colour::Blue: return "Blue";
-        case Colour::Red: return "Red";
-        case Colour::Orange: return "Orange";
-        case Colour::Yellow: return "Yellow";
+        case Colour::BLUE: return "Blue";
+        case Colour::RED: return "Red";
+        case Colour::ORANGE: return "Orange";
+        case Colour::YELLOW: return "Yellow";
     }
 }
 
 Colour stringToColour(const std::string& str) {
-    if (str == "Blue") return Colour::Blue;
-    if (str == "Red") return Colour::Red;
-    if (str == "Orange") return Colour::Orange;
-    if (str == "Yellow") return Colour::Yellow;
+    if (str == "Blue") return Colour::BLUE;
+    if (str == "Red") return Colour::RED;
+    if (str == "Orange") return Colour::ORANGE;
+    if (str == "Yellow") return Colour::YELLOW;
 }
 
 const std::map<Colour, std::string> COLOUR_TO_STRING = {
