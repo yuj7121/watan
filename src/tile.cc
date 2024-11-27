@@ -3,8 +3,8 @@
 
 using namespace std; 
 
-Tile::Tile(int index, int value, ResourceType resource) :
-        index{index}, value{value}, resource{resource} {} 
+Tile::Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria) :
+        index{index}, value{value}, resource{resource}, attachedCriteria{attachedCriteria} {} 
         
 int Tile::getIndex() const { return index; } 
 
@@ -12,9 +12,9 @@ int Tile::getValue() const { return value; }
 
 ResourceType Tile::getResourceType() const { return resource; }
 
-bool isValue(int val) { return val = value; }
+bool Tile::isValue(int val) { return val = value; }
 
-void save() const {
+void Tile::save() const {
         string output; 
         string resourceTypeNum; 
         if (resource == ResourceType::CAFFEINE) resourceTypeNum = "0"; 

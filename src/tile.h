@@ -9,22 +9,20 @@
 
 using namespace std; 
 
-class Criterion; 
+class Criteria; 
 
 class Tile { 
     int index; 
     int value; 
     ResourceType resource; 
-    vector<std::shared_ptr<Criterion>> criterion;  
-    bool hasGoose; 
+    vector<Criteria *> attachedCriteria;  
 
 public: 
-    Tile(int index, int value, ResourceType resource, bool hasGoose);
+    Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;
-    bool isVertex() const; 
-    bool checkGoose() const; 
+    bool isValue(int val);
     void save() const; 
 };
 
