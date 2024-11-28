@@ -33,6 +33,9 @@ public:
     bool nbrGoalOwnedBy(Student *player) const;
     bool adjacentGoalOwner(Student *player) const;
 
+    void notifyObservers() override;
+    void notify(Tile &t) override;
+
     ~Criteria() = default;
 private:
     void addOwner(Student *player);
