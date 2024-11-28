@@ -19,12 +19,13 @@ class Tile : public Subject {
     vector<Criteria *> attachedCriteria;  
 
 public: 
-    Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria);
+    Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria, vector<Observer *> oList);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;
     bool isValue(int val);
     void save() const; 
+    void notifyObservers() override;
 };
 
 #endif 

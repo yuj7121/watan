@@ -3,8 +3,12 @@
 
 using namespace std; 
 
-Tile::Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria) :
-        index{index}, value{value}, resource{resource}, attachedCriteria{attachedCriteria} {} 
+Tile::Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria, vector<Observer *> oList) :
+        index{index}, value{value}, resource{resource}, attachedCriteria{attachedCriteria} {
+                for (auto o : oList) {
+                        attach(o); 
+                }
+}
         
 int Tile::getIndex() const { return index; } 
 
@@ -25,4 +29,8 @@ void Tile::save() const {
         else (resource == ResourceType::NETFLIX) resourceTypeNum = "5";
         output += resourceTypeNum + " " + value; 
         return output; 
+}
+
+void Tile::notifyObservers() {
+    for(auto o : observers) o->notify(*this);
 }
