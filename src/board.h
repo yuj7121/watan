@@ -35,6 +35,7 @@ class Board : public Subject {
     int getGeese() const;
 
     void tileRolled(const int roll);
+    bool tileHasStudent(int tileIndex, unique_ptr<Student>& student);
     void buyGoal(Student* student, const int index);
     void buyCriteria(Student* student, const int index);
     void improveCriteria(Student* student, const int index);

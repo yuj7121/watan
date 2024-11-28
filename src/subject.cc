@@ -1,16 +1,16 @@
 #include "subject.h"
-#include <algorithm>
+#include "observer.h"
+using namespace std; 
 
-void Subject::attach(std::shared_ptr<Observer> observer) {
+void Subject::attach(Observer *o) {
     observers.push_back(observer);
 }
 
-void Subject::detach(std::shared_ptr<Observer> observer) {
-    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-}
-
-void Subject::notify() const {
-    for (const auto& observer : observers) {
-        observer->update();
+void Subject::detach(Observer *o) {
+    for ( auto it = observers.begin(); it != observers.end(); ++it ) {
+        if ( *it == o ) {
+            observers.erase(it);
+            break;
+        }
     }
-}Ï
+}

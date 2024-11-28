@@ -6,24 +6,29 @@
 #include <vector>
 #include <memory>
 #include "constants.h"
+#include "subject.h"
 
 using namespace std; 
 
 class Criteria; 
+class Student; 
 
-class Tile { 
+class Tile : public Subject { 
     int index; 
     int value; 
     ResourceType resource; 
-    vector<Criteria *> attachedCriteria;  
+    vector<std::shared_ptr<Criteria>> attachedCriterion;  
+    vector<std::shared_ptr<Criteria>> attachedGoals;  
 
 public: 
-    Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria);
+    Tile(int index, int value, ResourceType resource, vector<std::shared_ptr<Criteria>> attachedCriterion, vector<std::shared_ptr<Criteria>> attachedGoals, vector<Observer *> oList);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;
     bool isValue(int val);
-    void save() const; 
+    string save() const; 
+    void notifyObservers() override;
+    bool studentOwns(Student *student);
 };
 
 #endif 

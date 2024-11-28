@@ -11,6 +11,8 @@
 
 #include "board.h"
 #include "dice.h"
+#include "fairDice.h"
+#include "loadedDice.h"
 #include "boardSetup.h"
 #include "randomSetup.h"
 #include "fileSetup.h"
@@ -32,7 +34,10 @@ class Gameplay {
 
     Student *curPlayer; 
     int whoseTurn; 
-    int winnerIndex; 
+    int winnerIndex;
+    void loseToGeese(std::unique_ptr<Student> & student);
+    bool noCaseStrCmp(string str1, string str2);
+
 
 public: 
     Gameplay(); 

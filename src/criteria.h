@@ -7,6 +7,8 @@
 #include <string>
 
 #include "constants.h"
+#include "subject.h"
+#include "observer.h"
 
 using namespace std;
 
@@ -14,7 +16,7 @@ class Student;
 class Goal;
 class Tile;
 
-class Criteria {
+class Criteria : public Subject, public Observer {
     int index;
     CompletionType level;
     vector<shared_ptr<Goal>> adjGoals;
@@ -29,12 +31,16 @@ public:
     int getCompletionLevel() const;
     bool isOwnedBy(Student *player) const;
     bool nbrGoalOwnedBy(Student *player) const;
+    bool adjacentGoalOwner(Student *player) const;
 
-    virtual ~Criteria() = default;
+    void notifyObservers() override;
+    void notify(Tile &t) override;
+    string print() const; 
+
+    ~Criteria() = default;
 private:
     void addOwner(Student *player);
     bool adjacentCriteriaExist() const;
-    bool adjacentGoalOwner(Student *player) const;
     bool complete(Student *player, bool startOfGame);
     bool canImprove(Student *player) const;
     bool improve();

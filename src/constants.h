@@ -18,6 +18,8 @@ std::string resourceTypeToString(ResourceType r) {
         case ResourceType::TUTORIAL: return "TUTORIAL";
         case ResourceType::NETFLIX: return "NETFLIX";
     }
+    return "Error";
+
 }
 
 ResourceType stringToResourceType(const std::string& str) {
@@ -27,6 +29,18 @@ ResourceType stringToResourceType(const std::string& str) {
     if (str == "STUDY") return ResourceType::STUDY;
     if (str == "TUTORIAL") return ResourceType::TUTORIAL;
     if (str == "NETFLIX") return ResourceType::NETFLIX;
+    return ResourceType::NETFLIX;
+
+}
+
+ResourceType intToResourceType(const int i) {
+    if (i == 0) return ResourceType::CAFFEINE;
+    if (i == 1) return ResourceType::LAB;
+    if (i == 2) return ResourceType::LECTURE;
+    if (i == 3) return ResourceType::STUDY;
+    if (i == 4) return ResourceType::TUTORIAL;
+    if (i == 5) return ResourceType::NETFLIX;
+    return ResourceType::NETFLIX;
 }
 
 const std::map<ResourceType, std::string> RESOURCE_TYPE_STRINGS = {
@@ -47,6 +61,7 @@ std::string colourToString(Colour c) {
         case Colour::ORANGE: return "Orange";
         case Colour::YELLOW: return "Yellow";
     }
+    return "Error";
 }
 
 Colour stringToColour(const std::string& str) {
@@ -54,6 +69,8 @@ Colour stringToColour(const std::string& str) {
     if (str == "Red") return Colour::RED;
     if (str == "Orange") return Colour::ORANGE;
     if (str == "Yellow") return Colour::YELLOW;
+    return Colour::YELLOW;
+
 }
 
 const std::map<Colour, std::string> COLOUR_TO_STRING = {
@@ -81,7 +98,7 @@ const std::vector<std::vector<int>> TILE_ROWS = {
     {16, 17, 18}
 };
 
-const std::vector<std::vector<int>> CRITERIA_PER_TILE {
+const std::vector<std::vector<int>> CRITERION_PER_TILE {
     {0, 1, 3, 4, 8, 9}, {2, 3, 7, 8, 13, 14}, {4, 5, 9, 10, 15, 16},
     {6, 7, 12, 13, 18, 19}, {8, 9, 14, 15, 20, 21}, {10, 11, 16, 17, 22, 23},
     {13, 14, 19, 20, 25, 26}, {15, 16, 21, 22, 27, 28}, {18, 19, 24, 25, 30, 31},
@@ -89,6 +106,20 @@ const std::vector<std::vector<int>> CRITERIA_PER_TILE {
     {27, 28, 33, 34, 39, 40}, {30, 31, 36, 37, 42, 43}, {32, 33, 38, 39, 44, 35},
     {34, 35, 40, 41, 46, 47}, {37, 38, 43, 44, 48, 49} , {39, 40, 45, 46, 50, 51},
     {44, 45, 49, 50, 52, 53} };
+
+const std::vector<std::vector<int>> GOAL_PER_TILE {
+    {0, 1}, {0, 2}, {3, 5}, {1, 3, 6}, {2, 4, 7}, {4, 8}, {9, 12}, {5, 9, 13},
+    {6, 10, 14}, {7, 10, 15}, {8, 11, 16}, {11, 17}, {12, 20}, {13, 18, 21},
+    {14, 18, 22}, {15, 19, 23}, {16, 19, 24}, {17, 25}, {20, 26, 29},
+    {21, 26, 30}, {22, 27, 31}, {23, 27, 32}, {24, 28, 33}, {25, 28, 34},
+    {29, 37}, {30, 35, 38}, {31, 35, 39}, {32, 36, 40}, {33, 36, 41},
+    {34, 42}, {37, 43, 46}, {38, 43, 47}, {39, 44, 48}, {40, 44, 49},
+    {41, 45, 50}, {42, 45, 51}, {46, 54}, {47, 52, 55}, {48, 52, 56},
+    {49, 53, 57}, {50, 53, 58}, {51, 59}, {54, 60}, {55, 60, 63}, {56, 61, 64},
+    {57, 61, 65}, {58, 62, 66}, {59, 62}, {63, 67}, {64, 67, 69}, {65, 68, 70},
+    {66, 68}, {69, 71}, {70, 71}
+};
+
 
 const std::vector<std::vector<int>> ADJ_GOAL_PER_CRITERIA {
     {0, 1}, {0, 2}, {3, 5}, {1, 3, 6}, {2, 4, 7}, {4, 8}, {9, 12}, {5, 9, 13},

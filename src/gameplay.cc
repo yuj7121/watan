@@ -73,19 +73,19 @@ void Gameplay::loadBoard(const std::string file) {
     // TODO: text display and board display 
 }
 
-void Gameplay::loseToGeese(unique_ptr<Student> student) {
+void Gameplay::loseToGeese(std::unique_ptr<Student> & student) {
     int numResources; //total number of resources the student has
     //find the total number of resources
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-        numResources += student.getResource(it->second);
+        numResources += student->getResource(it->first);
     }
     if(numResources < 10) {
         return;
     }
     //output
     cout << "Student"
-    << COLOUR_TO_STRING.at(students[j]->getColour())
-    << " loses " << numResources << "resources to the geese. They lose:" << endl;
+    << COLOUR_TO_STRING.at(student->getColour())
+    << " loses " << numResources / 2 << "resources to the geese. They lose:" << endl;
 
     //make student lose resources
     vector<bool> toLose; //vector for which resoruces to lose
@@ -101,17 +101,29 @@ void Gameplay::loseToGeese(unique_ptr<Student> student) {
     //call removeResource functions for appropriate resources
     int index = 0; //index through the toLose vector
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-        int count = student.getResource(it->second);
+        int count = student->getResource(it->first);
         int howManyLost = 0;
         for(int i = 0; i < count; ++i) {
             if(toLose.at(index)) {
-                student->removeResource(it->second);
+                student->removeResource(it->first);
                 ++howManyLost;
             }
             ++index;
         }
-        cout << howManyLost << " it->second" << endl;
+        cout << howManyLost << " " << it->second << endl;
     }
+}
+
+//a helper function that does case-insensitive string comparison
+bool Gameplay::noCaseStrCmp(string str1, string str2)
+{
+    if (str1.length() != str2.length())
+        return false;
+    for (int i = 0; i < str1.length(); ++i) {
+        if (tolower(str1[i]) != tolower(str2[i]))
+            return false;
+    }
+    return true;
 }
 
 void Gameplay::rollDice(int val, bool type) {
@@ -129,7 +141,7 @@ void Gameplay::rollDice(int val, bool type) {
 
         //make each student with more than 10 resources lose to geese
         for(auto it = students.begin(); it != students.end(); ++it) {
-            loseToGeese(it);
+            loseToGeese(*it);
         }
         //move geese
         int geeseHere;
@@ -141,7 +153,7 @@ void Gameplay::rollDice(int val, bool type) {
                     throw new InvalidInputException("not an integer");
                 } else {
                     if(geeseHere < 0 || geeseHere > 18) {
-                        throw new OutOfRangeInputException(geeseHere);
+                        throw new OutOfRangeInputException(std::to_string(geeseHere));
                     } else {
                         invalid = false;
                     }
@@ -152,13 +164,92 @@ void Gameplay::rollDice(int val, bool type) {
                 cerr << e.what() << endl;
             } //end of try catch
         } while (invalid); //end of while loop
-        theBoard.moveGeese(geeseHere); //geese moved!
+        theBoard->moveGeese(geeseHere); //geese moved!
 
-        //TODO: steal        
+        //check who can be stolen from
+        bool canSteal[NUM_STUDENTS];
+        bool noOneToSteal = true;
+        for(int i = 0; i < NUM_STUDENTS; ++i) {
+            if(students.at(i)->getIndex() == curPlayer->getIndex()) {
+                canSteal[i] = false;
+            } else if(theBoard->tileHasStudent(geeseHere, students.at(i))){
+                canSteal[i] = true;
+                noOneToSteal = false;
+            } else {
+                canSteal[i] = false;
+            }
+        }
+        if(noOneToSteal) {
+            cout << "Student "+ colourToString(curPlayer->getColour()) + " has no students to steal from." << endl;
+        } else{
+            //if you can steal
+            cout << "Student " + colourToString(curPlayer->getColour()) + " can choose to steal from ";
+            bool first = true;
+            for(int i = 0; i < NUM_STUDENTS; ++i) {
+                if(canSteal[i]){
+                    if (!first) {
+                        cout << ", ";
+                    }
+                    cout << colourToString((students.at(i))->getColour());
+                }
+            }
+            cout << "." << endl;
+        }
+
+        //take in who to steal from
+        int toSteal;
+        invalid = true;
+        do{
+            try{
+                string str;
+                cout << "Choose a student to steal from." << endl;
+                if(!(cin >> str)) {
+                    throw new InvalidInputException("Read failed.");
+                } else {
+                    if(noCaseStrCmp(str, "Blue")) {
+                        toSteal = 0;
+                        invalid = false;
+                    } else if(noCaseStrCmp(str, "Red")){
+                        toSteal = 1;
+                        invalid = false;
+                    } else if(noCaseStrCmp(str, "Orange")){
+                        toSteal = 2;
+                        invalid = false;
+                    } else if(noCaseStrCmp(str, "Yellow")){
+                        toSteal = 3;
+                        invalid = false;
+                    } else {
+                        throw new InvalidInputException(str);
+                    }
+                    if(toSteal == curPlayer->getIndex()) {
+                        throw new InvalidInputException("You can't steal from yourself!");
+                    }
+                }
+            } catch (InvalidInputException& e) { //invalid input
+                cerr << e.what() << endl;
+            } //end of try catch
+        } while (invalid); //end of while loop
+
+        //steal from that student!
+        //probability = numRes/total num res
+        int totalRes; //total number of resources the student being stollen from has
+        for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+            totalRes += (students.at(toSteal))->getResource(it->first);
+        }
+        for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+            int randomNumber = (std::rand() % (100));
+            //if the random roll succeeds, you steal!
+            if(randomNumber <= ((100 * (students.at(toSteal))->getResource(it->first)) / totalRes)) {
+                (students.at(toSteal))->removeResource(it->first);
+                curPlayer->getResource(it->first);
+                cout << "Student " << COLOUR_TO_STRING.at(curPlayer->getColour()) << " steals "
+                << it->second << " from student " << COLOUR_TO_STRING.at((students.at(toSteal))->getColour()) << "." << endl;
+            }
+        }
 
 
     } else {
-        theBoard.tileRolled(roll);
+        theBoard->tileRolled(roll);
     }
 }
 
@@ -172,11 +263,12 @@ string Gameplay::curTurn() const {
 
 bool Gameplay::gameOver() const { 
     for (int i = 0; i < 4; ++i) {
-        if (Students[i]->getVictoryPoints() == 10) {
+        if ((students[i])->getVictoryPoints() == 10) {
             winnerIndex = i;
             return true;
 	    }
-    }   
+    }
+    return false;
 }
 
 void Gameplay::board() const { 
@@ -196,6 +288,7 @@ void Gameplay::achieve(int index) {
 }
 
 void Gameplay::complete(int index) {
+    // TODO: if start of game, 
     theBoard->buyCriteria(curPlayer, index); 
 }
 
@@ -331,14 +424,14 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
 
 }//end of function
 
-void endTurn() {
+void Gameplay::endTurn() {
     while (!gameOver()) {
         cout << ">"; 
         string line; 
         getline(cin, line); 
 
         if (cin.eof()) {
-            save("backup.sv"); 
+            Gameplay::save("backup.sv"); 
             break; 
         } 
 
@@ -379,7 +472,7 @@ void endTurn() {
             if (fileName == "") {
                 // TODO: throw exception?
             } else {
-                save(fileName); 
+                Gameplay::save(fileName); 
             } 
         } else if (cmd == "help") {
             help(); 
@@ -389,7 +482,7 @@ void endTurn() {
     }
 }
 
-bool endGame() {
+bool Gameplay::endGame() {
     while (true) { 
         cout << "Would you like to play again?" << endl;
         cout << ">"; 
