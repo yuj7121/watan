@@ -155,6 +155,8 @@ void Gameplay::geeseLanded() {
             } else {
                 if(geeseHere < 0 || geeseHere > 18) {
                     throw new OutOfRangeInputException(std::to_string(geeseHere));
+                } else if(geeseHere == theBoard->getGeese()) {
+                    throw InvalidGeesePlacementException("Geese are already on this tile!");
                 } else {
                     invalid = false;
                 }
@@ -163,7 +165,9 @@ void Gameplay::geeseLanded() {
             cerr << e.what() << endl;
         } catch (OutOfRangeInputException& e) { //int out of range
             cerr << e.what() << endl;
-        } //end of try catch
+        } catch (InvalidGeesePlacementException& e) {
+            cerr << e.what() << endl;
+        }//end of try catch
     } while (invalid); //end of while loop
     theBoard->moveGeese(geeseHere); //geese moved!
 
@@ -265,10 +269,8 @@ string Gameplay::curTurn() const {
     else return "";
 }
 
-bool Gameplay::gameOver() { 
-bool Gameplay::gameOver() { 
+bool Gameplay::gameOver() {
     for (int i = 0; i < 4; ++i) {
-        if ((students[i])->calculatePoints() == 10) {
         if ((students[i])->calculatePoints() == 10) {
             winnerIndex = i;
             return true;
@@ -283,8 +285,8 @@ void Gameplay::board() const {
 
 void Gameplay::status() const {
     cout << curPlayer->status() << endl; 
-    for (auto s: students) {
-        cout << s->status() << endl; 
+    for (auto it = students.begin(); it != students.end(); ++it) {
+        cout << (*it)->status() << endl; 
     }
 }
 
@@ -476,7 +478,7 @@ void Gameplay::endTurn() {
                 if(index < 0 || index > NUM_CRITERION) {
                     throw new InvalidCommandException(""); 
                 }
-                control->improve(index); 
+                improve(index); 
             } else if (cmd == "trade") {
                 string colour, give, take; 
                 iss >> colour; 
@@ -510,6 +512,14 @@ void Gameplay::endTurn() {
                 throw new InvalidCommandException(""); 
             } 
         } catch (InvalidCommandException& e){
+            cerr << e.what() << endl;
+        } catch (NonAdjacentPlacementException& e) {
+            cerr << e.what() << endl;
+        } catch (AlreadyOwnedException& e) {
+            cerr << e.what() << endl;
+        } catch (InsufficientResourcesException& e) {
+            cerr << e.what() << endl;
+        } catch (InvalidCriterionImprovementException& e) {
             cerr << e.what() << endl;
         }
     }
