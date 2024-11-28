@@ -61,8 +61,9 @@ void Goal::notifyObservers() {
 
 void Goal::print() const {
     string output; 
+    C colour = owner.getColour(); 
     if(owner) {
-        output = owner->colourToString(getOwner()).substr(0, 1);
+        output = colourToString(c).substr(0, 1);
         output += "A"; 
     } else {
         output = to_string(getIndex()); 
