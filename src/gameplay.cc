@@ -154,20 +154,35 @@ void Gameplay::rollDice(int val, bool type) {
         } while (invalid); //end of while loop
         theBoard.moveGeese(geeseHere); //geese moved!
 
-        //TODO: steal
-
         //check who can be stolen from
-            bool canSteal[NUM_STUDENTS];
-            for(int i = 0; i < NUM_STUDENTS; ++i) {
-                if()
+        bool canSteal[NUM_STUDENTS];
+        bool noOneToSteal = true;
+        for(int i = 0; i < NUM_STUDENTS; ++i) {
+            if(students.at(i).getIndex() == curPlayer.getIndex()) {
+                canSteal[i] = false;
+            } else if(tiles.at(geeseHere).studentOwns(students.at(i))) {
+                canSteal[i] = true;
+                noOneToSteal = false;
+            } else {
+                canSteal[i] = false;
             }
-
-        //if you can steal
-        cout << "Student " + (curPlayer.getColour()).colourToString() + " can choose to steal from";
-        for(int i = 0; i < 6; ++i) {
-            sadas
         }
-        cout << "." < endl;
+        if(noOneToSteal) {
+            cout << "Student "+ (curPlayer.getColour()).colourToString() + " has no students to steal from." << endl;
+        } else{
+            //if you can steal
+            cout << "Student " + (curPlayer.getColour()).colourToString() + " can choose to steal from ";
+            bool first = true;
+            for(int i = 0; i < NUM_STUDENTS; ++i) {
+                if(canSteal[i]){
+                    if (!first) {
+                        cout << ", "
+                    }
+                    cout << ((students.at(i)).getColour()).colourToString();
+                }
+            }
+            cout << "." << endl;
+        }
 
     } else {
         theBoard.tileRolled(roll);
@@ -188,7 +203,8 @@ bool Gameplay::gameOver() const {
             winnerIndex = i;
             return true;
 	    }
-    }   
+    }
+    return false;
 }
 
 void Gameplay::board() const { 
@@ -344,14 +360,14 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
 
 }//end of function
 
-void endTurn() {
+void Gameplay::endTurn() {
     while (!gameOver()) {
         cout << ">"; 
         string line; 
         getline(cin, line); 
 
         if (cin.eof()) {
-            save("backup.sv"); 
+            Gameplay::save("backup.sv"); 
             break; 
         } 
 
@@ -392,7 +408,7 @@ void endTurn() {
             if (file == "") {
                 // TODO: throw exception?
             } else {
-                save(fileName); 
+                Gameplay::save(fileName); 
             } 
         } else if (cmd == "help") {
             help(); 
@@ -402,7 +418,7 @@ void endTurn() {
     }
 }
 
-bool endGame() {
+bool Gameplay::endGame() {
     while (true) { 
         cout << "Would you like to play again?" << endl;
         cout << ">"; 

@@ -12,7 +12,7 @@ struct printTile {
     int index; 
     int value; 
     string resource; 
-}
+};
 
 class TextDisplay : public Observer {
     vector<string> criterias(54); 

@@ -34,6 +34,7 @@ class Gameplay {
     int whoseTurn; 
     int winnerIndex; 
 
+
 public: 
     Gameplay(); 
 

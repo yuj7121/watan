@@ -11,6 +11,7 @@
 using namespace std; 
 
 class Criteria; 
+class Student; 
 
 class Tile : public Subject { 
     int index; 
@@ -27,6 +28,7 @@ public:
     bool isValue(int val);
     void save() const; 
     void notifyObservers() override;
+    bool studentOwns(Student *student);
 };
 
 #endif 
