@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <random>
+#include <algorithm>
 #include <memory>
 #include "dice.h"
 
@@ -11,7 +12,7 @@ using namespace std;
 class FairDice : public Dice {
     unique_ptr<default_random_engine> generator;
 public: 
-    FairDice(unique_ptr<default_random_engine> generator);
+    FairDice(default_random_engine &generator);
     int roll() override; 
 }; 
 

@@ -2,12 +2,13 @@
 #include <iostream>
 #include <string>
 #include "gameplay.h"
+#include "exceptions.h"
 
 using namespace std;
 
 
 int main (int argc, char* argv[]) {
-    Gameplay game = Gameplay{};
+    Gameplay game = Gameplay();
 
     //get the command line and run appropriate functions from gameplay
     //  to set up the game

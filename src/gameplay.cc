@@ -246,7 +246,7 @@ void Gameplay::geeseLanded() {
 void Gameplay::rollDice(int val, bool type) {
     int roll; 
     if (type) { // fair dice
-        dice = std::make_unique<FairDice>(eng); 
+        dice = std::make_unique<FairDice>(*eng); 
         roll = dice->roll(); 
     } else { // loaded dice 
         dice = std::make_unique<LoadedDice>(val); 
