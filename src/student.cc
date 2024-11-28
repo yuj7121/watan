@@ -145,8 +145,8 @@ string Student::save() const {
     for (auto &c : criterion) {
         ostringstream criteria;
         ostringstream level;
-        criteria << c.first;
-        level << c.second;
+        criteria << c.getIndex();
+        level << c.getCompletionLevel();
         output += " " + criteria.str() + " " + level.str();
     }
     return output;

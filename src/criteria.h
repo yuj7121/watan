@@ -7,6 +7,8 @@
 #include <string>
 
 #include "constants.h"
+#include "subject.h"
+#include "observer.h"
 
 using namespace std;
 
@@ -14,7 +16,7 @@ class Student;
 class Goal;
 class Tile;
 
-class Criteria {
+class Criteria : public Subject, public Observer {
     int index;
     CompletionType level;
     vector<shared_ptr<Goal>> adjGoals;
