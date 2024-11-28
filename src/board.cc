@@ -84,9 +84,9 @@ void Board::improveCriteria(Student* student, const int index) {
                 ResourceType::LAB, ResourceType::LAB, ResourceType::LECTURE,
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
     }
-    if (student->hasResources(cost.getResource())) {
+    if (student->hasResources(cost)) {
         crit->playCriteria(student, false);
-        student->removeResource(cost.getResource());
+        student->removeResources(cost);
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criterion!");
     }
