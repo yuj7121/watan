@@ -254,7 +254,7 @@ void Gameplay::rollDice(int val, bool type) {
         geeseLanded();
     } else {
         theBoard->tileRolled(roll);
-    }
+    } 
 }
 
 string Gameplay::curTurn() const { 
