@@ -15,12 +15,12 @@ struct printTile {
 };
 
 class TextDisplay : public Observer {
-    vector<string> criterias(54); 
-    vector<string> goals(72);
-    vector<printTile> resources(19); 
+    vector<string> criterias;
+    vector<string> goals;
+    vector<printTile> resources;
     int gooseIndex; 
 
-    void createBoard(vector<pair<string, int>> board(19)); 
+    void createBoard(vector<pair<string, int>> &board); 
     string printSpaces(int num) const; 
     string printTileTop(bool left, bool right);
     string printTileBottom(bool left, bool right);
@@ -40,9 +40,9 @@ public:
     void createTile(int id, int resource, int val); 
     void moveGoose(int index);
 
-    void updateGoal(int goalIndex, int studentIndex) override;
-    void updateCriterion(int criterionIndex, int studentIndex) override;
-    void updateGeese(int tileIndex) override;
+    void updateGoal(int goalIndex, int studentIndex);
+    void updateCriterion(int criterionIndex, int studentIndex);
+    void updateGeese(int tileIndex);
 
 };
 

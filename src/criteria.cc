@@ -1,18 +1,19 @@
 #include "criteria.h"
 #include "goal.h"
 #include "tile.h"
-#include "player.h"
+#include "student.h"
 
 Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student *owner)
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
 bool Criteria::playCriteria(Student *player, bool startOfGame) {
-    if (getCompletionType() == CompletionType::NONE) {
+    if (level == CompletionType::NONE) {
         return complete(player, startOfGame);
     } else {
         canImprove(player);
         return improve();
     }
+    return false; 
 }
 
 bool Criteria::complete(Student *player, bool startOfGame) {
@@ -70,7 +71,7 @@ void Criteria::notifyObservers() {
 }
 
 void Criteria::notify(Tile &t) {
-    updateResourceChange(t.getResourceYield()*getCompletionLevel());
+// updateResourceChange(t.getResourceYield()*getCompletionLevel());
     notifyObservers();
 }
 
@@ -80,20 +81,22 @@ Student* Criteria::getOwner() const { return owner; }
 
 int Criteria::getCompletionLevel() const { 
     if (level == CompletionType::ASSIGNMENT) return 1; 
-    if (level == CompletionType::MIDTERM) return 2; 
-    if (level == CompletionType::EXAM) return 3; 
+    else if (level == CompletionType::MIDTERM) return 2; 
+    else if (level == CompletionType::EXAM) return 3; 
+    return 0; 
 }
 
 bool Criteria::isOwnedBy(Student* player) const { return owner == player; }
 
 void Criteria::addOwner(Student *player) { owner = player; }
 
-string Criteria::print() {
+string Criteria::print() const {
     string output; 
     if (level == CompletionType::NONE) {
         return std::to_string(index); 
     }
-    output = owner->colourToString(getOwner()).substr(0, 1);
+    Colour c = owner->getColour();
+    output = colourToString(c).substr(0, 1);
     if (level == CompletionType::ASSIGNMENT) {
         output += "A"; 
     } else if (level == CompletionType::MIDTERM) {

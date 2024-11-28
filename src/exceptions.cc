@@ -37,4 +37,4 @@ ResourceTypeConversionException::ResourceTypeConversionException(const string& n
 : out_of_range("EXCEPTION: Trouble converting ResourceType to string: " + note) {}
 
 InvalidCommandLineException::InvalidCommandLineException(const string& note)
-: out_of_range("EXCEPTION: Invalid command line input: " + note) {}
+: invalid_argument("EXCEPTION: Invalid command line input: " + note) {}

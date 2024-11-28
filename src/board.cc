@@ -26,7 +26,7 @@ void Board::tileRolled(const int roll) {
     }
 }
 
-bool Board::tileHasStudent(int tileIndex,  unique_ptr<Student>& student) {
+bool Board::tileHasStudent(int tileIndex, Student* student) {
     return (tiles.at(tileIndex))->studentOwns(student);
 }
 
