@@ -1,10 +1,10 @@
 #include "fairDice.h"
 using namespace std; 
 
-FairDice::FairDice(unique_ptr<default_random_engine> generator)
-    : generator(move(generator)) {}
+FairDice::FairDice(default_random_engine *generator)
+    : generator{generator} {}
 
 int FairDice::roll() {
-    uniform_int_distribution<int> distribution(1, 6);
-    return distribution(*generator) + distribution(*generator);
+    uniform_int_distribution<> dist(1, 6);
+    return dist(*generator) + dist(*generator);
 }

@@ -10,9 +10,9 @@
 using namespace std; 
 
 class FairDice : public Dice {
-    unique_ptr<default_random_engine> generator;
+    std::default_random_engine *generator;
 public: 
-    FairDice(default_random_engine &generator);
+    FairDice(std::default_random_engine *generator);
     int roll() override; 
 }; 
 

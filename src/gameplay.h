@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <random>
+#include <memory>
 
 #include "board.h"
 #include "dice.h"
