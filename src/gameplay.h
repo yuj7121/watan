@@ -35,7 +35,8 @@ class Gameplay {
     Student *curPlayer; 
     int whoseTurn; 
     int winnerIndex;
-    void loseToGeese(Student *student);
+    void loseToGeese(std::unique_ptr<Student> & student);
+    bool noCaseStrCmp(string str1, string str2);
 
 
 public: 

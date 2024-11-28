@@ -38,6 +38,7 @@ class Student {
     //other functions
     void addResource(ResourceType type);
     void removeResource(ResourceType type);
+    void removeResources(std::vector<ResourceType> types);
     void playGoal(shared_ptr<Goal> goal);
     void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
 
