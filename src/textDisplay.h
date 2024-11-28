@@ -19,8 +19,12 @@ class TextDisplay : public Observer {
     vector<string> goals(72);
     vector<printTile> resources(19); 
     int gooseIndex; 
+
     void createBoard(vector<pair<int, int>> board(19)); 
     string printSpaces(int num) const; 
+    string printTileTop(bool left, bool right);
+    string printTileBottom(bool left, bool right);
+
     string printTileIndex(int index) const; 
     string printTileResource(int index) const; 
     string printTileValue(int index) const; 
@@ -30,13 +34,17 @@ class TextDisplay : public Observer {
 public:
     TextDisplay(vector<pair<int, int>> board(19)); 
     TextDisplay(vector<pair<int, int>> board(19), vector<int> playerGoal(4), vector<pair<int, int>> playerCriteria(4), int goose); 
+
+    void notify(Goal &g) override; 
+    void notify(Criteria &c) override; 
+    friend ostream& operator<< (ostream &out, TextDisplay &td); 
+    void createTile(int id, int resource, int val); 
+    void moveGoose(int index);
+
     void updateGoal(int goalIndex, int studentIndex) override;
     void updateCriterion(int criterionIndex, int studentIndex) override;
     void updateGeese(int tileIndex) override;
-    void printBoard(const Board &board) const override;
 
-private:
-    std::weak_ptr<Board> board;
 };
 
 #endif

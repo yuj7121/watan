@@ -1,5 +1,9 @@
 #include "textDisplay.h"
 
+void TextDisplay::initTile(int id, int resource, int val) {
+    myResources[id] = printTile{id, resourceTypes[resource], val};
+}
+
 string TextDisplay::printSpaces(int num) const { 
     string output; 
     for (int i = 0; i < num; ++i) {
@@ -8,7 +12,7 @@ string TextDisplay::printSpaces(int num) const {
     return output; 
 }
 
-string printTileTop(bool left = true, bool right = true) {
+string TextDisplay::printTileTop(bool left = true, bool right = true) {
     string output; 
     if (left) {
         output += "/"; 
@@ -24,7 +28,7 @@ string printTileTop(bool left = true, bool right = true) {
     return output; 
 }
 
-string printTileBottom(bool left = true, bool right = true) {
+string TextDisplay::printTileBottom(bool left = true, bool right = true) {
     string output; 
     if (right) {
         output += "/"; 
@@ -90,24 +94,16 @@ string TextDisplay::printHorizontalGoal(int index) const {
     return "--" + goals[index] + "--"; 
 }
 
-TextDisplay::TextDisplay(std::shared_ptr<Board> board) : board(board) {
-    board->attach(std::make_shared<TextDisplay>(*this));
+void TextDisplay::notify(Goal &g) {
+    goals[g.getID()] = g.print();
 }
 
-void TextDisplay::updateGoal(int goalIndex, int studentIndex) {
-    std::cout << "Goal " << goalIndex << " now belongs to Student " << studentIndex << ".\n";
+void TextDisplay::notify(Criteria &c) {
+    criterias[c.getID()] = c.print();
 }
 
-void TextDisplay::updateCriterion(int criterionIndex, int studentIndex) {
-    std::cout << "Criterion " << criterionIndex << " improved by Student " << studentIndex << ".\n";
-}
-
-void TextDisplay::updateGeese(int tileIndex) {
-    std::cout << "Geese moved to Tile " << tileIndex << ".\n";
-}
-
-void TextDisplay::printBoard(const Board &board) const {
-    // TODO: Print the board.
+void TextDisplay::moveGoose(int index) {
+    goose = index;
 }
 
 ostream & operator<<(ostream &out, const TextDisplay &td) {
@@ -284,4 +280,17 @@ ostream & operator<<(ostream &out, const TextDisplay &td) {
     out << endl;
 
     return out; 
+}
+
+
+void TextDisplay::updateGoal(int goalIndex, int studentIndex) {
+    std::cout << "Goal " << goalIndex << " now belongs to Student " << studentIndex << ".\n";
+}
+
+void TextDisplay::updateCriterion(int criterionIndex, int studentIndex) {
+    std::cout << "Criterion " << criterionIndex << " improved by Student " << studentIndex << ".\n";
+}
+
+void TextDisplay::updateGeese(int tileIndex) {
+    std::cout << "Geese moved to Tile " << tileIndex << ".\n";
 }
