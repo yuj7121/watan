@@ -374,9 +374,9 @@ void endTurn() {
             next(); 
             break; 
         } else if (cmd == "save") {
-            string fileName; 
+            string fileName;
             iss >> fileName; 
-            if (file == "") {
+            if (fileName == "") {
                 // TODO: throw exception?
             } else {
                 save(fileName); 
