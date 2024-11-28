@@ -33,7 +33,7 @@ public:
     bool nbrGoalOwnedBy(Student *player) const;
     bool adjacentGoalOwner(Student *player) const;
 
-    virtual ~Criteria() = default;
+    ~Criteria() = default;
 private:
     void addOwner(Student *player);
     bool adjacentCriteriaExist() const;

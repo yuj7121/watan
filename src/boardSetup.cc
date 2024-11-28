@@ -37,12 +37,23 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
         } else {
             currType = intToResourceType(resourceTypes[i]);
         }
+
         //figure out surrounding criteria
-        
+        std::vector<std::shared_ptr<Criteria>> surrCriterion;
+        for(int i = 0; i < NUM_TILES; ++i) {
+            for(auto it = (CRITERION_PER_TILE.at(i)).begin(); it != (CRITERION_PER_TILE.at(i)).end(); ++it) {
+                surrCriterion.emplace_back((b->criterion).at(*it));
+            }
+        }
         //figure out surrounding goals
+        std::vector<std::shared_ptr<Goal>> surrGoals;
+        for(int i = 0; i < NUM_TILES; ++i) {
+            for(auto it = (GOAL_PER_TILE.at(i)).begin(); it != (GOAL_PER_TILE.at(i)).end(); ++it) {
+                surrGoals.emplace_back((b->goals).at(*it));
+            }
+        }
 
-
-        std::shared_ptr<Tile> curr = std::make_shared<Tile>(i, resourceValues[i], currType, false);
+        std::shared_ptr<Tile> curr = std::make_shared<Tile>(i, resourceValues[i], currType, surrCriterion, surrGoals, observer_here);
         b->tiles.emplace_back(curr);
     }
 
