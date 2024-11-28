@@ -35,9 +35,10 @@ class Gameplay {
     Student *curPlayer; 
     int whoseTurn; 
     int winnerIndex;
-    void loseToGeese(std::unique_ptr<Student> & student);
-    bool noCaseStrCmp(string str1, string str2);
-
+    void loseToGeese(std::unique_ptr<Student> & student); //helper fucntion that makes each student lose resources
+    void geeseLanded(); //helper function that is called when you rool 7
+    bool noCaseStrCmp(string str1, string str2); //helper function that does case insensitive string comparison
+    int convertColourInput(string input); //takes in a string, returns the colour, or -1 if invalid
 
 public: 
     Gameplay(); 
@@ -52,7 +53,7 @@ public:
     void rollDice(int val = -1, bool isFairDice = false);
 
     string curTurn() const; 
-    bool gameOver() const; 
+    bool gameOver(); 
     string whoWon() const; // TODO: NEEDED?
 
     // end of turn commands - NEED TO IMPLEMENT
@@ -62,13 +63,13 @@ public:
 	void achieve(int index);
 	void complete(int index);  
 	void improve(int index);
-	void trade(Colour receivingStudent, ResourceType give, ResourceType take); // user will input colour, and two resources, so check parameters?
+	void trade(Student* receivingStudent, ResourceType give, ResourceType take); // user will input colour, and two resources, so check parameters?
 	void next();
 	void save(string file); 
 	void help() const;
 
     void initialAssignments();
-    void beginTurn(Student& s);
+    void beginTurn(Student* student);
     void endTurn(); 
     bool endGame(); 
 }; 

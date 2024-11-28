@@ -14,7 +14,10 @@ FileWriteException::FileWriteException(const string& note)
 
 // (b) Invalid User Input
 InvalidInputException::InvalidInputException(const string& note)
-: invalid_argument("EXCEPTION: Invalid input detected: " + note) {}
+: invalid_argument("Invalid input detected: " + note) {}
+
+InvalidCommandException::InvalidCommandException(const string& note)
+: invalid_argument("Invalid command" + note) {}
 
 OutOfRangeInputException::OutOfRangeInputException(const string& note)
 : out_of_range("EXCEPTION: Input is out of range: " + note) {}

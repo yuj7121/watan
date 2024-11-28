@@ -126,6 +126,121 @@ bool Gameplay::noCaseStrCmp(string str1, string str2)
     return true;
 }
 
+int Gameplay::convertColourInput(string input) {
+    int colour = -1;
+    if(noCaseStrCmp(input, "Blue")) {
+        colour = 0;
+    } else if(noCaseStrCmp(input, "Red")){
+        colour = 1;
+    } else if(noCaseStrCmp(input, "Orange")){
+        colour = 2;
+    } else if(noCaseStrCmp(input, "Yellow")){
+        colour = 3;
+    }
+    return colour;
+}
+
+//helper function that is called when you rool 7
+void Gameplay::geeseLanded() {
+    //make each student with more than 10 resources lose to geese
+    for(auto it = students.begin(); it != students.end(); ++it) {
+        loseToGeese(*it);
+    }
+    //move geese
+    int geeseHere;
+    bool invalid = true;
+    do{
+        try{
+            cout << "Choose where to place the GEESE." << endl;
+            if(!(cin >> geeseHere)) {
+                throw new InvalidInputException("not an integer");
+            } else {
+                if(geeseHere < 0 || geeseHere > 18) {
+                    throw new OutOfRangeInputException(std::to_string(geeseHere));
+                } else {
+                    invalid = false;
+                }
+            }
+        } catch (InvalidInputException& e) { // not an int
+            cerr << e.what() << endl;
+        } catch (OutOfRangeInputException& e) { //int out of range
+            cerr << e.what() << endl;
+        } //end of try catch
+    } while (invalid); //end of while loop
+    theBoard->moveGeese(geeseHere); //geese moved!
+
+    //check who can be stolen from
+    bool canSteal[NUM_STUDENTS];
+    bool noOneToSteal = true;
+    for(int i = 0; i < NUM_STUDENTS; ++i) {
+        Student* tempStudent = &(*(students.at(i)));
+        if(tempStudent->getIndex() == curPlayer->getIndex()) {
+            canSteal[i] = false;
+        } else if(theBoard->tileHasStudent(geeseHere, tempStudent)){
+            canSteal[i] = true;
+            noOneToSteal = false;
+        } else {
+            canSteal[i] = false;
+        }
+    }
+    if(noOneToSteal) {
+        cout << "Student "+ colourToString(curPlayer->getColour()) + " has no students to steal from." << endl;
+    } else{
+        //if you can steal
+        cout << "Student " + colourToString(curPlayer->getColour()) + " can choose to steal from ";
+        bool first = true;
+        for(int i = 0; i < NUM_STUDENTS; ++i) {
+            if(canSteal[i]){
+                if (!first) {
+                    cout << ", ";
+                }
+                cout << colourToString((students.at(i))->getColour());
+            }
+        }
+        cout << "." << endl;
+    }
+
+    //take in who to steal from
+    int toSteal;
+    invalid = true;
+    do{
+        try{
+            string str;
+            cout << "Choose a student to steal from." << endl;
+            if(!(cin >> str)) {
+                throw new InvalidInputException("Read failed.");
+            } else {
+                toSteal = convertColourInput(str);
+                if(toSteal == -1) {
+                    throw new InvalidInputException(str);
+                }
+                if(toSteal == curPlayer->getIndex()) {
+                    throw new InvalidInputException("You can't steal from yourself!");
+                }
+            }
+        } catch (InvalidInputException& e) { //invalid input
+            cerr << e.what() << endl;
+        } //end of try catch
+    } while (invalid); //end of while loop
+
+    //steal from that student!
+    //probability = numRes/total num res
+    int totalRes; //total number of resources the student being stollen from has
+    for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+        totalRes += (students.at(toSteal))->getResource(it->first);
+    }
+    for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
+        int randomNumber = (std::rand() % (100));
+        //if the random roll succeeds, you steal!
+        if(randomNumber <= ((100 * (students.at(toSteal))->getResource(it->first)) / totalRes)) {
+            (students.at(toSteal))->removeResource(it->first);
+            curPlayer->getResource(it->first);
+            cout << "Student " << COLOUR_TO_STRING.at(curPlayer->getColour()) << " steals "
+            << it->second << " from student " << COLOUR_TO_STRING.at((students.at(toSteal))->getColour()) << "." << endl;
+        }
+    }
+}
+
 void Gameplay::rollDice(int val, bool type) {
     int roll; 
     if (type) { // fair dice
@@ -138,116 +253,7 @@ void Gameplay::rollDice(int val, bool type) {
 
     if (roll == 7) {
         // TODO: GEESE
-
-        //make each student with more than 10 resources lose to geese
-        for(auto it = students.begin(); it != students.end(); ++it) {
-            loseToGeese(*it);
-        }
-        //move geese
-        int geeseHere;
-        bool invalid = true;
-        do{
-            try{
-                cout << "Choose where to place the GEESE." << endl;
-                if(!(cin >> geeseHere)) {
-                    throw new InvalidInputException("not an integer");
-                } else {
-                    if(geeseHere < 0 || geeseHere > 18) {
-                        throw new OutOfRangeInputException(std::to_string(geeseHere));
-                    } else {
-                        invalid = false;
-                    }
-                }
-            } catch (InvalidInputException& e) { // not an int
-                cerr << e.what() << endl;
-            } catch (OutOfRangeInputException& e) { //int out of range
-                cerr << e.what() << endl;
-            } //end of try catch
-        } while (invalid); //end of while loop
-        theBoard->moveGeese(geeseHere); //geese moved!
-
-        //check who can be stolen from
-        bool canSteal[NUM_STUDENTS];
-        bool noOneToSteal = true;
-        for(int i = 0; i < NUM_STUDENTS; ++i) {
-            if(students.at(i)->getIndex() == curPlayer->getIndex()) {
-                canSteal[i] = false;
-            } else if(theBoard->tileHasStudent(geeseHere, students.at(i))){
-                canSteal[i] = true;
-                noOneToSteal = false;
-            } else {
-                canSteal[i] = false;
-            }
-        }
-        if(noOneToSteal) {
-            cout << "Student "+ colourToString(curPlayer->getColour()) + " has no students to steal from." << endl;
-        } else{
-            //if you can steal
-            cout << "Student " + colourToString(curPlayer->getColour()) + " can choose to steal from ";
-            bool first = true;
-            for(int i = 0; i < NUM_STUDENTS; ++i) {
-                if(canSteal[i]){
-                    if (!first) {
-                        cout << ", ";
-                    }
-                    cout << colourToString((students.at(i))->getColour());
-                }
-            }
-            cout << "." << endl;
-        }
-
-        //take in who to steal from
-        int toSteal;
-        invalid = true;
-        do{
-            try{
-                string str;
-                cout << "Choose a student to steal from." << endl;
-                if(!(cin >> str)) {
-                    throw new InvalidInputException("Read failed.");
-                } else {
-                    if(noCaseStrCmp(str, "Blue")) {
-                        toSteal = 0;
-                        invalid = false;
-                    } else if(noCaseStrCmp(str, "Red")){
-                        toSteal = 1;
-                        invalid = false;
-                    } else if(noCaseStrCmp(str, "Orange")){
-                        toSteal = 2;
-                        invalid = false;
-                    } else if(noCaseStrCmp(str, "Yellow")){
-                        toSteal = 3;
-                        invalid = false;
-                    } else {
-                        throw new InvalidInputException(str);
-                    }
-                    if(toSteal == curPlayer->getIndex()) {
-                        throw new InvalidInputException("You can't steal from yourself!");
-                    }
-                }
-            } catch (InvalidInputException& e) { //invalid input
-                cerr << e.what() << endl;
-            } //end of try catch
-        } while (invalid); //end of while loop
-
-        //steal from that student!
-        //probability = numRes/total num res
-        int totalRes; //total number of resources the student being stollen from has
-        for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-            totalRes += (students.at(toSteal))->getResource(it->first);
-        }
-        for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-            int randomNumber = (std::rand() % (100));
-            //if the random roll succeeds, you steal!
-            if(randomNumber <= ((100 * (students.at(toSteal))->getResource(it->first)) / totalRes)) {
-                (students.at(toSteal))->removeResource(it->first);
-                curPlayer->getResource(it->first);
-                cout << "Student " << COLOUR_TO_STRING.at(curPlayer->getColour()) << " steals "
-                << it->second << " from student " << COLOUR_TO_STRING.at((students.at(toSteal))->getColour()) << "." << endl;
-            }
-        }
-
-
+        geeseLanded();
     } else {
         theBoard->tileRolled(roll);
     }
@@ -261,9 +267,9 @@ string Gameplay::curTurn() const {
     else return "";
 }
 
-bool Gameplay::gameOver() const { 
+bool Gameplay::gameOver() { 
     for (int i = 0; i < 4; ++i) {
-        if ((students[i])->getVictoryPoints() == 10) {
+        if ((students[i])->calculatePoints() == 10) {
             winnerIndex = i;
             return true;
 	    }
@@ -276,11 +282,11 @@ void Gameplay::board() const {
 }
 
 void Gameplay::status() const {
-    cout << students->status() << endl; 
+    cout << curPlayer->status() << endl; 
 }
 
 void Gameplay::criteria() const { 
-    cout << students->criteria() << endl; 
+    cout << curPlayer->criteria() << endl; 
 }
 
 void Gameplay::achieve(int index) {
@@ -296,19 +302,19 @@ void Gameplay::improve(int index) {
     theBoard->improveCriteria(curPlayer, index); 
 }
 
-void Gameplay::trade(Colour receivingStudent, ResourceType give, ResourceType take) {
-    cout << colourToString(curPlayer.getColour()) << " offers " << colourToString(receivingStudent) << 
+void Gameplay::trade(Student* receivingStudent, ResourceType give, ResourceType take) {
+    cout << colourToString(curPlayer->getColour()) << " offers " << colourToString(receivingStudent->getColour()) << 
         " one " << resourceTypeToString(give) << " for one " << resourceTypeToString(take) << ". "; 
-    cout << "\nDoes " << colourToString(receivingStudent) << " accept this offer?" << endl; 
+    cout << "\nDoes " << colourToString(receivingStudent->getColour()) << " accept this offer?" << endl; 
     
     string response;
     cout << ">"; 
     cin >> response;
-    if (response == "yes") { 
+    if (noCaseStrCmp(response, "yes")) { 
         theBoard->trade(curPlayer, receivingStudent, give, take);
         cout << "Trade Successful.\n";
     }
-    else if (response == "no") cout << "Trade declined." << endl;
+    else if (noCaseStrCmp(response, "no")) cout << "Trade declined." << endl;
 }
 
 void Gameplay::next() {
@@ -320,8 +326,8 @@ void Gameplay::save(string file) {
     ofstream myFile(file); 
     if (myFile.is_open()) {
         myFile << whoseTurn; 
-        myFIle << "\n"; 
-        for (auto &p : student) myFile << p->save() + "\n"; 
+        myFile << "\n"; 
+        for (auto &p : students) myFile << p->save() + "\n"; 
         myFile << theBoard->save() + "\n"; 
     }
 }
@@ -351,19 +357,21 @@ void Gameplay::initialAssignments() {
             start = NUM_STUDENTS - 1;
             end = 0;            
         }
-        while(j < NUM_STUDENTS && j >= 0;) {
+        int j = 0;
+        while(j < NUM_STUDENTS && j >= 0) {
             bool validInput = false;
             do {
                 try {
                     int input;
                     cout << "Student " 
-                    << COLOUR_TO_STRING.at(students[j]->getColour());
+                    << COLOUR_TO_STRING.at(students[j]->getColour())
                     << ", where do you want to complete an Assignment?" << endl;
                     if (!(cin >> input)) {
                         throw new InvalidInputException("not an integer, try again.");
                     } else {
                         validInput = true;
-                        theBoard.buyCriteria(students[j], input);
+                        Student* tempStudent = &(*(students.at(j)));
+                        theBoard->buyCriteria(tempStudent, input);
                     }
                 } catch (InvalidInputException& e) {
                     cerr << e.what() << endl;
@@ -381,7 +389,7 @@ void Gameplay::initialAssignments() {
 }//end of fucntion
 
 
-void Gameplay::beginTurn(unique_ptr<Student> student) {
+void Gameplay::beginTurn(Student* student) {
     cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
     cout << student;
 
@@ -399,7 +407,7 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
                             throw new InvalidInputException("not an integer");
                         } else {
                             if(val < 2 || val > 12) {
-                                throw new OutOfRangeInputException(val);
+                                throw new OutOfRangeInputException(std::to_string(val));
                             } else {
                                 invalid = false;
                             }
@@ -410,7 +418,7 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
                         cerr << e.what() << endl;
                     } //end of try catch
                 } //end of while
-                rollDice(, true);
+                rollDice(val, false);
                 //if user wants fair            
             } else if (input == "fair") {
                 rollDice(-1, true);
@@ -426,7 +434,7 @@ void Gameplay::beginTurn(unique_ptr<Student> student) {
 
 void Gameplay::endTurn() {
     while (!gameOver()) {
-        cout << ">"; 
+        cout << "> "; 
         string line; 
         getline(cin, line); 
 
@@ -438,47 +446,69 @@ void Gameplay::endTurn() {
         istringstream iss{line}; 
         string cmd; 
         iss >> cmd; 
-
-        if (cmd == "board") {
-            board(); 
-        } else if (cmd == "status") {
-            status(); 
-        } else if (cmd == "criteria") {
-            criteria(); 
-        } else if (cmd == "achieve") {
-            int index; 
-            iss >> index; 
-            achieve(curPlayer, index); 
-        } else if (cmd == "complete") {
-            int index; 
-            iss >> index; 
-            complete(curPlayer, index); 
-        } else if (cmd == "improve") {
-            int index; 
-            iss >> index; 
-            control->improve(index); 
-        } else if (cmd == "trade") {
-            string colour, give, take; 
-            iss >> colour; 
-            iss >> give; 
-            iss >> take; 
-            trade(stringToColour(curPlayer), stringToColour(colour), stringToResourceType(give), stringToResourceType(take)); 
-        } else if (cmd == "next") {
-            next(); 
-            break; 
-        } else if (cmd == "save") {
-            string fileName;
-            iss >> fileName; 
-            if (fileName == "") {
-                // TODO: throw exception?
-            } else {
-                Gameplay::save(fileName); 
+        try{
+            if (cmd == "board") {
+                board(); 
+            } else if (cmd == "status") {
+                status(); 
+            } else if (cmd == "criteria") {
+                criteria(); 
+            } else if (cmd == "achieve") {
+                int index;
+                iss >> index; 
+                if(index < 0 || index > NUM_GOALS) {
+                    throw new InvalidCommandException(""); 
+                }
+                achieve(index); 
+            } else if (cmd == "complete") {
+                int index;
+                iss >> index;
+                if(index < 0 || index > NUM_CRITERION) {
+                    throw new InvalidCommandException(""); 
+                }
+                complete(index); 
+            } else if (cmd == "improve") {
+                int index; 
+                iss >> index; 
+                if(index < 0 || index > NUM_CRITERION) {
+                    throw new InvalidCommandException(""); 
+                }
+                control->improve(index); 
+            } else if (cmd == "trade") {
+                string colour, give, take; 
+                iss >> colour; 
+                iss >> give; 
+                iss >> take; 
+                Student* toTrade = &(*(students.at(convertColourInput(colour))));
+                if(toTrade->getIndex() == curPlayer->getIndex()) {
+                    throw new InvalidCommandException(""); 
+                }
+                ResourceType giveType = stringToResourceType(give);
+                ResourceType takeType = stringToResourceType(take);
+                if(giveType == ResourceType::ERROR || takeType == ResourceType::ERROR) {
+                    throw new InvalidCommandException(""); 
+                }
+                trade(toTrade, giveType, takeType); 
+            } else if (cmd == "next") {
+                next(); 
+                break; 
+            } else if (cmd == "save") {
+                string fileName;
+                iss >> fileName; 
+                if (fileName == "") {
+                    // TODO: throw exception?
+                    throw new InvalidCommandException(""); 
+                } else {
+                    Gameplay::save(fileName); 
+                } 
+            } else if (cmd == "help") {
+                help(); 
+            } else { 
+                throw new InvalidCommandException(""); 
             } 
-        } else if (cmd == "help") {
-            help(); 
-        } else { 
-            cout << "Invalid command" << endl; 
-        } 
+        } catch (InvalidCommandException& e){
+            cerr << e.what() << endl;
+        }
     }
 }
 

@@ -7,7 +7,7 @@
 
 enum class CompletionType { NONE, ASSIGNMENT, MIDTERM, EXAM };
 
-enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX };
+enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX, ERROR};
 
 std::string resourceTypeToString(ResourceType r) {
     switch (r) {
@@ -19,7 +19,6 @@ std::string resourceTypeToString(ResourceType r) {
         case ResourceType::NETFLIX: return "NETFLIX";
     }
     return "Error";
-
 }
 
 ResourceType stringToResourceType(const std::string& str) {
@@ -70,7 +69,6 @@ Colour stringToColour(const std::string& str) {
     if (str == "Orange") return Colour::ORANGE;
     if (str == "Yellow") return Colour::YELLOW;
     return Colour::YELLOW;
-
 }
 
 const std::map<Colour, std::string> COLOUR_TO_STRING = {

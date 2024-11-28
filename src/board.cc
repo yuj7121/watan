@@ -15,7 +15,7 @@ void Board::tileRolled(const int roll) {
     for (unsigned int i = 0; i < tiles.size(); i++) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
-            const auto &criteriaIndices = CRITERION_PER_TILE[i];
+            const auto &criteriaIndices = CRITERIA_PER_TILE[i];
             for (int criterionIndex : criteriaIndices) {
                 const auto &crit = criterion[criterionIndex];
                 if (crit->getOwner()) {
@@ -26,11 +26,6 @@ void Board::tileRolled(const int roll) {
     }
 }
 
-bool Board::tileHasStudent(int tileIndex, Student* student) {
-    return (tiles.at(tileIndex))->studentOwns(student);
-}
-
-
 // EFFECTS: Attempts to buy a goal at the specified index for the student.
 //          Updates the goal's owner, student's goals, and deducts the cost
 //          if successful.
@@ -40,7 +35,8 @@ void Board::buyGoal(Student* student, const int index) {
         throw AlreadyOwnedException("Goal is already owned!");
     }
     if (student->hasResources({ResourceType::STUDY, ResourceType::TUTORIAL})) {
-        student->playGoal(goals.at(index));
+        goal->buildGoal(student);
+        student->addGoal(index);
         student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
     } else {
         throw InsufficientResourcesException("Not enough resources to buy goal!");
@@ -52,13 +48,13 @@ void Board::buyGoal(Student* student, const int index) {
 //          if successful.
 void Board::buyCriteria(Student* student, const int index) {
     auto &crit = criterion[index];
-    // TODO: if its the start of the game, don't need to check resources
     if (crit->getOwner() != nullptr) {
         throw AlreadyOwnedException("Criterion is already owned!");
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
-        student->playCriteria(criterion.at(index), false);
+        crit->playCriteria(student, false);
+        student->addCriterion(index);
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
     } else {
@@ -73,13 +69,13 @@ void Board::improveCriteria(Student* student, const int index) {
     if (crit->getOwner() != student) {
         throw InvalidCriterionImprovementException("Criterion is not owned by this student!");
     }
-    if (crit->getCompletionLevel() == 3) { //exam
+    if (crit->getCompletionType() == CompletionType::EXAM) {
         throw InvalidCriterionImprovementException("Criterion is already fully upgraded!");
     }
     vector<ResourceType> cost;
-    if (crit->getCompletionLevel() == 1) { //asisngment
+    if (crit->getCompletionType() == CompletionType::ASSIGNMENT) {
         cost = {ResourceType::LECTURE, ResourceType::LECTURE, ResourceType::STUDY, ResourceType::STUDY, ResourceType::STUDY};
-    } else if (crit->getCompletionLevel() == 2 ) { //midterm
+    } else if (crit->getCompletionType() == CompletionType::MIDTERM) {
         cost = {ResourceType::CAFFEINE, ResourceType::CAFFEINE, ResourceType::CAFFEINE,
                 ResourceType::LAB, ResourceType::LAB, ResourceType::LECTURE,
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
@@ -122,9 +118,9 @@ string Board::save() {
         output += t->save() + " "; 
     } 
     ostringstream goose; 
-    goose << geesePosition; 
+    goose << gooseIndex; 
     output += '\n'; 
-    output += goose.str();
+    output += oss.str();
 
     return output; 
 }

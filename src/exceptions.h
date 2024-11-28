@@ -23,6 +23,11 @@ class FileWriteException : public runtime_error {
 };
 
 // (b) Invalid User Input
+class InvalidCommandException : public invalid_argument {
+    public:
+        explicit InvalidCommandException(const string& note);
+};
+
 class InvalidInputException : public invalid_argument {
     public:
         explicit InvalidInputException(const string& note);
