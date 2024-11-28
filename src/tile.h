@@ -26,7 +26,7 @@ public:
     int getValue() const; 
     ResourceType getResourceType() const;
     bool isValue(int val);
-    void save() const; 
+    string save() const; 
     void notifyObservers() override;
     bool studentOwns(Student *student);
 };

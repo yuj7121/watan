@@ -87,3 +87,19 @@ int Criteria::getCompletionLevel() const {
 bool Criteria::isOwnedBy(Student* player) const { return owner == player; }
 
 void Criteria::addOwner(Student *player) { owner = player; }
+
+string Criteria::print() {
+    string output; 
+    if (level == CompletionType::NONE) {
+        return std::to_string(index); 
+    }
+    output = owner->colourToString(getOwner()).substr(0, 1);
+    if (level == CompletionType::ASSIGNMENT) {
+        output += "A"; 
+    } else if (level == CompletionType::MIDTERM) {
+        output += "M"; 
+    } else if (level == CompletionType::EXAM) {
+        output += "E"; 
+    }
+    return output; 
+}

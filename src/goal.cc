@@ -58,3 +58,14 @@ bool Goal::playGoal(Student* player) {
 void Goal::notifyObservers() {
     for(auto o : observers) o->notify(*this);
 }
+
+void Goal::print() const {
+    string output; 
+    if(owner) {
+        output = owner->colourToString(getOwner()).substr(0, 1);
+        output += "A"; 
+    } else {
+        output = to_string(getIndex()); 
+    }
+    return output; 
+}

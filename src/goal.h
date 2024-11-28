@@ -28,6 +28,7 @@ public:
     void detachCriteria(std::shared_ptr<Criteria> c); 
     bool playGoal(Student* player);
     void notifyObservers() override;
+    string print() const; 
     
     ~Goal() = default;
 };
