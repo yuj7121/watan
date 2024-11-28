@@ -29,12 +29,12 @@ public:
     int getCompletionLevel() const;
     bool isOwnedBy(Student *player) const;
     bool nbrGoalOwnedBy(Student *player) const;
+    bool adjacentGoalOwner(Student *player) const;
 
     virtual ~Criteria() = default;
 private:
     void addOwner(Student *player);
     bool adjacentCriteriaExist() const;
-    bool adjacentGoalOwner(Student *player) const;
     bool complete(Student *player, bool startOfGame);
     bool canImprove(Student *player) const;
     bool improve();

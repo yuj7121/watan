@@ -16,10 +16,11 @@ class Tile : public Subject {
     int index; 
     int value; 
     ResourceType resource; 
-    vector<Criteria *> attachedCriteria;  
+    vector<std::shared_ptr<Criteria>> attachedCriterion;  
+    vector<std::shared_ptr<Criteria>> attachedGoals;  
 
 public: 
-    Tile(int index, int value, ResourceType resource, vector<Criteria*>& attachedCriteria, vector<Observer *> oList);
+    Tile(int index, int value, ResourceType resource, vector<std::shared_ptr<Criteria>> attachedCriterion, vector<std::shared_ptr<Criteria>> attachedGoals, vector<Observer *> oList);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;

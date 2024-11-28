@@ -75,37 +75,36 @@ void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
 int Student::calculatePoints() const { 
   int point = 0; 
   for (auto &it : criterion) { 
-    point += criterion->getLevel();
+    point += it->getCompletionLevel();
   }
-
   return point; 
 }
 
 string Student::status() const {
   string output; 
-  ostringstream oss; 
+  std::ostringstream oss; 
   oss << calculatePoints(); 
-  output = colour + " has " + oss.str() + " victory points, "; 
+  output = colourToString(colour) + " has " + oss.str() + " victory points, "; 
   for (int i = 0; i < 5; ++i) {
     ostringstream val;
     if (i == 0) {
-      val << resource.at(ResourceType::CAFFEINE); 
+      val << resources.at(ResourceType::CAFFEINE); 
       output += val.str(); 
       output += " caffeines, ";
     } else if (i == 1) {
-      val << resource.at(ResourceType::LAB); 
+      val << resources.at(ResourceType::LAB); 
       output += val.str(); 
       output += " labs, ";
     } else if (i == 2) {
-      val << resource.at(ResourceType::LECTURE); 
+      val << resources.at(ResourceType::LECTURE); 
       output += val.str(); 
       output += " lectures, ";
     } else if (i == 3) {
-      val << resource.at(ResourceType::TUTORIAL); 
+      val << resources.at(ResourceType::TUTORIAL); 
       output += val.str(); 
       output += " tutorials, ";
     } else if (i == 4) {
-      val << resource.at(ResourceType::STUDY); 
+      val << resources.at(ResourceType::STUDY); 
       output += val.str(); 
       output += " studies.";
     } 
@@ -115,7 +114,7 @@ string Student::status() const {
 
 string Student::criteria() const {
 	string output; 
-  output = colour + " has completed: "; 
+  output = colourToString(colour) + " has completed: "; 
   for (auto c : criterion) {
     ostringstream oss; 
     oss << c->getIndex() << " "; 
@@ -129,9 +128,23 @@ string Student::save() const {
     string output;
 
     for (int i = 0; i < 5; ++i) {
-        ostringstream val;
-        val << resources[i];
+      ostringstream val;
+      if (i == 0) {
+        val << resources.at(ResourceType::CAFFEINE); 
         output += val.str() + " ";
+      } else if (i == 1) {
+        val << resources.at(ResourceType::LAB); 
+        output += val.str() + " ";
+      } else if (i == 2) {
+        val << resources.at(ResourceType::LECTURE); 
+        output += val.str() + " ";
+      } else if (i == 3) {
+        val << resources.at(ResourceType::TUTORIAL); 
+        output += val.str() + " ";
+      } else if (i == 4) {
+        val << resources.at(ResourceType::STUDY); 
+        output += val.str() + " ";
+      } 
     }
 
     output += "g ";

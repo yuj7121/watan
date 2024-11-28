@@ -154,8 +154,20 @@ void Gameplay::rollDice(int val, bool type) {
         } while (invalid); //end of while loop
         theBoard.moveGeese(geeseHere); //geese moved!
 
-        //TODO: steal        
+        //TODO: steal
 
+        //check who can be stolen from
+            bool canSteal[NUM_STUDENTS];
+            for(int i = 0; i < NUM_STUDENTS; ++i) {
+                if()
+            }
+
+        //if you can steal
+        cout << "Student " + (curPlayer.getColour()).colourToString() + " can choose to steal from";
+        for(int i = 0; i < 6; ++i) {
+            sadas
+        }
+        cout << "." < endl;
 
     } else {
         theBoard.tileRolled(roll);

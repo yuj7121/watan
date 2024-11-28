@@ -17,19 +17,19 @@ bool Goal::isOwnedBy(Student* player) const {
 
 bool Goal::checkCriteriaExist() const {
     for (auto c : adjCriteria) {
-        if (c->getCompletionType() != CompletionType::NONE) {
+        if (c->getCompletionLevel() != 0) {
             return true;
         }
     }
     return false;
 }
 
-void Goal::attachCriteria(Criteria* c) {
-    adjCriteria.push_back(c);
+void Goal::attachCriteria(std::shared_ptr<Criteria> c) {
+    adjCriteria.emplace_back(c);
 }
 
-void Goal::detachCriteria(Criteria *c) {
-    for(auto it = adjCriteria.begin();; *it != c; ++it) {
+void Goal::detachCriteria(std::shared_ptr<Criteria> c) {
+    for(auto it = adjCriteria.begin(); *it != c; ++it) {
         adjCriteria.erase(it);
     }
 }
@@ -48,7 +48,7 @@ bool Goal::playGoal(Student* player) {
         }
     }
     if (!adjacent) return false;
-    attach(student); //TODO CHECK
+    attach(player); //TODO CHECK
 
     owner = player; 
     notifyObservers(); 

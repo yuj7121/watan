@@ -14,7 +14,7 @@ using namespace std;
 class Goal : public Subject {
     int index;
     Student* owner;
-    vector<Criteria *> adjCriteria;
+    vector<std::shared_ptr<Criteria>> adjCriteria;
 
 public:
     Goal(int index, Student* owner);
@@ -24,8 +24,8 @@ public:
     bool isOwnedBy(Student* player) const;
     bool checkCriteriaExist() const;
     
-    void attachCriteria(Criteria *c);
-    void detachCriteria(Criteria *c); 
+    void attachCriteria(std::shared_ptr<Criteria> c);
+    void detachCriteria(std::shared_ptr<Criteria> c); 
     bool playGoal(Student* player);
     void notifyObservers() override;
     

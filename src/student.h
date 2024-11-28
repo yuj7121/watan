@@ -9,6 +9,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
+#include <sstream>
 
 class Criteria;
 class Goal;
