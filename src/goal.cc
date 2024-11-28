@@ -59,9 +59,9 @@ void Goal::notifyObservers() {
     for(auto o : observers) o->notify(*this);
 }
 
-void Goal::print() const {
+string Goal::print() const {
     string output; 
-    C colour = owner.getColour(); 
+    Colour c = owner->getColour(); 
     if(owner) {
         output = colourToString(c).substr(0, 1);
         output += "A"; 
