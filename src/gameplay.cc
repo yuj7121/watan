@@ -13,12 +13,11 @@ void Gameplay::newGame(int seed) {
 
 void Gameplay::loadGame(const std::string file) { 
     ifstream f{file};
-	int curTurn;
     // TODO: check types 
     vector<vector<int>> studentResources(4, vector<int>(5));
     vector<vector<int>> studentGoals(4);
     vector<vector<pair<int, int>>> studentCriteria(4);
-	int geese;
+	int curTurn, geese;
     for (int i = 0; i < 7; ++i) {
         string line; 
         getline(f, line); 
@@ -115,8 +114,7 @@ void Gameplay::loseToGeese(std::unique_ptr<Student> & student) {
 }
 
 //a helper function that does case-insensitive string comparison
-bool Gameplay::noCaseStrCmp(string str1, string str2)
-{
+bool Gameplay::noCaseStrCmp(string str1, string str2) {
     if (str1.length() != str2.length())
         return false;
     for (int i = 0; i < str1.length(); ++i) {
@@ -268,7 +266,9 @@ string Gameplay::curTurn() const {
 }
 
 bool Gameplay::gameOver() { 
+bool Gameplay::gameOver() { 
     for (int i = 0; i < 4; ++i) {
+        if ((students[i])->calculatePoints() == 10) {
         if ((students[i])->calculatePoints() == 10) {
             winnerIndex = i;
             return true;
@@ -283,6 +283,9 @@ void Gameplay::board() const {
 
 void Gameplay::status() const {
     cout << curPlayer->status() << endl; 
+    for (auto s: students) {
+        cout << s->status() << endl; 
+    }
 }
 
 void Gameplay::criteria() const { 
