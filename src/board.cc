@@ -41,7 +41,6 @@ void Board::buyGoal(Student* student, const int index) {
         throw AlreadyOwnedException("Goal is already owned!");
     }
     if (student->hasResources({ResourceType::STUDY, ResourceType::TUTORIAL})) {
-        goal->playGoal(student);
         student->playGoal(goals.at(index));
         student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
     } else {
@@ -60,7 +59,6 @@ void Board::buyCriteria(Student* student, const int index) {
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
-        crit->playCriteria(student, false);
         student->playCriteria(criterion.at(index), false);
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
