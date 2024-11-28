@@ -52,7 +52,7 @@ public:
     void rollDice(int val = -1, bool isFairDice = false);
 
     string curTurn() const; 
-    bool gameOver() const; 
+    bool gameOver(); 
     string whoWon() const; // TODO: NEEDED?
 
     // end of turn commands - NEED TO IMPLEMENT
