@@ -35,6 +35,7 @@ public:
 
     void notifyObservers() override;
     void notify(Tile &t) override;
+    string print() const; 
 
     ~Criteria() = default;
 private:
