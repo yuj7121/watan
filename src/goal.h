@@ -4,13 +4,14 @@
 #include <iostream> 
 #include <vector> 
 #include <string>
+#include "subject.h"
 
 class Criteria; 
 class Student; 
 
 using namespace std; 
 
-class Goal {
+class Goal : public Subject {
     int index;
     Student* owner;
     vector<Criteria *> adjCriteria;
@@ -24,7 +25,10 @@ public:
     bool checkCriteriaExist() const;
     
     void attachCriteria(Criteria *c);
+    void detachCriteria(Criteria *c); 
     bool playGoal(Student* player);
+    void notifyObservers() override;
+    
     ~Goal() = default;
 };
 

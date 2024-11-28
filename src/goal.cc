@@ -28,6 +28,12 @@ void Goal::attachCriteria(Criteria* c) {
     adjCriteria.push_back(c);
 }
 
+void Goal::detachCriteria(Criteria *c) {
+    for(auto it = adjCriteria.begin();; *it != c; ++it) {
+        adjCriteria.erase(it);
+    }
+}
+
 bool Goal::playGoal(Student* player) {
     bool adjacent = false;
 
@@ -42,7 +48,10 @@ bool Goal::playGoal(Student* player) {
         }
     }
     if (!adjacent) return false;
+    attach(student); //TODO CHECK
 
-    owner = player;
+    owner = player; 
+    notifyObservers(); 
+    
     return true;
 }
