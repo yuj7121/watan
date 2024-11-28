@@ -35,7 +35,7 @@ void Board::buyGoal(Student* student, const int index) {
         throw AlreadyOwnedException("Goal is already owned!");
     }
     if (student->hasResources({ResourceType::STUDY, ResourceType::TUTORIAL})) {
-        student->buildGoal(index);
+        student->playGoal(index);
         student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
     } else {
         throw InsufficientResourcesException("Not enough resources to buy goal!");
@@ -52,7 +52,7 @@ void Board::buyCriteria(Student* student, const int index) {
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
-        student->playCriteria(index);
+        student->playCriteria(index, false);
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
     } else {
@@ -67,13 +67,13 @@ void Board::improveCriteria(Student* student, const int index) {
     if (crit->getOwner() != student) {
         throw InvalidCriterionImprovementException("Criterion is not owned by this student!");
     }
-    if (crit->getCompletionType() == 3) {
+    if (crit->getCompletionLevel() == 3) {
         throw InvalidCriterionImprovementException("Criterion is already fully upgraded!");
     }
     vector<ResourceType> cost;
-    if (crit->getCompletionType() == 1) {
+    if (crit->getCompletionLevel() == 1) {
         cost = {ResourceType::LECTURE, ResourceType::LECTURE, ResourceType::STUDY, ResourceType::STUDY, ResourceType::STUDY};
-    } else if (crit->getCompletionType() == 2) {
+    } else if (crit->getCompletionLevel() == 2) {
         cost = {ResourceType::CAFFEINE, ResourceType::CAFFEINE, ResourceType::CAFFEINE,
                 ResourceType::LAB, ResourceType::LAB, ResourceType::LECTURE,
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
