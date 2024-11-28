@@ -39,14 +39,14 @@ void Tile::notifyObservers() {
     for(auto o : observers) o->notify(*this);
 }
 
-void Tile::studentOwns(Student *student) {
-    for(auto it = attachedCriterion.begin(); it != attachedCriterion.end(); ++i) {
-        if(it->isOwnedBy(student)){
+bool Tile::studentOwns(Student *student) {
+    for(auto it = attachedCriterion.begin(); it != attachedCriterion.end(); ++it) {
+        if((*it)->isOwnedBy(student)){
                 return true;
         }
     }
-    for(auto it = attachedCriterion.begin(); it != attachedCriterion.end(); ++i) {
-        if(it->isOwnedBy(student)){
+    for(auto it = attachedCriterion.begin(); it != attachedCriterion.end(); ++it) {
+        if((*it)->isOwnedBy(student)){
                 return true;
         }
     }
