@@ -48,7 +48,6 @@ bool Goal::playGoal(Student* player) {
         }
     }
     if (!adjacent) return false;
-    attach(player); //TODO CHECK
 
     owner = player; 
     notifyObservers(); 
