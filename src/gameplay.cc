@@ -73,18 +73,18 @@ void Gameplay::loadBoard(const std::string file) {
     // TODO: text display and board display 
 }
 
-void Gameplay::loseToGeese(unique_ptr<Student> student) {
+void Gameplay::loseToGeese(Student *student) {
     int numResources; //total number of resources the student has
     //find the total number of resources
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-        numResources += student.getResource(it->second);
+        numResources += student->getResource(it->first);
     }
     if(numResources < 10) {
         return;
     }
     //output
     cout << "Student"
-    << COLOUR_TO_STRING.at(students[j]->getColour())
+    << COLOUR_TO_STRING.at(student->getColour())
     << " loses " << numResources << "resources to the geese. They lose:" << endl;
 
     //make student lose resources
@@ -101,16 +101,16 @@ void Gameplay::loseToGeese(unique_ptr<Student> student) {
     //call removeResource functions for appropriate resources
     int index = 0; //index through the toLose vector
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-        int count = student.getResource(it->second);
+        int count = student->getResource(it->first);
         int howManyLost = 0;
         for(int i = 0; i < count; ++i) {
             if(toLose.at(index)) {
-                student->removeResource(it->second);
+                student->removeResource(it->first);
                 ++howManyLost;
             }
             ++index;
         }
-        cout << howManyLost << " it->second" << endl;
+        cout << howManyLost << " " << it->second << endl;
     }
 }
 

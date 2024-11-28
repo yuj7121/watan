@@ -11,6 +11,8 @@
 
 #include "board.h"
 #include "dice.h"
+#include "fairDice.h"
+#include "loadedDice.h"
 #include "boardSetup.h"
 #include "randomSetup.h"
 #include "fileSetup.h"
@@ -32,7 +34,8 @@ class Gameplay {
 
     Student *curPlayer; 
     int whoseTurn; 
-    int winnerIndex; 
+    int winnerIndex;
+    void loseToGeese(Student *student);
 
 
 public: 
