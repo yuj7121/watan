@@ -17,6 +17,7 @@ std::string resourceTypeToString(ResourceType r) {
         case ResourceType::STUDY: return "STUDY";
         case ResourceType::TUTORIAL: return "TUTORIAL";
         case ResourceType::NETFLIX: return "NETFLIX";
+        case ResourceType::ERROR: return "ERROR";
     }
     return "Error";
 }
