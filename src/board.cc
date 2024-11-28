@@ -15,7 +15,7 @@ void Board::tileRolled(const int roll) {
     for (unsigned int i = 0; i < tiles.size(); i++) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
-            const auto &criteriaIndices = CRITERIA_PER_TILE[i];
+            const auto &criteriaIndices = CRITERION_PER_TILE[i];
             for (int criterionIndex : criteriaIndices) {
                 const auto &crit = criterion[criterionIndex];
                 if (crit->getOwner()) {
@@ -35,9 +35,9 @@ void Board::buyGoal(Student* student, const int index) {
         throw AlreadyOwnedException("Goal is already owned!");
     }
     if (student->hasResources({ResourceType::STUDY, ResourceType::TUTORIAL})) {
-        goal->buildGoal(student);
-        student->addGoal(index);
-        student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
+        goal->playGoal(student);
+        student->playGoal(index);
+        student->removeResource({ResourceType::STUDY, ResourceType::TUTORIAL});
     } else {
         throw InsufficientResourcesException("Not enough resources to buy goal!");
     }
@@ -70,20 +70,20 @@ void Board::improveCriteria(Student* student, const int index) {
     if (crit->getOwner() != student) {
         throw InvalidCriterionImprovementException("Criterion is not owned by this student!");
     }
-    if (crit->getCompletionType() == CompletionType::EXAM) {
+    if (crit->getCompletionLevel() == 3) {
         throw InvalidCriterionImprovementException("Criterion is already fully upgraded!");
     }
     vector<ResourceType> cost;
-    if (crit->getCompletionType() == CompletionType::ASSIGNMENT) {
+    if (crit->getCompletionLevel() == 1) {
         cost = {ResourceType::LECTURE, ResourceType::LECTURE, ResourceType::STUDY, ResourceType::STUDY, ResourceType::STUDY};
-    } else if (crit->getCompletionType() == CompletionType::MIDTERM) {
+    } else if (crit->getCompletionLevel() == 2) {
         cost = {ResourceType::CAFFEINE, ResourceType::CAFFEINE, ResourceType::CAFFEINE,
                 ResourceType::LAB, ResourceType::LAB, ResourceType::LECTURE,
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
     }
     if (student->hasResources(cost)) {
         crit->playCriteria(student, false);
-        student->removeResources(cost);
+        student->removeResource(cost);
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criterion!");
     }
