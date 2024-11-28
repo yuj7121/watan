@@ -16,7 +16,6 @@ void Board::tileRolled(const int roll) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
             const auto &criteriaIndices = CRITERION_PER_TILE[i];
-            const auto &criteriaIndices = CRITERION_PER_TILE[i];
             for (int criterionIndex : criteriaIndices) {
                 const auto &crit = criterion[criterionIndex];
                 if (crit->getOwner()) {
@@ -85,9 +84,9 @@ void Board::improveCriteria(Student* student, const int index) {
                 ResourceType::LAB, ResourceType::LAB, ResourceType::LECTURE,
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
     }
-    if (student->hasResources(cost)) {
+    if (student->hasResources(cost.getResource())) {
         crit->playCriteria(student, false);
-        student->removeResource(cost);
+        student->removeResource(cost.getResource());
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criterion!");
     }
@@ -125,7 +124,7 @@ string Board::save() {
     ostringstream goose; 
     goose << geesePosition; 
     output += '\n'; 
-    output += oss.str();
+    output += goose.str();
 
     return output; 
 }
