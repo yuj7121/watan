@@ -16,7 +16,7 @@ class Student;
 class Goal;
 class Tile;
 
-class Criteria : public Subject, public Observer {
+class Criteria : public Subject {
     int index;
     CompletionType level;
     vector<shared_ptr<Goal>> adjGoals;
@@ -34,7 +34,6 @@ public:
     bool adjacentGoalOwner(Student *player) const;
 
     void notifyObservers() override;
-    void notify(Tile &t) override;
     string print() const; 
 
     ~Criteria() = default;

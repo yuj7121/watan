@@ -70,11 +70,6 @@ void Criteria::notifyObservers() {
     for(auto o : observers) o->notify(*this);
 }
 
-void Criteria::notify(Tile &t) {
-// updateResourceChange(t.getResourceYield()*getCompletionLevel());
-    notifyObservers();
-}
-
 int Criteria::getIndex() const { return index; }
 
 Student* Criteria::getOwner() const { return owner; }
