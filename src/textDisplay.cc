@@ -1,7 +1,35 @@
 #include "textDisplay.h"
 
-void TextDisplay::initTile(int id, int resource, int val) {
-    myResources[id] = printTile{id, resourceTypes[resource], val};
+void TextDisplay::initTile(int id, string resource, int val) {
+    resources[id] = printTile{id, resourceTypes[resource], val};
+}
+
+void TextDisplay::createBoard(vector<pair<string, int>> &board) {
+    for (int i = 0; i < 54; ++i) {
+        ostringstream oss;
+        oss << i;
+        if (i < 10) {
+            criterias[i] = " " + oss.str();
+        } else {
+            criterias[i] = oss.str();
+        }
+    }
+    for (int i = 0; i < 72; ++i) {
+        ostringstream oss;
+        oss << i;
+        if (i < 10) {
+            goals[i] = " " + oss.str();
+        } else {
+            goals[i] = oss.str();
+        }
+    }
+    for (int i = 0; i < 19; ++i) {
+        initTile(i, board[i].first, board[i].second);
+    }
+}
+
+TextDisplay::TextDisplay(vector<pair<string, int>> board(19)) {
+    createBoard(board); 
 }
 
 string TextDisplay::printSpaces(int num) const { 
@@ -103,7 +131,7 @@ void TextDisplay::notify(Criteria &c) {
 }
 
 void TextDisplay::moveGoose(int index) {
-    goose = index;
+    gooseIndex = index;
 }
 
 ostream & operator<<(ostream &out, const TextDisplay &td) {

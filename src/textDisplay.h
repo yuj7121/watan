@@ -20,7 +20,7 @@ class TextDisplay : public Observer {
     vector<printTile> resources(19); 
     int gooseIndex; 
 
-    void createBoard(vector<pair<int, int>> board(19)); 
+    void createBoard(vector<pair<string, int>> board(19)); 
     string printSpaces(int num) const; 
     string printTileTop(bool left, bool right);
     string printTileBottom(bool left, bool right);
@@ -32,8 +32,7 @@ class TextDisplay : public Observer {
     string printCriteria(int index) const; 
     string printHorizontalGoal(int index) const; 
 public:
-    TextDisplay(vector<pair<int, int>> board(19)); 
-    TextDisplay(vector<pair<int, int>> board(19), vector<int> playerGoal(4), vector<pair<int, int>> playerCriteria(4), int goose); 
+    TextDisplay(vector<pair<int, int>> &board); 
 
     void notify(Goal &g) override; 
     void notify(Criteria &c) override; 
