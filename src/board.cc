@@ -15,7 +15,7 @@ void Board::tileRolled(const int roll) {
     for (unsigned int i = 0; i < tiles.size(); i++) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
-            const auto &criteriaIndices = CRITERIA_PER_TILE[i];
+            const auto &criteriaIndices = CRITERION_PER_TILE[i];
             for (int criterionIndex : criteriaIndices) {
                 const auto &crit = criterion[criterionIndex];
                 if (crit->getOwner()) {
