@@ -54,3 +54,7 @@ bool Goal::playGoal(Student* player) {
     
     return true;
 }
+
+void Goal::notifyObservers() {
+    for(auto o : observers) o->notify(*this);
+}
