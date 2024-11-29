@@ -508,7 +508,7 @@ void Gameplay::endTurn() {
 }
 
 void Gameplay::play() {
-    initialAssignments();
+    //initialAssignments();
     while (!gameOver()) {
         int val = beginTurn(curPlayer);
         int roll = rollDice(val);
