@@ -349,12 +349,22 @@ void Gameplay::achieve(int index) {
 
 void Gameplay::complete(int index) {
     // TODO: if start of game, 
-    theBoard->buyCriteria(curPlayer, index); 
+    try {
+        theBoard->buyCriteria(curPlayer, index); 
+        lastErrorMessage = ""; 
+    } catch (exception &e) {
+        lastErrorMessage = e.what(); 
+    }
     notifyObservers(GameEvent::Complete); 
 }
 
 void Gameplay::improve(int index) {
-    theBoard->improveCriteria(curPlayer, index); 
+    try {
+        theBoard->improveCriteria(curPlayer, index); 
+        lastErrorMessage = ""; 
+    } catch (exception &e) {
+        lastErrorMessage = e.what(); 
+    }
     notifyObservers(GameEvent::Improve); 
 }
 
