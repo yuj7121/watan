@@ -5,7 +5,7 @@ using namespace std;
 
 Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>(seed)}, whoseTurn{0} {
     newGame(seed); 
-    initGame();
+    initGame(true);
     srand(seed);
     theBoard->moveGeese(std::rand() % 18);
 }
