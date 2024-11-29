@@ -59,7 +59,7 @@ void Gameplay::loadGame(const std::string file) {
     vector<vector<int>> studentResources(4, vector<int>(5));
     vector<vector<int>> studentGoals(4);
     vector<vector<pair<int, int>>> studentCriteria(4);
-	//int curTurn, geese;
+	int curTurn, geese;
     for (int i = 0; i < 7; ++i) {
         string line; 
         getline(f, line); 
