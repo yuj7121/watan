@@ -20,9 +20,9 @@ class Student {
     Colour colour;
     std::vector<std::shared_ptr<Criteria>> criterion; 
     std::vector<std::shared_ptr<Goal>> goals;
-    std::unordered_map<ResourceType, int> resources;
     void loseToGeese(unique_ptr<Student> student);
 
+    std::unordered_map<ResourceType, int> resources;
   public:
     //ctor
     Student(Colour colour);
@@ -37,8 +37,11 @@ class Student {
 
     //other functions
     void addResource(ResourceType type);
+    void setResource(ResourceType type, int count);
     void removeResource(ResourceType type);
     void removeResources(std::vector<ResourceType> types);
+    void addGoal(std::shared_ptr<Goal> goal);
+    void addCriterion(std::shared_ptr<Criteria> criterion);
     void playGoal(shared_ptr<Goal> goal);
     bool playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
     void trade(shared_ptr<Student> receivingStudent, const ResourceType offered, const ResourceType requested);

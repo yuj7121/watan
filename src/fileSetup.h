@@ -14,7 +14,6 @@ class FileSetup: public BoardSetup {
     void populate();
   public:
     FileSetup(string fileName);
-    void setup(shared_ptr<Board> b);
 };
 
 #endif

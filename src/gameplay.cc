@@ -29,7 +29,6 @@ void Gameplay::initGame(bool initStudents) {
     }
     curPlayer = students.at(whoseTurn);
     winnerIndex = -1;
-}nnerIndex = -1;
 }
 
 GameState Gameplay::getState() {
