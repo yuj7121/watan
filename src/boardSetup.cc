@@ -1,4 +1,5 @@
 #include "boardSetup.h"
+#include "board.h"
 
 BoardSetup::BoardSetup() {}
 
@@ -19,13 +20,13 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
             adj.emplace_back((b->goals).at(*it));
         }
         std::shared_ptr<Criteria> curr {new Criteria(i, CompletionType::NONE, adj, nullptr)};
-        b->criterion.emplace_back(curr);
+        b->criteria.emplace_back(curr);
     }
 
     //attatch adjacent criterions to each goal
     for(int i = 0; i < NUM_GOALS; ++i) {
         for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
-            (b->goals.at(i))->attachCriteria((b->criterion).at(*it));
+            (b->goals.at(i))->attachCriteria((b->criteria).at(*it));
         }
     }
 
@@ -42,7 +43,7 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
         std::vector<std::shared_ptr<Criteria>> surrCriterion;
         for(int i = 0; i < NUM_TILES; ++i) {
             for(auto it = (CRITERION_PER_TILE.at(i)).begin(); it != (CRITERION_PER_TILE.at(i)).end(); ++it) {
-                surrCriterion.emplace_back((b->criterion).at(*it));
+                surrCriterion.emplace_back((b->criteria).at(*it));
             }
         }
         //figure out surrounding goals
@@ -53,7 +54,7 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
             }
         }
 
-        std::shared_ptr<Tile> curr = std::make_shared<Tile>(i, resourceValues[i], currType, surrCriterion, surrGoals, observer_here);
+        std::shared_ptr<Tile> curr = std::make_shared<Tile>(i, resourceValues[i], currType, surrCriterion, surrGoals);
         b->tiles.emplace_back(curr);
     }
 

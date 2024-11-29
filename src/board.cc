@@ -4,8 +4,15 @@ using namespace std;
 
 Board::Board() : geesePosition(NOT_IN_PLAY) {}
 
-const std::vector<std::shared_ptr<Tile>>& Board::getTiles() const {
+std::vector<std::shared_ptr<Tile>> Board::getTiles() const {
     return tiles;
+}
+
+vector<shared_ptr<Criteria>> Board::getCriteria() const {
+    return criteria; 
+}
+vector<shared_ptr<Goal>> Board::getGoals() const {
+    return goals; 
 }
 
 int Board::getGeese() const { return geesePosition; }
@@ -16,8 +23,8 @@ void Board::tileRolled(const int roll) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
             const auto &criteriaIndices = CRITERION_PER_TILE[i];
-            for (int criterionIndex : criteriaIndices) {
-                const auto &crit = criterion[criterionIndex];
+            for (int criteriaIndex : criteriaIndices) {
+                const auto &crit = criteria[criteriaIndex];
                 if (crit->getOwner()) {
                     crit->getOwner()->addResource(tile->getResourceType());
                 }
@@ -29,7 +36,7 @@ void Board::tileRolled(const int roll) {
 // EFFECTS: Attempts to buy a goal at the specified index for the student.
 //          Updates the goal's owner, student's goals, and deducts the cost
 //          if successful.
-void Board::buyGoal(Student* student, const int index) {
+void Board::buyGoal(shared_ptr<Student> student, const int index) {
     auto &goal = goals[index];
     if (goal->getOwner() != nullptr) {
         throw AlreadyOwnedException("Goal is already owned!");
@@ -43,32 +50,32 @@ void Board::buyGoal(Student* student, const int index) {
 }
 
 // EFFECTS: Attempts to buy a criteria at the specified index for the student.
-//          Updates the critera's owner, student's criterion, and deducts the cost
+//          Updates the critera's owner, student's criteria, and deducts the cost
 //          if successful.
-void Board::buyCriteria(Student* student, const int index) {
-    auto &crit = criterion[index];
+void Board::buyCriteria(shared_ptr<Student> student, const int index) {
+    auto &crit = criteria[index];
     if (crit->getOwner() != nullptr) {
-        throw AlreadyOwnedException("Criterion is already owned!");
+        throw AlreadyOwnedException("Criteria is already owned!");
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
-        student->playCriteria(criterion.at(index), false);
+        student->playCriteria(criteria.at(index), false);
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
     } else {
-        throw InsufficientResourcesException("Not enough resources to buy criterion!");
+        throw InsufficientResourcesException("Not enough resources to buy criteria!");
     }
 }
 
-// EFFECTS: Attempts to improve a criterion at the specified index for the student.
-//          Updates the criterion's level and deducts the cost if successful.
-void Board::improveCriteria(Student* student, const int index) {
-    auto &crit = criterion[index];
+// EFFECTS: Attempts to improve a criteria at the specified index for the student.
+//          Updates the criteria's level and deducts the cost if successful.
+void Board::improveCriteria(shared_ptr<Student> student, const int index) {
+    auto &crit = criteria[index];
     if (crit->getOwner() != student) {
-        throw InvalidCriterionImprovementException("Criterion is not owned by this student!");
+        throw InvalidCriteriaImprovementException("Criteria is not owned by this student!");
     }
     if (crit->getCompletionLevel() == 3) {
-        throw InvalidCriterionImprovementException("Criterion is already fully upgraded!");
+        throw InvalidCriteriaImprovementException("Criteria is already fully upgraded!");
     }
     vector<ResourceType> cost;
     if (crit->getCompletionLevel() == 1) {
@@ -82,7 +89,7 @@ void Board::improveCriteria(Student* student, const int index) {
         crit->playCriteria(student, false);
         student->removeResources(cost);
     } else {
-        throw InsufficientResourcesException("Not enough resources to improve criterion!");
+        throw InsufficientResourcesException("Not enough resources to improve criteria!");
     }
 }
 
@@ -96,19 +103,7 @@ void Board::moveGeese(const int index) {
 
 // EFFECTS: offeringStudent gets +1 requested ResourceType, -1 offered ResourceType.
 //          receivingStudent gets +1 offered ResourceType, -1 requested ResourceType.
-void Board::trade(Student* offeringStudent, Student* receivingStudent,
-const ResourceType offered, const ResourceType requested) {
-    if (offeringStudent->getResource(offered) == 0) {
-        throw InsufficientResourcesException("Offering student does not have the resource to trade!");
-    }
-    if (receivingStudent->getResource(requested) == 0) {
-        throw InsufficientResourcesException("Receiving student does not have the requested resource!");
-    }
-    offeringStudent->removeResource(offered);
-    offeringStudent->addResource(requested);
-    receivingStudent->removeResource(requested);
-    receivingStudent->addResource(offered);
-}
+
 
 string Board::save() { 
     string output; 

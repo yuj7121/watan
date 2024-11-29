@@ -1,18 +1,16 @@
 #include "tile.h"
 #include "constants.h"
+#include "goal.h"
+#include "criteria.h"
 
 using namespace std; 
 
 
 
 Tile::Tile(int index, int value, ResourceType resource, vector<std::shared_ptr<Criteria>> attachedCriterion, 
-    vector<std::shared_ptr<Criteria>> attachedGoals, vector<Observer *> oList) :
+    vector<std::shared_ptr<Goal>> attachedGoals) :
     index{index}, value{value}, resource{resource}, attachedCriterion{attachedCriterion}, 
-    attachedGoals{attachedGoals} {
-    for (auto o : oList) {
-        attach(o); 
-    }
-}
+    attachedGoals{attachedGoals} {}
 
 int Tile::getIndex() const { return index; } 
 
@@ -35,11 +33,8 @@ string Tile::save() const {
     return output; 
 }
 
-void Tile::notifyObservers() {
-    for(auto o : observers) o->notify(*this);
-}
 
-bool Tile::studentOwns(Student *student) {
+bool Tile::studentOwns(shared_ptr<Student> student) {
     for(auto it = attachedCriterion.begin(); it != attachedCriterion.end(); ++it) {
         if((*it)->isOwnedBy(student)){
                 return true;

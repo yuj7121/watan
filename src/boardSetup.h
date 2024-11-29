@@ -1,7 +1,6 @@
 #ifndef BOARDSETUP_H
 #define BOARDSETUP_H
 
-#include "board.h"
 #include "constants.h"
 #include "tile.h"
 #include "goal.h"
@@ -11,7 +10,7 @@
 #include <utility>
 #include <memory>
 
-
+class Board;
 class Tile;
 class Goal;
 class Criteria;

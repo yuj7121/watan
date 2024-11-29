@@ -55,7 +55,9 @@ void Student::removeResources(std::vector<ResourceType> types) {
 void Student::playGoal(shared_ptr<Goal> goal) {
   if(goal->playGoal(this)){
     goals.emplace_back(goal);
+    
   }
+
 }
 
 void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
@@ -162,8 +164,8 @@ string Student::save() const {
     for (auto &c : criterion) {
         ostringstream criteria;
         ostringstream level;
-        criteria << c->getIndex();
-        level << c->getCompletionLevel();
+        criteria << c.getIndex();
+        level << c.getCompletionLevel();
         output += " " + criteria.str() + " " + level.str();
     }
     return output;
@@ -171,4 +173,17 @@ string Student::save() const {
 
 string Student::steal(Student *from) {
 
+}
+
+void Student::trade(shared_ptr<Student> receivingStudent, const ResourceType offered, const ResourceType requested) {
+    if (getResource(offered) == 0) {
+        throw InsufficientResourcesException("Offering student does not have the resource to trade!");
+    }
+    if (receivingStudent->getResource(requested) == 0) {
+        throw InsufficientResourcesException("Receiving student does not have the requested resource!");
+    }
+    removeResource(offered);
+    addResource(requested);
+    receivingStudent->removeResource(requested);
+    receivingStudent->addResource(offered);
 }

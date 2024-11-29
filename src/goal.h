@@ -11,26 +11,27 @@ class Student;
 
 using namespace std; 
 
-class Goal : public Subject {
+class Goal {
     int index;
-    Student* owner;
+    shared_ptr<Student> owner;
     vector<std::shared_ptr<Criteria>> adjCriteria;
 
 public:
-    Goal(int index, Student* owner);
+    Goal(int index, shared_ptr<Student> owner = nullptr);
 
     int getIndex() const;
-    Student* getOwner() const;
-    bool isOwnedBy(Student* player) const;
+    shared_ptr<Student> getOwner() const;
+    bool isOwnedBy(shared_ptr<Student> player) const;
     bool checkCriteriaExist() const;
+    void setOwner(shared_ptr<Student> s); 
     
     void attachCriteria(std::shared_ptr<Criteria> c);
     void detachCriteria(std::shared_ptr<Criteria> c); 
-    bool playGoal(Student* player);
-    void notifyObservers() override;
-    string print() const; 
+    bool playGoal(shared_ptr<Student> player);
+    string info() const;
+
     
-    ~Goal() = default;
+    ~Goal() = default; 
 };
 
 #endif

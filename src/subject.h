@@ -4,16 +4,25 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <string>
+#include "gameEvent.h"
+#include "gameState.h"
+#include "trade.h"
+
+using namespace std;
 
 class Observer; 
+class Gameplay; 
 
 class Subject {
 protected:
-    std::vector<Observer *> observers;
+    std::vector<shared_ptr<Observer>> observers;
 public:
-    void attach( Observer* o );
-    void detach( Observer* o );
-    virtual void notifyObservers() = 0; 
+    void attach(shared_ptr<Observer> o);
+    void detach(shared_ptr<Observer> o);
+    void notifyObservers(GameEvent ge);
+    void notifyObservers(GameEvent ge, Trade t);
+    virtual GameState getState() = 0;
     virtual ~Subject() = default;
 };
 

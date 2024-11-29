@@ -4,14 +4,14 @@
 
 using namespace std; 
 
-Goal::Goal(int index, Student* owner)
+Goal::Goal(int index, shared_ptr<Student> owner)
     : index{index}, owner{nullptr} {}
 
 int Goal::getIndex() const { return index; }
 
-Student* Goal::getOwner() const { return owner; }
+shared_ptr<Student> Goal::getOwner() const { return owner; }
 
-bool Goal::isOwnedBy(Student* player) const {
+bool Goal::isOwnedBy(shared_ptr<Student> player) const {
     return owner == player;
 }
 
@@ -34,12 +34,13 @@ void Goal::detachCriteria(std::shared_ptr<Criteria> c) {
     }
 }
 
-bool Goal::playGoal(Student* player) {
+// change to void function -> just throw with exception
+bool Goal::playGoal(shared_ptr<Student> player) {
     bool adjacent = false;
 
     if (owner) {
         return false;
-    }
+    } // through exception
 
     for (auto c : adjCriteria) {
         if (c->isOwnedBy(player) || c->adjacentGoalOwner(player)) {
@@ -47,19 +48,18 @@ bool Goal::playGoal(Student* player) {
             break;
         }
     }
-    if (!adjacent) return false;
+    if (!adjacent) return false; // through exception
 
     owner = player; 
-    notifyObservers(); 
-    
     return true;
 }
 
-void Goal::notifyObservers() {
-    for(auto o : observers) o->notify(*this);
+void Goal::setOwner(shared_ptr<Student> s) {
+    owner = s; 
 }
+    
 
-string Goal::print() const {
+string Goal::info() const {
     string output; 
     Colour c = owner->getColour(); 
     if(owner) {

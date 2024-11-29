@@ -2,13 +2,13 @@
 #include <iostream>
 #include <string>
 #include "gameplay.h"
-#include "exceptions.h"
+#include "textDisplay.h"
 
 using namespace std;
 
 
 int main (int argc, char* argv[]) {
-    Gameplay game = Gameplay();
+    shared_ptr<Gameplay> game;
 
     //get the command line and run appropriate functions from gameplay
     //  to set up the game
@@ -19,16 +19,16 @@ int main (int argc, char* argv[]) {
                 ++i;
                 try {
                     int seed = atoi(argv[i]);
-                    game.newGame(seed);
+                    game = make_shared<Gameplay>(seed); 
                 } catch (const invalid_argument& e) {
                     throw new InvalidCommandLineException("not an integer");
                 }
             } else if (curr == "-load") {
                 ++i;
-                game.loadGame(argv[i]);
+                game = make_shared<Gameplay>(Gameplay::SetupType::LoadFromFile, argv[i]); 
             } else if (curr == "-board") {
                 ++i;
-                game.loadBoard(argv[i]);
+                game = make_shared<Gameplay>(Gameplay::SetupType::LoadFromBoard, argv[i]);
             } else {
                 throw new InvalidCommandLineException("invalid commandline input");
             }
@@ -37,9 +37,24 @@ int main (int argc, char* argv[]) {
         cerr << e.what() << endl;
     }
 
-
+    // Establish the observer pattern here 
+    shared_ptr<TextDisplay> td = make_shared<TextDisplay>(game); 
+    game->attach(td); // attach the observer to the subject
     
-
-
+    // running game instances
+    while (true) { 
+        game->play(); // keep playing the game until it terminates -> then ask for playing again -> 1 game instance
+        cout << "Would you like to play again?" << endl;
+        cout << ">"; 
+        string response; 
+        cin >> response; 
+        if (response == "yes") {
+            return false; 
+        } else if (response == "no") {
+            return true; 
+        } else { 
+            cout << "Invalid command." << endl; 
+        }
+    }
 
 }

@@ -7,6 +7,9 @@
 #include <vector>
 #include "observer.h"
 #include "board.h"
+#include "trade.h"
+
+class Gameplay; 
 
 struct printTile { 
     int index; 
@@ -15,35 +18,27 @@ struct printTile {
 };
 
 class TextDisplay : public Observer {
-    vector<string> criterias;
-    vector<string> goals;
-    vector<printTile> resources;
-    int gooseIndex; 
-
-    void createBoard(vector<pair<string, int>> &board); 
-    string printSpaces(int num) const; 
-    string printTileTop(bool left, bool right);
-    string printTileBottom(bool left, bool right);
+    shared_ptr<Gameplay> gp; 
+    void help() const;
 
     string printTileIndex(int index) const; 
     string printTileResource(int index) const; 
     string printTileValue(int index) const; 
     string printGoose(int index) const; 
-    string printCriteria(int index) const; 
-    string printHorizontalGoal(int index) const; 
+    string printCriteria(shared_ptr<Criteria> c) const; 
+    string printHorizontalGoal(shared_ptr<Goal> g) const; 
+    void printBoard(shared_ptr<Board> b) const; 
 public:
-    TextDisplay(vector<pair<int, int>> &board); 
+    TextDisplay(shared_ptr<Gameplay> gp); 
 
-    void notify(Goal &g) override; 
-    void notify(Criteria &c) override; 
-    friend ostream& operator<< (ostream &out, TextDisplay &td); 
-    void createTile(int id, int resource, int val); 
-    void moveGoose(int index);
-
-    void updateGoal(int goalIndex, int studentIndex);
-    void updateCriterion(int criterionIndex, int studentIndex);
-    void updateGeese(int tileIndex);
-
+    void notify(GameEvent ge) override; 
+    void notify(GameEvent ge, Trade t) override; 
+    //void notify(Criteria &c) override; 
+    //friend ostream& operator<< (ostream &out, TextDisplay &td); 
+    // void createTile(int id, string resource, int val); 
+    // void moveGoose(int index);
+    //friend ostream& operator << (ostream&out, const TextDisplay &td);
 };
+
 
 #endif

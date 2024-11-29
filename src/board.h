@@ -20,29 +20,31 @@ using namespace std;
 
 class BoardSetup;
 
-class Board : public Subject {
+class Board {
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::shared_ptr<Goal>> goals;
-    std::vector<std::shared_ptr<Criteria>> criterion;
+    std::vector<std::shared_ptr<Criteria>> criteria; // TODO replace in board criterion to criteria
     int geesePosition;
     friend class BoardSetup;
 
   public:
     Board();
 
-    void printBoard() const;
-    const vector<shared_ptr<Tile>>& getTiles() const;
+    vector<shared_ptr<Tile>> getTiles() const;
     int getGeese() const;
+    vector<shared_ptr<Criteria>> getCriteria() const; 
+    vector<shared_ptr<Goal>> getGoals() const; 
 
     void tileRolled(const int roll);
-    bool tileHasStudent(int tileIndex, Student* student);
-    void buyGoal(Student* student, const int index);
-    void buyCriteria(Student* student, const int index);
-    void improveCriteria(Student* student, const int index);
+    bool tileHasStudent(int tileIndex, shared_ptr<Student> student);
+    void buyGoal(shared_ptr<Student> student, const int index);
+    void buyCriteria(shared_ptr<Student> student, const int index);
+    void improveCriteria(shared_ptr<Student> student, const int index);
     void moveGeese(const int index);
-    void trade(Student* offeringStudent, Student* receivingStudent,
-    const ResourceType offered, const ResourceType requested);
+
     string save(); 
+
 };
+
 
 #endif

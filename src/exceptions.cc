@@ -32,7 +32,7 @@ NonAdjacentPlacementException::NonAdjacentPlacementException(const string& note)
 InsufficientResourcesException::InsufficientResourcesException(const string& note)
 : logic_error("EXCEPTION: Resources needed for Criteria/Goal are insufficient: " + note) {}
 
-InvalidCriterionImprovementException::InvalidCriterionImprovementException(const string& note)
+InvalidCriteriaImprovementException::InvalidCriteriaImprovementException(const string& note)
 : logic_error("EXCEPTION: Criteria cannot be improved: " + note) {}
 
 // (d) Miscellaneous

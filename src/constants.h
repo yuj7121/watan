@@ -5,11 +5,11 @@
 #include <map>
 #include <string>
 
-enum class CompletionType { NONE, ASSIGNMENT, MIDTERM, EXAM };
+enum class CompletionType { NONE, ASSIGNMENT, MIDTERM, EXAM }; // move to goal file
 
-enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX, ERROR};
+enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX, ERROR}; // move to tile file
 
-std::string resourceTypeToString(ResourceType r) {
+std::string resourceTypeToString(ResourceType r) { // move under the tile class file (as a static class maybe)
     switch (r) {
         case ResourceType::CAFFEINE: return "CAFFEINE";
         case ResourceType::LAB: return "LAB";
@@ -17,7 +17,6 @@ std::string resourceTypeToString(ResourceType r) {
         case ResourceType::STUDY: return "STUDY";
         case ResourceType::TUTORIAL: return "TUTORIAL";
         case ResourceType::NETFLIX: return "NETFLIX";
-        case ResourceType::ERROR: return "ERROR";
     }
     return "Error";
 }

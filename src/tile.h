@@ -7,30 +7,28 @@
 #include <memory>
 #include "constants.h"
 #include "subject.h"
-#include "observer.h"
-#include "criteria.h"
 
 using namespace std; 
 
 class Criteria; 
 class Student; 
+class Goal;
 
-class Tile : public Subject { 
+class Tile { 
     int index; 
     int value; 
     ResourceType resource; 
     vector<std::shared_ptr<Criteria>> attachedCriterion;  
-    vector<std::shared_ptr<Criteria>> attachedGoals;  
+    vector<std::shared_ptr<Goal>> attachedGoals;  
 
-public: 
-    Tile(int index, int value, ResourceType resource, vector<std::shared_ptr<Criteria>> attachedCriterion, vector<std::shared_ptr<Criteria>> attachedGoals, vector<Observer *> oList);
+public:
+    Tile(int index, int value, ResourceType resource, vector<std::shared_ptr<Criteria>> attachedCriterion, vector<std::shared_ptr<Goal>> attachedGoals);
     int getIndex() const; 
     int getValue() const; 
     ResourceType getResourceType() const;
     bool isValue(int val);
     string save() const; 
-    void notifyObservers() override;
-    bool studentOwns(Student *student);
+    bool studentOwns(shared_ptr<Student> student);
 };
 
 #endif 

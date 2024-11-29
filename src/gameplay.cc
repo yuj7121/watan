@@ -3,10 +3,36 @@
 
 using namespace std; 
 
-Gameplay::Gameplay() : theBoard{std::make_shared<Board>()} {}
+Gameplay::Gameplay(int seed) {
+    newGame(seed); 
+}
+
+Gameplay::Gameplay(SetupType st, string fileName) {
+    if (st == SetupType::LoadFromFile) {
+        loadGame(fileName); 
+    } else {
+        loadBoard(fileName); 
+    }
+}
+
+GameState Gameplay::getState() {
+    return GameState{students, theBoard, curPlayer}; 
+}
+
+vector<shared_ptr<Student>> Gameplay::getStudents() const { 
+    return students; 
+}
+
+shared_ptr<Board> Gameplay::getBoard() const {
+    return theBoard; 
+}
+
+shared_ptr<Student> Gameplay::getCurPlayer() const {
+    return curPlayer; 
+}
 
 void Gameplay::newGame(int seed) {
-    setup = std::make_unique<RandomSetup>(seed);
+    shared_ptr<RandomSetup> setup = std::make_shared<RandomSetup>(seed);
     setup->setup(theBoard); 
     // TODO: text display and board display
 }
@@ -55,7 +81,7 @@ void Gameplay::loadGame(const std::string file) {
                 studentCriteria.at(playerIndex) = criteria; 
             // board 
             } else if (i == 5) {
-                setup = std::make_unique<FileSetup>(file); 
+                shared_ptr<FileSetup> setup = std::make_shared<FileSetup>(file); 
                 setup->setup(theBoard); 
             } else {
                 geese = input; 
@@ -67,12 +93,12 @@ void Gameplay::loadGame(const std::string file) {
 }
 
 void Gameplay::loadBoard(const std::string file) {
-    setup = std::make_unique<FileSetup>(file); 
+    shared_ptr<FileSetup> setup = std::make_shared<FileSetup>(file); 
     setup->setup(theBoard); 
     // TODO: text display and board display 
 }
 
-void Gameplay::loseToGeese(std::unique_ptr<Student> & student) {
+void Gameplay::loseToGeese(std::shared_ptr<Student> student) {
     int numResources; //total number of resources the student has
     //find the total number of resources
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
@@ -175,7 +201,7 @@ void Gameplay::geeseLanded() {
     bool canSteal[NUM_STUDENTS];
     bool noOneToSteal = true;
     for(int i = 0; i < NUM_STUDENTS; ++i) {
-        Student* tempStudent = &(*(students.at(i)));
+        shared_ptr<Student> tempStudent = students.at(i);
         if(tempStudent->getIndex() == curPlayer->getIndex()) {
             canSteal[i] = false;
         } else if(theBoard->tileHasStudent(geeseHere, tempStudent)){
@@ -243,13 +269,13 @@ void Gameplay::geeseLanded() {
     }
 }
 
-void Gameplay::rollDice(int val, bool type) {
+void Gameplay::rollDice(int val) {
     int roll; 
-    if (type) { // fair dice
-        dice = std::make_unique<FairDice>(*eng); 
+    if (val = -1) { // fair dice
+        dice = std::make_shared<FairDice>(eng); 
         roll = dice->roll(); 
     } else { // loaded dice 
-        dice = std::make_unique<LoadedDice>(val); 
+        dice = std::make_shared<LoadedDice>(val); 
         roll = dice->roll(); 
     }
 
@@ -269,9 +295,10 @@ string Gameplay::curTurn() const {
     else return "";
 }
 
+// TODO double check logic/efficiency -
 bool Gameplay::gameOver() {
     for (int i = 0; i < 4; ++i) {
-        if ((students[i])->calculatePoints() == 10) {
+        if ((students[i])->calculatePoints() >= 10) {
             winnerIndex = i;
             return true;
 	    }
@@ -279,78 +306,85 @@ bool Gameplay::gameOver() {
     return false;
 }
 
-void Gameplay::board() const { 
-    cout << *textDisplay << endl;	
+void Gameplay::board() { 
+    notifyObservers(GameEvent::BoardInfo); //TODO : Fix
 }
 
-void Gameplay::status() const {
-    cout << curPlayer->status() << endl; 
-    for (auto it = students.begin(); it != students.end(); ++it) {
-        cout << (*it)->status() << endl; 
-    }
+void Gameplay::status() {
+    notifyObservers(GameEvent::PlayersStatus);
 }
 
-void Gameplay::criteria() const { 
-    cout << curPlayer->criteria() << endl; 
+void Gameplay::criteria() { 
+    notifyObservers(GameEvent::PlayerCriteria); 
+}
+
+string Gameplay::getLastErrorMessage() const {
+    return lastErrorMessage; 
 }
 
 void Gameplay::achieve(int index) {
-    theBoard->buyGoal(curPlayer, index); 
+    try {
+        theBoard->buyGoal(curPlayer, index); 
+        lastErrorMessage = ""; 
+        lastAchievedGoal = theBoard->getGoals()[index]; 
+    } catch (exception &e) {
+        lastErrorMessage = e.what(); 
+    }
+    notifyObservers(GameEvent::Achieve);
 }
 
 void Gameplay::complete(int index) {
     // TODO: if start of game, 
     theBoard->buyCriteria(curPlayer, index); 
+    notifyObservers(GameEvent::Complete); 
 }
 
 void Gameplay::improve(int index) {
     theBoard->improveCriteria(curPlayer, index); 
+    notifyObservers(GameEvent::Improve); 
 }
 
-void Gameplay::trade(Student* receivingStudent, ResourceType give, ResourceType take) {
-    cout << colourToString(curPlayer->getColour()) << " offers " << colourToString(receivingStudent->getColour()) << 
-        " one " << resourceTypeToString(give) << " for one " << resourceTypeToString(take) << ". "; 
-    cout << "\nDoes " << colourToString(receivingStudent->getColour()) << " accept this offer?" << endl; 
+void Gameplay::trade(shared_ptr<Student> offeringStudent, string colour, string give, string take) {
+    shared_ptr<Student> receivingStudent = students.at(convertColourInput(colour));
+    if(receivingStudent->getIndex() == curPlayer->getIndex()) {
+        throw new InvalidCommandException(""); 
+    }
+    ResourceType giveType = stringToResourceType(give);
+    ResourceType takeType = stringToResourceType(take);
+    if(giveType == ResourceType::ERROR || takeType == ResourceType::ERROR) {
+        throw new InvalidCommandException(""); 
+    }
+    trade(offeringStudent, receivingStudent, giveType, takeType); 
+}
+
+void Gameplay::trade(shared_ptr<Student> offeringStudent, shared_ptr<Student> receivingStudent, ResourceType give, ResourceType take) {
+    struct Trade t {offeringStudent, receivingStudent, give, take, ""}; 
+    notifyObservers(GameEvent::TradeResource, t); 
     
     string response;
-    cout << ">"; 
     cin >> response;
     if (noCaseStrCmp(response, "yes")) { 
-        theBoard->trade(curPlayer, receivingStudent, give, take);
-        cout << "Trade Successful.\n";
+        offeringStudent->trade(receivingStudent, give, take);
+        t.result == "Trade Successful.\n";
     }
-    else if (noCaseStrCmp(response, "no")) cout << "Trade declined." << endl;
+    else if (noCaseStrCmp(response, "no")) t.result = "Trade declined.";
+    notifyObservers(GameEvent::TradeResource, t); 
 }
 
-void Gameplay::next() {
-    whoseTurn = (whoseTurn + 1) % 4;
-    curPlayer = students[whoseTurn].get();
+//TODO
+void Gameplay::distributeResource() {
+    
 }
 
 void Gameplay::save(string file) {
     ofstream myFile(file); 
     if (myFile.is_open()) {
         myFile << whoseTurn; 
-        myFile << "\n"; 
+        myFile << "\n";  
         for (auto &p : students) myFile << p->save() + "\n"; 
         myFile << theBoard->save() + "\n"; 
     }
 }
-
-void Gameplay::help() const {
-    cout << "Valid commands:" << endl
-        << "board" << endl
-        << "status" << endl
-        << "criteria" << endl
-        << "achieve <goal>" << endl
-        << "complete <criterion>" << endl
-        << "improve <criterion>" << endl
-        << "trade <colour> <give> <take>" << endl
-        << "next" << endl
-        << "save <file>" << endl
-        << "help" << endl;
-}
-
 
 void Gameplay::initialAssignments() {
     for(int i = 0; i < 2; ++i) {
@@ -375,7 +409,7 @@ void Gameplay::initialAssignments() {
                         throw new InvalidInputException("not an integer, try again.");
                     } else {
                         validInput = true;
-                        Student* tempStudent = &(*(students.at(j)));
+                        shared_ptr<Student> tempStudent = students.at(j);
                         theBoard->buyCriteria(tempStudent, input);
                     }
                 } catch (InvalidInputException& e) {
@@ -394,24 +428,25 @@ void Gameplay::initialAssignments() {
 }//end of fucntion
 
 
-void Gameplay::beginTurn(Student* student) {
+void Gameplay::beginTurn(shared_ptr<Student> student) {
     cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
     cout << student;
 
     string input;
+    int val;
     do {
         try{
             //if user wants loaded
             if(input == "load") {
                 int invalid = true;
                 cout << "Input a roll between 2 and 12:" << endl;
-                int val;
                 while (invalid) {
                     try {
                         if(!(cin >> val)) {
                             throw new InvalidInputException("not an integer");
                         } else {
                             if(val < 2 || val > 12) {
+                                // throw invalidInputException instead 
                                 throw new OutOfRangeInputException(std::to_string(val));
                             } else {
                                 invalid = false;
@@ -423,13 +458,14 @@ void Gameplay::beginTurn(Student* student) {
                         cerr << e.what() << endl;
                     } //end of try catch
                 } //end of while
-                rollDice(val, false);
+                //rollDice(val, false);
                 //if user wants fair            
             } else if (input == "fair") {
-                rollDice(-1, true);
+                val = -1; 
             } else {
                 throw new InvalidInputException(input);
             }
+            rollDice(val);
         } catch (InvalidInputException& e) { //invalid input for what to do
             cerr << e.what() << endl;
         } //end of try catch
@@ -438,110 +474,86 @@ void Gameplay::beginTurn(Student* student) {
 }//end of function
 
 void Gameplay::endTurn() {
+    whoseTurn = (whoseTurn + 1) % 4; // TODO: constant of # of players 
+    curPlayer = students[whoseTurn];
+}
+
+void Gameplay::play() {
     while (!gameOver()) {
-        cout << "> "; 
-        string line; 
-        getline(cin, line); 
+        beginTurn(curPlayer); // rolls dice
+// TODO: process the dice roll
+        distributeResource(); // TODO
+        while (true) {
+            cout << "> "; 
+            string line; 
+            getline(cin, line); 
 
-        if (cin.eof()) {
-            Gameplay::save("backup.sv"); 
-            break; 
-        } 
-
-        istringstream iss{line}; 
-        string cmd; 
-        iss >> cmd; 
-        try{
-            if (cmd == "board") {
-                board(); 
-            } else if (cmd == "status") {
-                status(); 
-            } else if (cmd == "criteria") {
-                criteria(); 
-            } else if (cmd == "achieve") {
-                int index;
-                iss >> index; 
-                if(index < 0 || index > NUM_GOALS) {
+            istringstream iss{line}; 
+            string cmd; 
+            iss >> cmd; 
+            try{
+                if (cmd == "board") {
+                    board(); 
+                } else if (cmd == "status") {
+                    status(); 
+                } else if (cmd == "criteria") {
+                    criteria(); 
+                } else if (cmd == "achieve") {
+                    int index;
+                    iss >> index; 
+                    if(index < 0 || index > NUM_GOALS) {
+                        throw new InvalidCommandException(""); 
+                    }
+                    achieve(index); 
+                } else if (cmd == "complete") {
+                    int index;
+                    iss >> index;
+                    if(index < 0 || index > NUM_CRITERION) {
+                        throw new InvalidCommandException(""); 
+                    }
+                    complete(index); 
+                } else if (cmd == "improve") {
+                    int index; 
+                    iss >> index; 
+                    if(index < 0 || index > NUM_CRITERION) {
+                        throw new InvalidCommandException(""); 
+                    }
+                    improve(index); 
+                } else if (cmd == "trade") {
+                    string colour, give, take; 
+                    iss >> colour; 
+                    iss >> give; 
+                    iss >> take; 
+                    trade(curPlayer, colour, give, take); 
+                } else if (cmd == "next") {
+                    break; 
+                } else if (cmd == "save") {
+                    string fileName;
+                    iss >> fileName; 
+                    if (fileName == "") {
+                        // TODO: throw exception?
+                        throw new InvalidCommandException(""); 
+                    } else {
+                        Gameplay::save(fileName); 
+                    } 
+                } else if (cmd == "help") {
+                    notifyObservers(GameEvent::Help); 
+                } else { 
                     throw new InvalidCommandException(""); 
-                }
-                achieve(index); 
-            } else if (cmd == "complete") {
-                int index;
-                iss >> index;
-                if(index < 0 || index > NUM_CRITERION) {
-                    throw new InvalidCommandException(""); 
-                }
-                complete(index); 
-            } else if (cmd == "improve") {
-                int index; 
-                iss >> index; 
-                if(index < 0 || index > NUM_CRITERION) {
-                    throw new InvalidCommandException(""); 
-                }
-                improve(index); 
-            } else if (cmd == "trade") {
-                string colour, give, take; 
-                iss >> colour; 
-                iss >> give; 
-                iss >> take; 
-                Student* toTrade = &(*(students.at(convertColourInput(colour))));
-                if(toTrade->getIndex() == curPlayer->getIndex()) {
-                    throw new InvalidCommandException(""); 
-                }
-                ResourceType giveType = stringToResourceType(give);
-                ResourceType takeType = stringToResourceType(take);
-                if(giveType == ResourceType::ERROR || takeType == ResourceType::ERROR) {
-                    throw new InvalidCommandException(""); 
-                }
-                trade(toTrade, giveType, takeType); 
-            } else if (cmd == "next") {
-                next(); 
-                break; 
-            } else if (cmd == "save") {
-                string fileName;
-                iss >> fileName; 
-                if (fileName == "") {
-                    // TODO: throw exception?
-                    throw new InvalidCommandException(""); 
-                } else {
-                    Gameplay::save(fileName); 
                 } 
-            } else if (cmd == "help") {
-                help(); 
-            } else { 
-                throw new InvalidCommandException(""); 
-            } 
-        } catch (InvalidCommandException& e){
-            cerr << e.what() << endl;
-        } catch (NonAdjacentPlacementException& e) {
-            cerr << e.what() << endl;
-        } catch (AlreadyOwnedException& e) {
-            cerr << e.what() << endl;
-        } catch (InsufficientResourcesException& e) {
-            cerr << e.what() << endl;
-        } catch (InvalidCriterionImprovementException& e) {
-            cerr << e.what() << endl;
+            } catch (InvalidCommandException& e){
+                cerr << e.what() << endl;
+            } catch (NonAdjacentPlacementException& e) {
+                cerr << e.what() << endl;
+            } catch (AlreadyOwnedException& e) {
+                cerr << e.what() << endl;
+            } catch (InsufficientResourcesException& e) {
+                cerr << e.what() << endl;
+            } catch (InvalidCriteriaImprovementException& e) {
+                cerr << e.what() << endl;
+            }
         }
+        endTurn();
     }
+    save("backup.sv"); 
 }
-
-bool Gameplay::endGame() {
-    while (true) { 
-        cout << "Would you like to play again?" << endl;
-        cout << ">"; 
-        string response; 
-        cin >> response; 
-        if (cin.eof()) {
-            save("backup.sv"); 
-            break; 
-        } else if (response == "yes") {
-            return false; 
-        } else if (response == "no") {
-            return true; 
-        } else { 
-            cout << "Invalid command." << endl; 
-        }
-    }
-    return true; 
-}
-

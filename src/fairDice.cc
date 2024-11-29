@@ -1,7 +1,7 @@
 #include "fairDice.h"
 using namespace std; 
 
-FairDice::FairDice(default_random_engine *generator)
+FairDice::FairDice(std::shared_ptr<default_random_engine> generator)
     : generator{generator} {}
 
 int FairDice::roll() {

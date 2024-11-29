@@ -54,9 +54,9 @@ public:
     explicit InsufficientResourcesException(const string &note);
 };
 
-class InvalidCriterionImprovementException : public logic_error {
+class InvalidCriteriaImprovementException : public logic_error {
 public:
-    explicit InvalidCriterionImprovementException(const string &note);
+    explicit InvalidCriteriaImprovementException(const string &note);
 };
 
 class InvalidGeesePlacementException : public logic_error {
