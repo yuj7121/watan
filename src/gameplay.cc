@@ -478,7 +478,7 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
     cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
 
     string input;
-    int val;
+    int val = -1;
     //get dice type
     do {
         try{
@@ -513,10 +513,10 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
                 } //end of while
                 //rollDice(val, false);
                 //if user wants fair            
-                break;
             } else if (input == "fair") {
                 val = -1;
-                break;
+            } else if (input == "roll") {
+                return rollDice(val);
             } else {
                 cout << "input: " << input << endl;
                 throw InvalidInputException(input);
@@ -526,8 +526,7 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
         } //end of try catch
     } while (true); //end of while loop
     // cout << "val = " << val << endl;
-    return val;
-
+    return -1;
 }//end of function
 
 void Gameplay::endTurn() {
@@ -537,8 +536,7 @@ void Gameplay::endTurn() {
 
 void Gameplay::play() {
     while (!gameOver()) {
-        int val = beginTurn(curPlayer);
-        int roll = rollDice(val);
+        int roll = beginTurn(curPlayer);
         distributeResource(roll);
         while (true) {
             string line; 
