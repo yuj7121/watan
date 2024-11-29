@@ -8,7 +8,6 @@ std::string resourceTypeToString(ResourceType r) { // move under the tile class 
         case ResourceType::STUDY: return "STUDY";
         case ResourceType::TUTORIAL: return "TUTORIAL";
         case ResourceType::NETFLIX: return "NETFLIX";
-        case ResourceType::ERROR: return "ERROR";
     }
     return "Error";
 }
@@ -158,5 +157,11 @@ const std::vector<std::vector<int>> ADJ_CRITERIA_PER_GOAL {
     {43, 48}, {44, 49}, {45, 50}, {46, 51}, {48, 49}, {50, 51},
     {49, 52}, {50, 53}, {52, 53}
 };
+
+const Colour studentColours[] = {Colour::BLUE, Colour::RED, Colour::ORANGE, Colour::YELLOW};
+const ResourceType studentResourceTypes[] = {ResourceType::CAFFEINE, ResourceType::LAB, 
+                                        ResourceType::LECTURE, ResourceType::TUTORIAL, 
+                                        ResourceType::STUDY};
+const CompletionType completionTypes[] = {CompletionType::NONE, CompletionType::ASSIGNMENT, CompletionType::MIDTERM, CompletionType::EXAM};
 
 

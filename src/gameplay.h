@@ -35,7 +35,7 @@ class Gameplay : public Subject {
     shared_ptr<Student> curPlayer; 
     int whoseTurn; 
     int winnerIndex;
-    void initGame();
+    void initGame(bool initStudent);
     void loseToGeese(shared_ptr<Student> student); //helper fucntion that makes each student lose resources
     void geeseLanded(); //helper function that is called when you rool 7
     bool noCaseStrCmp(string str1, string str2); //helper function that does case insensitive string comparison

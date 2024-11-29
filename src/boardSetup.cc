@@ -27,7 +27,6 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
     for(int i = 0; i < NUM_GOALS; ++i) {
         for(auto it = (ADJ_CRITERIA_PER_GOAL.at(i)).begin(); it != (ADJ_CRITERIA_PER_GOAL.at(i)).end(); ++it) {
             auto a = b->goals.at(i); 
-            cout << *it << endl; 
             auto c = (b->criteria).at(*it);
             (b->goals.at(i))->attachCriteria((b->criteria).at(*it));
         }

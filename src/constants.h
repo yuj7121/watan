@@ -54,5 +54,10 @@ extern const std::vector<std::vector<int>> ADJ_GOAL_PER_CRITERIA;
 
 extern const std::vector<std::vector<int>> ADJ_CRITERIA_PER_GOAL;
 
+extern const Colour studentColours[];
+extern const ResourceType studentResourceTypes[];
+extern const CompletionType completionTypes[];
+
+
 
 #endif

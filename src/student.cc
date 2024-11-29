@@ -44,6 +44,18 @@ void Student::addResource(ResourceType type) {
   }
 }
 
+void Student::setResource(ResourceType type, int count) {
+  resources[type] = count;
+}
+
+void Student::addGoal(std::shared_ptr<Goal> goal) {
+  goals.push_back(goal);
+}
+
+void Student::addCriterion(std::shared_ptr<Criteria> criterion) {
+  this->criterion.push_back(criterion);
+}
+
 void Student::removeResource(ResourceType type) {
   resources.at(type) = resources.at(type) - 1;
 }

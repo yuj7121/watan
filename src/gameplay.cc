@@ -13,17 +13,20 @@ Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<d
 Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>()}, whoseTurn{0}{
     if (st == SetupType::LoadFromFile) {
         loadGame(fileName); 
+        initGame(false);
     } else {
         loadBoard(fileName); 
+        initGame(true);
     }
-    initGame();
 }
 
-void Gameplay::initGame() {
-    students.push_back(make_shared<Student>(Colour::BLUE));
-    students.push_back(make_shared<Student>(Colour::RED));
-    students.push_back(make_shared<Student>(Colour::ORANGE));
-    students.push_back(make_shared<Student>(Colour::YELLOW));
+void Gameplay::initGame(bool initStudents) {
+    if (initStudents) {
+        students.push_back(make_shared<Student>(Colour::BLUE));
+        students.push_back(make_shared<Student>(Colour::RED));
+        students.push_back(make_shared<Student>(Colour::ORANGE));
+        students.push_back(make_shared<Student>(Colour::YELLOW));
+    }
     curPlayer = students.at(whoseTurn);
     winnerIndex = -1;
 }
@@ -56,61 +59,89 @@ void Gameplay::newGame(int seed) {
 
 void Gameplay::loadGame(const std::string file) { 
     ifstream f{file};
-    // TODO: check types 
-    vector<vector<int>> studentResources(4, vector<int>(5));
-    vector<vector<int>> studentGoals(4);
-    vector<vector<pair<int, int>>> studentCriteria(4);
-    int curTurn = 0;
-    for (int i = 0; i < 7; ++i) {
-        string line; 
+    vector<vector<int>> studentGoals;
+    vector<vector<pair<int, int>>> studentCriteria;
+	int curTurn, geese;
+    string line;
+    int input;
+
+    // current player
+    getline(f, line); 
+    istringstream iss{line}; 
+    iss >> input;
+
+    // 4 players
+    for (int i = 0; i < 4; i++ ) {
+        shared_ptr<Student> student = make_shared<Student>(studentColours[i]);
         getline(f, line); 
-        istringstream iss{line}; 
-        int input; 
-        while (iss >> input) {
-            // curTurn
-            if (i == 0) {
-                if(input >= 0 && input < NUM_STUDENTS) {
-                    curTurn = input;
-                }
-            // studentData
-           } else if (i >= 1 && i <= 4) {
-                int playerIndex = i - 1; 
-                vector<int> resources(5); 
-                for (int j = 0; j < 5; ++j) {
-                    resources.at(j) = input; 
-                    iss >> input; 
-                }
-               studentResources.at(playerIndex) = resources; 
-                if (input == static_cast<int>('g')) iss >> input; 
-                // goals
-                vector<int> goals; 
-                while (input != static_cast<int>('c')) {
-                    goals.emplace_back(input); 
-                    if(!iss >> input){
-                        break;
-                    } 
-               }
-                studentGoals.at(playerIndex) = goals; 
-                if (input == static_cast<int>('c')) iss >> input; 
-                // criteria
-                vector<pair<int, int>> criteria; 
-                while (iss >> input) {
-                    int level; 
-                    iss >> level; 
-                    criteria.emplace_back(input, level); 
-                }
-                studentCriteria.at(playerIndex) = criteria; 
-            // board 
-            } else if (i == 5) {
-                shared_ptr<FileSetup> setup = std::make_shared<FileSetup>(file); 
-                setup->setup(theBoard); 
-            } else {
-                theBoard->moveGeese(input); //asddddddd
+        istringstream iss2{line}; 
+
+        int playerIndex = i - 1;
+
+        for (int j = 0; j < 5; j++ ) {
+            iss2 >> input;
+            student->setResource(studentResourceTypes[j], input);
+        }
+        students.push_back(student);
+
+        // goals
+        string numStr;
+        iss2 >> numStr;
+        if (numStr != "g") cerr << "Error: 'g' is expected for player #" << i + 1 << endl;
+        vector<int> goals;
+        while (iss2 >> numStr) {
+            try {
+                input = stoi(numStr);
+                goals.push_back(input); 
+            } catch (logic_error &e) {
+                break;
             }
         }
+        studentGoals.push_back(goals); 
+
+        // criteria
+        // iss2 >> numStr;
+        if (numStr != "c") cerr << "Error: 'c' is expected at line #" << i + 1 << endl;
+        vector<pair<int, int>> criteria; 
+        while (iss2 >> numStr) {
+            try {
+                input = stoi(numStr);
+                int level; 
+                iss2 >> level; 
+                criteria.emplace_back(input, level); 
+            } catch (logic_error &e) {
+                break;
+            }
+        }
+        studentCriteria.push_back(criteria); 
+
     }
-    whoseTurn = curTurn;
-    // TODO: text display and board display
+
+    // Board data
+    shared_ptr<FileSetup> setup = std::make_shared<FileSetup>(file); 
+    setup->setup(theBoard);
+
+    // Process Goals and Criteria post board setup
+    for (int i = 0; i < 4; i++ ) {
+        for (int g : studentGoals.at(i)) {
+            auto goal = theBoard->getGoals().at(g);
+            students.at(i)->addGoal(goal);
+            cout << "Add goal to student #" << i + 1 << ": " << goal->getIndex() << endl;
+        }
+        for (pair<int, int> c : studentCriteria.at(i)) {
+            auto criteria = theBoard->getCriteria().at(c.first);
+            criteria->addOwner(students.at(i));
+            criteria->setLevel(completionTypes[c.second]);
+            students.at(i)->addCriterion(criteria);
+            cout << "Add criteria to student #" << i + 1 << ": " << criteria->getIndex() << ", " << criteria->getCompletionLevel() << endl;
+        }
+    }
+
+    // Geese
+    getline(f, line); 
+    istringstream iss2{line}; 
+    iss2 >> input;
+    geese = input; 
 }
 
 void Gameplay::loadBoard(const std::string file) {
