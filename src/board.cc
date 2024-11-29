@@ -134,7 +134,7 @@ void Board::moveGeese(const int index) {
 
 // EFFECTS: offeringStudent gets +1 requested ResourceType, -1 offered ResourceType.
 //          receivingStudent gets +1 offered ResourceType, -1 requested ResourceType.
-
+ 
 
 string Board::save() { 
     string output; 
