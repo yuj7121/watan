@@ -115,7 +115,7 @@ void Gameplay::loadBoard(const std::string file) {
 }
 
 void Gameplay::loseToGeese(std::shared_ptr<Student> student) {
-    int numResources; //total number of resources the student has
+    int numResources = 0; //total number of resources the student has
     //find the total number of resources
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
         numResources += student->getResource(it->first);
@@ -238,6 +238,8 @@ void Gameplay::geeseLanded() {
             if(canSteal[i]){
                 if (!first) {
                     cout << ", ";
+                } else {
+                    first = false;
                 }
                 cout << colourToString((students.at(i))->getColour());
             }
@@ -251,16 +253,17 @@ void Gameplay::geeseLanded() {
     do{
         try{
             string str;
-            cout << "Choose a student to steal from." << endl;
+            cout << "Choose a student to steal from." << endl << "> ";
             if(!(cin >> str)) {
                 throw new InvalidInputException("Read failed.");
             } else {
                 toSteal = convertColourInput(str);
                 if(toSteal == -1) {
                     throw new InvalidInputException(str);
-                }
-                if(toSteal == curPlayer->getIndex()) {
+                } else if(toSteal == curPlayer->getIndex()) {
                     throw new InvalidInputException("You can't steal from yourself!");
+                } else {
+                    invalid = false;
                 }
             }
         } catch (InvalidInputException& e) { //invalid input
@@ -270,14 +273,15 @@ void Gameplay::geeseLanded() {
 
     //steal from that student!
     //probability = numRes/total num res
-    int totalRes; //total number of resources the student being stollen from has
+    int totalRes = 0; //total number of resources the student being stollen from has
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
         totalRes += (students.at(toSteal))->getResource(it->first);
     }
     for(auto it = RESOURCE_TYPE_STRINGS.begin(); it != RESOURCE_TYPE_STRINGS.end(); ++it) {
-        int randomNumber = (std::rand() % (100));
+        int randomNumber = 0;
+        randomNumber = (std::rand() % (100));
         //if the random roll succeeds, you steal!
-        if(randomNumber <= ((100 * (students.at(toSteal))->getResource(it->first)) / totalRes)) {
+        if(totalRes != 0 && randomNumber <= ((100 * (students.at(toSteal))->getResource(it->first)) / totalRes)) {
             (students.at(toSteal))->removeResource(it->first);
             curPlayer->getResource(it->first);
             cout << "Student " << COLOUR_TO_STRING.at(curPlayer->getColour()) << " steals "
@@ -454,12 +458,13 @@ void Gameplay::initialAssignments() {
 
 
 int Gameplay::beginTurn(shared_ptr<Student> student) {
-    cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl << "< ";
+    cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
 
     string input;
     int val;
     do {
         try{
+            cout << "> ";
             cin >> input;
             cout << "(1) input: " << input << endl;
             //if user wants loaded
@@ -468,6 +473,7 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
                 cout << "Input a roll between 2 and 12:" << endl;
                 while (invalid) {
                     try {
+                        cout << "> ";
                         if(!(cin >> val)) {
                             throw InvalidInputException("not an integer");
                         } else {
@@ -515,8 +521,8 @@ void Gameplay::play() {
         int roll = rollDice(val);
         distributeResource(roll);
         while (true) {
-            cout << "> "; 
             string line; 
+            cout << "> "; 
             getline(cin, line); 
 
             istringstream iss{line}; 
