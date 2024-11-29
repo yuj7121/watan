@@ -19,15 +19,31 @@ int Board::getGeese() const { return geesePosition; }
 
 // EFFECTS: Distributes resources to students based on the rolled number.
 void Board::tileRolled(const int roll) {
-    for (unsigned int i = 0; i < tiles.size(); i++) {
+    int gained[NUM_STUDENTS][NUM_RESOURCE_TYPES] = {0};
+    for (unsigned int i = 0; i < NUM_TILES; i++) {
         const auto &tile = tiles[i];
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
+            //cout << "tile ehrer" << roll << " index: " << tile->getIndex();
             const auto &criteriaIndices = CRITERION_PER_TILE[i];
             for (int criteriaIndex : criteriaIndices) {
                 const auto &crit = criteria[criteriaIndex];
                 if (crit->getOwner()) {
                     crit->getOwner()->addResource(tile->getResourceType());
+                    gained[crit->getOwner()->getIndex()][resourceTypeToInt(tile->getResourceType())] += 1;
                 }
+            }
+        }
+    }
+    for(int i = 0; i < NUM_STUDENTS; ++i) {
+        bool gainedNothing = true;
+        for(int j = 0; j < NUM_RESOURCE_TYPES; ++j) { 
+            int gainedNum = gained[i][j];
+            if(gainedNum != 0){
+                if(gainedNothing){
+                    gainedNothing = false;
+                    cout << "Student " << colourToString(intToColour(i)) << " gained:" << endl;
+                }
+                cout << gainedNum << " " << resourceTypeToString(intToResourceType(j)) << endl;
             }
         }
     }

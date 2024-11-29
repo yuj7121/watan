@@ -13,6 +13,20 @@ std::string resourceTypeToString(ResourceType r) { // move under the tile class 
     return "Error";
 }
 
+int resourceTypeToInt(ResourceType r) {
+    switch (r) {
+        case ResourceType::CAFFEINE: return 0;
+        case ResourceType::LAB: return 1;
+        case ResourceType::LECTURE: return 2;
+        case ResourceType::STUDY: return 3;
+        case ResourceType::TUTORIAL: return 4;
+        case ResourceType::NETFLIX: return 5;
+        case ResourceType::ERROR: return -1;
+    }
+    return -1;
+
+}
+
 ResourceType stringToResourceType(const std::string& str) {
     if (str == "CAFFEINE") return ResourceType::CAFFEINE;
     if (str == "LAB") return ResourceType::LAB;
@@ -58,6 +72,14 @@ Colour stringToColour(const std::string& str) {
     if (str == "Red") return Colour::RED;
     if (str == "Orange") return Colour::ORANGE;
     if (str == "Yellow") return Colour::YELLOW;
+    return Colour::YELLOW;
+}
+
+Colour intToColour(const int i) {
+    if (i == 0) return Colour::BLUE;
+    if (i == 1) return Colour::RED;
+    if (i == 2) return Colour::ORANGE;
+    if (i == 3) return Colour::YELLOW;
     return Colour::YELLOW;
 }
 

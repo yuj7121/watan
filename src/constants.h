@@ -10,13 +10,14 @@ enum class CompletionType { NONE, ASSIGNMENT, MIDTERM, EXAM }; // move to goal f
 enum class ResourceType { CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL, NETFLIX, ERROR}; // move to tile file
 
 std::string resourceTypeToString(ResourceType r); // move under the tile class file (as a static class maybe)
+int resourceTypeToInt(ResourceType r);
 ResourceType stringToResourceType(const std::string& str);
 ResourceType intToResourceType(const int i);
 
 enum class Colour { BLUE, RED, ORANGE, YELLOW };
 
 std::string colourToString(Colour c);
-
+Colour intToColour(const int i);
 Colour stringToColour(const std::string& str);
 
 

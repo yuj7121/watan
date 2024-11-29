@@ -108,8 +108,8 @@ string Student::status() const {
       output += val.str(); 
       output += " studies.";
     } 
-    output += "\n";
   }
+  output += "\n";
   return output; 
 }
 
