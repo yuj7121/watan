@@ -138,7 +138,7 @@ void Board::moveGeese(const int index) {
 
 string Board::save() { 
     string output; 
-    for (auto &t : tiles) {  
+    for (auto &t : tiles) {
         output += t->save() + " "; 
     } 
     ostringstream goose; 

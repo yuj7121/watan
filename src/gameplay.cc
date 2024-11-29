@@ -562,15 +562,18 @@ void Gameplay::play() {
     while (!gameOver()) {
         int roll = beginTurn(curPlayer);
         distributeResource(roll);
+
+        string line;
+        getline(cin, line); 
+        
         while (true) {
-            string line; 
-            cout << "> "; 
+            cout << "> ";
             getline(cin, line); 
 
             istringstream iss{line}; 
             string cmd; 
-            iss >> cmd; 
-            try{
+            iss >> cmd;
+            try {
                 if (cmd == "board") {
                     board(); 
                 } else if (cmd == "status") {
@@ -621,7 +624,9 @@ void Gameplay::play() {
                     } 
                 } else if (cmd == "help") {
                     notifyObservers(GameEvent::Help); 
-                } else { 
+                } else if (line == "") { 
+                    continue;
+                } else {
                     throw InvalidCommandException("Invalid command."); 
                 } //end of it
             } catch (InvalidCommandException& e){
