@@ -204,11 +204,11 @@ void Gameplay::geeseLanded() {
                     invalid = false;
                 }
             }
-        } catch (InvalidInputException& e) { // not an int
+        } catch (const  InvalidInputException& e) { // not an int
             cerr << e.what() << endl;
-        } catch (OutOfRangeInputException& e) { //int out of range
+        } catch (const  OutOfRangeInputException& e) { //int out of range
             cerr << e.what() << endl;
-        } catch (InvalidGeesePlacementException& e) {
+        } catch (const  InvalidGeesePlacementException& e) {
             cerr << e.what() << endl;
         }//end of try catch
     } while (invalid); //end of while loop
