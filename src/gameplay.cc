@@ -417,9 +417,9 @@ void Gameplay::save(string file) {
 
 void Gameplay::initialAssignments() {
     bool reverse = false; 
-
-	for (int i = 0; i >= 0 && i < NUM_STUDENTS; reverse ? --i : ++i) {
-
+    int i = 0; 
+    
+    while (i >= 0 && i < NUM_STUDENTS) {
 		cout << "Student " << COLOUR_TO_STRING.at(students[i]->getColour())
             << ", where do you want to complete an Assignment?" << endl << ">";
 
@@ -429,14 +429,14 @@ void Gameplay::initialAssignments() {
 				try {
 					shared_ptr<Student> tempStudent = students.at(i);
                     theBoard->sogBuyCriteria(tempStudent, index);
+                    cout << i << endl; 
 				}
 				catch (InvalidInputException &err) {
 					cout << err.what() << endl;
 					reverse ? ++i : --i;
 					continue;
 				}
-			}
-			else {
+			} else {
 				cout << to_string(index) << " is not a valid "
 					<< "intersection index. It must be "
 					<< "between 0 and " << NUM_CRITERION - 1 
@@ -448,13 +448,16 @@ void Gameplay::initialAssignments() {
 			reverse ? ++i : --i;
 			continue;
 		}
-
 		if (i == NUM_STUDENTS - 1 && !reverse) {
-            		++i;
-			reverse = true;
-		}
+            i++;
+            reverse = true;
+        } else if (i == 0 && reverse) {
+            break; // all students have had their start turns
+        }
+        reverse ? --i : ++i;
+
 	}
-}//end of fucntion
+}//end of function
 
 
 int Gameplay::beginTurn(shared_ptr<Student> student) {
@@ -515,7 +518,7 @@ void Gameplay::endTurn() {
 }
 
 void Gameplay::play() {
-    //initialAssignments();
+    initialAssignments();
     while (!gameOver()) {
         int val = beginTurn(curPlayer);
         int roll = rollDice(val);
