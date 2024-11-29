@@ -192,7 +192,7 @@ void Gameplay::geeseLanded() {
     bool invalid = true;
     do{
         try{
-            cout << "Choose where to place the GEESE." << endl;
+            cout << "Choose where to place the GEESE." << endl << "> ";
             if(!(cin >> geeseHere)) {
                 throw new InvalidInputException("not an integer");
             } else {
@@ -218,10 +218,9 @@ void Gameplay::geeseLanded() {
     bool canSteal[NUM_STUDENTS];
     bool noOneToSteal = true;
     for(int i = 0; i < NUM_STUDENTS; ++i) {
-        shared_ptr<Student> tempStudent = students.at(i);
-        if(tempStudent->getIndex() == curPlayer->getIndex()) {
+        if(students.at(i)->getIndex() == curPlayer->getIndex()) {
             canSteal[i] = false;
-        } else if(theBoard->tileHasStudent(geeseHere, tempStudent)){
+        } else if(theBoard->tileHasStudent(geeseHere, students.at(i))){
             canSteal[i] = true;
             noOneToSteal = false;
         } else {
@@ -421,7 +420,7 @@ void Gameplay::initialAssignments() {
     
     while (i >= 0 && i < NUM_STUDENTS) {
 		cout << "Student " << COLOUR_TO_STRING.at(students[i]->getColour())
-            << ", where do you want to complete an Assignment?" << endl << ">";
+            << ", where do you want to complete an Assignment?" << endl << "> ";
 
 		int index;
 		if (cin >> index) {
@@ -430,10 +429,14 @@ void Gameplay::initialAssignments() {
 					shared_ptr<Student> tempStudent = students.at(i);
                     theBoard->sogBuyCriteria(tempStudent, index);
                     cout << i << endl; 
-				}
-				catch (InvalidInputException &err) {
+				} catch (InvalidInputException &err) {
 					cout << err.what() << endl;
-					reverse ? ++i : --i;
+					continue;
+				} catch (AdjacentPlacementException &err) {
+					cout << err.what() << endl;
+					continue;
+				} catch (AlreadyOwnedException &err) {
+					cout << err.what() << endl;
 					continue;
 				}
 			} else {
@@ -441,7 +444,6 @@ void Gameplay::initialAssignments() {
 					<< "intersection index. It must be "
 					<< "between 0 and " << NUM_CRITERION - 1 
 					<< "."  << endl;
-				reverse ? ++i : --i;
 				continue;
 			}
 		} else {
@@ -454,6 +456,7 @@ void Gameplay::initialAssignments() {
         } else if (i == 0 && reverse) {
             break; // all students have had their start turns
         }
+        cout << "ENDREACHED";
         reverse ? --i : ++i;
 
 	}
@@ -518,7 +521,6 @@ void Gameplay::endTurn() {
 }
 
 void Gameplay::play() {
-    initialAssignments();
     while (!gameOver()) {
         int val = beginTurn(curPlayer);
         int roll = rollDice(val);
@@ -580,7 +582,7 @@ void Gameplay::play() {
                     notifyObservers(GameEvent::Help); 
                 } else { 
                     throw InvalidCommandException(""); 
-                } 
+                } //end of it
             } catch (InvalidCommandException& e){
                 cerr << e.what() << endl;
             } catch (NonAdjacentPlacementException& e) {
@@ -591,8 +593,8 @@ void Gameplay::play() {
                 cerr << e.what() << endl;
             } catch (InvalidCriteriaImprovementException& e) {
                 cerr << e.what() << endl;
-            }
-        }
+            } //end of catch
+        } //end of while
         endTurn();
     }
     save("backup.sv"); 

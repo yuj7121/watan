@@ -23,6 +23,8 @@ int main (int argc, char* argv[]) {
                 try {
                     int seed = atoi(argv[i]);
                     game = make_shared<Gameplay>(seed); 
+                    game->initialAssignments();
+
                 } catch (const invalid_argument& e) {
                     throw InvalidCommandLineException("not an integer");
                 }
@@ -32,6 +34,7 @@ int main (int argc, char* argv[]) {
             } else if (curr == "-board") {
                 ++i;
                 game = make_shared<Gameplay>(Gameplay::SetupType::LoadFromBoard, argv[i]);
+                game->initialAssignments();
             } else {
                 throw InvalidCommandLineException("invalid commandline input");
             }

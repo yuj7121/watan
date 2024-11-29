@@ -133,5 +133,5 @@ string Board::save() {
 
 bool Board::tileHasStudent(int tileIndex, shared_ptr<Student> student) {
     // TODO: replace the following dummy impl.
-    return true;
+    return tiles.at(tileIndex)->studentOwns(student);
 }

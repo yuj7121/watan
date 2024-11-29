@@ -51,6 +51,7 @@ public:
     void newGame(int seed);
     void loadGame(const std::string file);
     void loadBoard(const std::string file);
+    void initialAssignments();
 
     vector<shared_ptr<Student>> getStudents() const;
     shared_ptr<Board> getBoard() const; 
@@ -84,7 +85,6 @@ private:
     void distributeResource(int roll);
 	void save(string file); 
 
-    void initialAssignments();
     int beginTurn(shared_ptr<Student> student);
     void endTurn(); 
 }; 
