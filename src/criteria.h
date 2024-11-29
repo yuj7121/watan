@@ -28,11 +28,13 @@ public:
 
     int getIndex() const;
     Student *getOwner() const;
+    void addOwner(shared_ptr<Student> owner);
     int getCompletionLevel() const;
     bool isOwnedBy(shared_ptr<Student> player) const;
     bool isOwnedBy(Student *player) const;
     bool nbrGoalOwnedBy(Student *player) const;
     bool adjacentGoalOwner(Student *player) const;
+    void setLevel(CompletionType level);
 
     string info() const; 
     ~Criteria() = default;

@@ -81,6 +81,13 @@ bool Criteria::isOwnedBy(shared_ptr<Student> player) const { return isOwnedBy(pl
 bool Criteria::isOwnedBy(Student * player) const { return owner == player; }
 
 void Criteria::addOwner(Student * player) { owner = player; }
+void Criteria::addOwner(shared_ptr<Student> owner) {
+    addOwner(owner.get());
+}
+void Criteria::setLevel(CompletionType level) {
+    this->level = level;
+}
+
 
 string Criteria::info() const {
     string output; 
