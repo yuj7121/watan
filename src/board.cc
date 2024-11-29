@@ -49,6 +49,14 @@ void Board::buyGoal(shared_ptr<Student> student, const int index) {
     }
 }
 
+void Board::sogBuyCriteria(shared_ptr<Student> student, const int index) {
+    auto &crit = criteria[index];
+    if (crit->getOwner() != nullptr) {
+        throw AlreadyOwnedException("Criteria is already owned!");
+    }
+    student->playCriteria(criteria.at(index), true); 
+}
+
 // EFFECTS: Attempts to buy a criteria at the specified index for the student.
 //          Updates the critera's owner, student's criteria, and deducts the cost
 //          if successful.

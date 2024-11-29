@@ -411,44 +411,44 @@ void Gameplay::save(string file) {
 }
 
 void Gameplay::initialAssignments() {
-    for(int i = 0; i < 2; ++i) {
-        int start, end;
-        if(i == 0) {
-            start = 0;
-            end = NUM_STUDENTS;
-        } else {
-            start = NUM_STUDENTS - 1;
-            end = 0;            
-        }
-        int j = 0;
-        while(j < NUM_STUDENTS && j >= 0) {
-            bool validInput = false;
-            do {
-                try {
-                    int input;
-                    cout << "Student " 
-                    << COLOUR_TO_STRING.at(students[j]->getColour())
-                    << ", where do you want to complete an Assignment?" << endl;
-                    if (!(cin >> input)) {
-                        throw InvalidInputException("not an integer, try again.");
-                    } else {
-                        validInput = true;
-                        shared_ptr<Student> tempStudent = students.at(j);
-                        theBoard->buyCriteria(tempStudent, input);
-                    }
-                } catch (InvalidInputException& e) {
-                    cerr << e.what() << endl;
-                } //end of try catch block
-            } while (!validInput); //end of inner while
+    bool reverse = false; 
 
-            //increase or decrease j depending on if it's the first round or the second
-            if(i == 0) {
-                ++j;
-            } else {
-                --j;
-            }
-        } //end of outer while loop
-    } //end of outer for
+	for (int i = 0; i >= 0 && i < (int)colours.size(); reverse ? --i : ++i) {
+
+		cout << "Student " << COLOUR_TO_STRING.at(students[j]->getColour())
+            << ", where do you want to complete an Assignment?" << endl << ">";
+
+		int index;
+		if (cin >> index) {
+			if (index >= 0 && index <= 53) {
+				try {
+					shared_ptr<Student> tempStudent = students.at(j);
+                    theBoard->sogBuyCriteria(tempStudent, input);
+				}
+				catch (InvalidInputException &err) {
+					cout << err.what() << endl;
+					reverse ? ++i : --i;
+					continue;
+				}
+			}
+			else {
+				cout << to_string(index) << " is not a valid "
+					<< "intersection index. It must be "
+					<< "between 0 and " << NUM_CRITERION - 1 
+					<< "."  << endl;
+				reverse ? ++i : --i;
+				continue;
+			}
+		} else {
+			reverse ? ++i : --i;
+			continue;
+		}
+
+		if (i == (int)colours.size() - 1 && !reverse) {
+            		++i;
+			reverse = true;
+		}
+	}
 }//end of fucntion
 
 

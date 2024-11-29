@@ -38,6 +38,7 @@ class Board {
     void tileRolled(const int roll);
     bool tileHasStudent(int tileIndex, shared_ptr<Student> student);
     void buyGoal(shared_ptr<Student> student, const int index);
+    void sogBuyCriteria(shared_ptr<Student> student, const int index);
     void buyCriteria(shared_ptr<Student> student, const int index);
     void improveCriteria(shared_ptr<Student> student, const int index);
     void moveGeese(const int index);

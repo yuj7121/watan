@@ -49,6 +49,11 @@ public:
     explicit NonAdjacentPlacementException(const string &note);
 };
 
+class AdjacentPlacementException : public logic_error {
+public:
+    explicit AdjacentPlacementException(const string &note);
+};
+
 class InsufficientResourcesException : public logic_error {
 public:
     explicit InsufficientResourcesException(const string &note);

@@ -27,7 +27,10 @@ AlreadyOwnedException::AlreadyOwnedException(const string& note)
 : logic_error("EXCEPTION: Criteria/Goal is already owned: " + note) {}
 
 NonAdjacentPlacementException::NonAdjacentPlacementException(const string& note)
-: logic_error("EXCEPTION: Criteria/Goal is not adjacent to one owned by player: " + note) {}
+: logic_error("EXCEPTION: Goal is not adjacent to one owned by player: " + note) {}
+
+AdjacentPlacementException::AdjacentPlacementException(const string& note)
+: logic_error("EXCEPTION: An adjacent criterion is completed: " + note) {}
 
 InsufficientResourcesException::InsufficientResourcesException(const string& note)
 : logic_error("EXCEPTION: Resources needed for Criteria/Goal are insufficient: " + note) {}
