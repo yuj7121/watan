@@ -426,35 +426,42 @@ void Gameplay::initialAssignments() {
     while (i >= 0 && i < NUM_STUDENTS) {
 		cout << "Student " << COLOUR_TO_STRING.at(students[i]->getColour())
             << ", where do you want to complete an Assignment?" << endl << "> ";
-
-		int index;
-		if (cin >> index) {
-			if (index >= 0 && index <= 53) {
-				try {
-					shared_ptr<Student> tempStudent = students.at(i);
-                    theBoard->sogBuyCriteria(tempStudent, index);
-                    //cout << i << endl; 
-				} catch (InvalidInputException &err) {
-					cout << err.what() << endl;
-					continue;
-				} catch (AdjacentPlacementException &err) {
-					cout << err.what() << endl;
-					continue;
-				} catch (AlreadyOwnedException &err) {
-					cout << err.what() << endl;
-					continue;
-				}
-			} else {
-				cout << to_string(index) << " is not a valid "
-					<< "intersection index. It must be "
-					<< "between 0 and " << NUM_CRITERION - 1 
-					<< "."  << endl;
-				continue;
-			}
-		} else {
-			reverse ? ++i : --i;
+        string str;
+        int index;
+        cin >> str;
+        try{
+            try {
+                index = stoi(str);
+            } catch (std::invalid_argument& e) {
+                throw InvalidInputException("not an integer");
+            }
+        } catch (InvalidInputException& e) {
+            cout << e.what() << endl;
 			continue;
-		}
+        }
+        if (index >= 0 && index <= 53) {
+            try {
+                shared_ptr<Student> tempStudent = students.at(i);
+                theBoard->sogBuyCriteria(tempStudent, index);
+                //cout << i << endl; 
+            } catch (InvalidInputException &err) {
+                cout << err.what() << endl;
+                continue;
+            } catch (AdjacentPlacementException &err) {
+                cout << err.what() << endl;
+                continue;
+            } catch (AlreadyOwnedException &err) {
+                cout << err.what() << endl;
+                continue;
+            }
+        } else {
+            cout << to_string(index) << " is not a valid "
+                << "intersection index. It must be "
+                << "between 0 and " << NUM_CRITERION - 1 
+                << "."  << endl;
+            continue;
+        }
+
 		if (i == NUM_STUDENTS - 1 && !reverse) {
             i++;
             reverse = true;
@@ -472,6 +479,7 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
 
     string input;
     int val;
+    //get dice type
     do {
         try{
             cout << "> ";
@@ -484,16 +492,19 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
                 while (invalid) {
                     try {
                         cout << "> ";
-                        if(!(cin >> val)) {
+                        string str;
+                        cin >> str;
+                        try {
+                            val = stoi(str);
+                        } catch (std::invalid_argument& e) {
                             throw InvalidInputException("not an integer");
+                        }
+                        if(val < 2 || val > 12) {
+                            // throw invalidInputException instead 
+                            throw OutOfRangeInputException(std::to_string(val));
                         } else {
-                            if(val < 2 || val > 12) {
-                                // throw invalidInputException instead 
-                                throw OutOfRangeInputException(std::to_string(val));
-                            } else {
-                                invalid = false;
-                            }
-                        } //end of if else block
+                            invalid = false;
+                        }
                     } catch (const InvalidInputException& e) { // not an int
                         cerr << e.what() << endl;
                     } catch (OutOfRangeInputException& e) { //int out of range
