@@ -40,7 +40,7 @@ class Student {
     void removeResource(ResourceType type);
     void removeResources(std::vector<ResourceType> types);
     void playGoal(shared_ptr<Goal> goal);
-    void playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
+    bool playCriteria(shared_ptr<Criteria> criteria, bool startOfGame);
     void trade(shared_ptr<Student> receivingStudent, const ResourceType offered, const ResourceType requested);
 
     int calculatePoints() const; 

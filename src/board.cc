@@ -54,7 +54,9 @@ void Board::sogBuyCriteria(shared_ptr<Student> student, const int index) {
     if (crit->getOwner() != nullptr) {
         throw AlreadyOwnedException("Criteria is already owned!");
     }
-    student->playCriteria(criteria.at(index), true); 
+    if (!(student->playCriteria(criteria.at(index), true))) {
+        throw AdjacentPlacementException("There is an adjacent criterion already owned!"); 
+    }
 }
 
 // EFFECTS: Attempts to buy a criteria at the specified index for the student.
@@ -67,7 +69,9 @@ void Board::buyCriteria(shared_ptr<Student> student, const int index) {
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
-        student->playCriteria(criteria.at(index), false);
+        if (!(student->playCriteria(criteria.at(index), false))) {
+            throw AdjacentPlacementException("There is an adjacent criterion already owned!"); 
+        }
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
     } else {

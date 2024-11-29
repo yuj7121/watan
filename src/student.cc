@@ -61,22 +61,14 @@ void Student::playGoal(shared_ptr<Goal> goal) {
 
 }
 
-void Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
+bool Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
   //if they succeed in buying/updating the criteria
   if(criteria->playCriteria(this, startOfGame)) {
     int index = criteria->getIndex();
-    bool alreadyExists = false;
-    //checks if the criteria already exists or not and adds to vector if needed
-    for(auto it = criterion.begin(); it != criterion.end();){
-      if((*it)->getIndex() == index) {
-        alreadyExists = true;
-        break;
-      }
-    }
-    if(!alreadyExists) {
-      criterion.emplace_back(criteria);
-    }
+    criterion.emplace_back(criteria);
+    return true; 
   }
+  return false; 
 }
 
 int Student::calculatePoints() const { 
