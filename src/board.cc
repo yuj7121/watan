@@ -88,7 +88,7 @@ void Board::buyCriteria(shared_ptr<Student> student, const int index) {
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
         if (!(student->playCriteria(criteria.at(index), false))) {
-            throw AdjacentPlacementException("There is an adjacent criterion already owned!\n"); 
+            throw AdjacentPlacementException("There is an adjacent criterion already owned or student doesn't own adjacent goals!\n"); 
         }
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
@@ -117,7 +117,6 @@ void Board::improveCriteria(shared_ptr<Student> student, const int index) {
     }
     if (student->hasResources(cost)) {
         student->playCriteria(crit, false);
-        // crit->playCriteria(student, false);
         student->removeResources(cost);
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criteria!\n");
