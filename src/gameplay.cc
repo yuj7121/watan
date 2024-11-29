@@ -61,22 +61,19 @@ void Gameplay::loadGame(const std::string file) {
     ifstream f{file};
     vector<vector<int>> studentGoals;
     vector<vector<pair<int, int>>> studentCriteria;
-	int curTurn, geese;
     string line;
     int input;
 
     // current player
     getline(f, line); 
     istringstream iss{line}; 
-    iss >> input;
-
+    iss >> input; 
+    whoseTurn = input;
     // 4 players
     for (int i = 0; i < 4; i++ ) {
         shared_ptr<Student> student = make_shared<Student>(studentColours[i]);
         getline(f, line); 
         istringstream iss2{line}; 
-
-        int playerIndex = i - 1;
 
         for (int j = 0; j < 5; j++ ) {
             iss2 >> input;
@@ -141,7 +138,7 @@ void Gameplay::loadGame(const std::string file) {
     getline(f, line); 
     istringstream iss2{line}; 
     iss2 >> input;
-    geese = input; 
+    theBoard->moveGeese(input); 
 }
 
 void Gameplay::loadBoard(const std::string file) {
