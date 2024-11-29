@@ -159,7 +159,8 @@ void Gameplay::loseToGeese(std::shared_ptr<Student> student) {
 bool Gameplay::noCaseStrCmp(string str1, string str2) {
     if (str1.length() != str2.length())
         return false;
-    for (int i = 0; i < str1.length(); ++i) {
+    int len = str1.length();
+    for (int i = 0; i < len; ++i) {
         if (tolower(str1[i]) != tolower(str2[i]))
             return false;
     }
@@ -413,17 +414,17 @@ void Gameplay::save(string file) {
 void Gameplay::initialAssignments() {
     bool reverse = false; 
 
-	for (int i = 0; i >= 0 && i < (int)colours.size(); reverse ? --i : ++i) {
+	for (int i = 0; i >= 0 && i < NUM_STUDENTS; reverse ? --i : ++i) {
 
-		cout << "Student " << COLOUR_TO_STRING.at(students[j]->getColour())
+		cout << "Student " << COLOUR_TO_STRING.at(students[i]->getColour())
             << ", where do you want to complete an Assignment?" << endl << ">";
 
 		int index;
 		if (cin >> index) {
 			if (index >= 0 && index <= 53) {
 				try {
-					shared_ptr<Student> tempStudent = students.at(j);
-                    theBoard->sogBuyCriteria(tempStudent, input);
+					shared_ptr<Student> tempStudent = students.at(i);
+                    theBoard->sogBuyCriteria(tempStudent, index);
 				}
 				catch (InvalidInputException &err) {
 					cout << err.what() << endl;
@@ -444,7 +445,7 @@ void Gameplay::initialAssignments() {
 			continue;
 		}
 
-		if (i == (int)colours.size() - 1 && !reverse) {
+		if (i == NUM_STUDENTS - 1 && !reverse) {
             		++i;
 			reverse = true;
 		}
