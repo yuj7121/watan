@@ -62,6 +62,7 @@ public:
 class InvalidGeesePlacementException : public logic_error {
 public:
     explicit InvalidGeesePlacementException(const string &note);
+    // explicit InvalidGeesePlacementException(const char *note);
 };
 
 // (d) Miscellaneous

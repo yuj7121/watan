@@ -41,3 +41,6 @@ ResourceTypeConversionException::ResourceTypeConversionException(const string& n
 
 InvalidCommandLineException::InvalidCommandLineException(const string& note)
 : invalid_argument("EXCEPTION: Invalid command line input: " + note) {}
+
+InvalidGeesePlacementException::InvalidGeesePlacementException(const string&note)
+: logic_error("EXCEPTION: Invalid geesse placement: " + note) {}

@@ -71,7 +71,7 @@ void Board::buyCriteria(shared_ptr<Student> student, const int index) {
 //          Updates the criteria's level and deducts the cost if successful.
 void Board::improveCriteria(shared_ptr<Student> student, const int index) {
     auto &crit = criteria[index];
-    if (crit->getOwner() != student) {
+    if (crit->getOwner() != student.get()) {
         throw InvalidCriteriaImprovementException("Criteria is not owned by this student!");
     }
     if (crit->getCompletionLevel() == 3) {
@@ -86,7 +86,8 @@ void Board::improveCriteria(shared_ptr<Student> student, const int index) {
                 ResourceType::LECTURE, ResourceType::TUTORIAL, ResourceType::STUDY, ResourceType::STUDY};
     }
     if (student->hasResources(cost)) {
-        crit->playCriteria(student, false);
+        student->playCriteria(crit, false);
+        // crit->playCriteria(student, false);
         student->removeResources(cost);
     } else {
         throw InsufficientResourcesException("Not enough resources to improve criteria!");
@@ -116,4 +117,9 @@ string Board::save() {
     output += goose.str();
 
     return output; 
+}
+
+bool Board::tileHasStudent(int tileIndex, shared_ptr<Student> student) {
+    // TODO: replace the following dummy impl.
+    return true;
 }

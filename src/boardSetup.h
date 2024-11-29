@@ -15,6 +15,8 @@ class Tile;
 class Goal;
 class Criteria;
 
+// const int NUM_TILES = 19;
+
 class BoardSetup {
   protected:
     int resourceTypes[NUM_TILES];

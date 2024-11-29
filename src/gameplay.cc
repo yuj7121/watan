@@ -5,6 +5,7 @@ using namespace std;
 
 Gameplay::Gameplay(int seed) {
     newGame(seed); 
+    initGame();
 }
 
 Gameplay::Gameplay(SetupType st, string fileName) {
@@ -13,6 +14,17 @@ Gameplay::Gameplay(SetupType st, string fileName) {
     } else {
         loadBoard(fileName); 
     }
+    initGame();
+}
+
+void Gameplay::initGame() {
+    students.push_back(make_shared<Student>(Colour::BLUE));
+    students.push_back(make_shared<Student>(Colour::RED));
+    students.push_back(make_shared<Student>(Colour::YELLOW));
+    students.push_back(make_shared<Student>(Colour::ORANGE));
+    curPlayer = students.at(0);
+    whoseTurn = 0;
+    winnerIndex = -1;
 }
 
 GameState Gameplay::getState() {
@@ -269,7 +281,7 @@ void Gameplay::geeseLanded() {
     }
 }
 
-void Gameplay::rollDice(int val) {
+int Gameplay::rollDice(int val) {
     int roll; 
     if (val = -1) { // fair dice
         dice = std::make_shared<FairDice>(eng); 
@@ -278,7 +290,9 @@ void Gameplay::rollDice(int val) {
         dice = std::make_shared<LoadedDice>(val); 
         roll = dice->roll(); 
     }
+}
 
+void Gameplay::distributeResource(int roll) {
     if (roll == 7) {
         // TODO: GEESE
         geeseLanded();
@@ -371,11 +385,6 @@ void Gameplay::trade(shared_ptr<Student> offeringStudent, shared_ptr<Student> re
     notifyObservers(GameEvent::TradeResource, t); 
 }
 
-//TODO
-void Gameplay::distributeResource() {
-    
-}
-
 void Gameplay::save(string file) {
     ofstream myFile(file); 
     if (myFile.is_open()) {
@@ -428,7 +437,7 @@ void Gameplay::initialAssignments() {
 }//end of fucntion
 
 
-void Gameplay::beginTurn(shared_ptr<Student> student) {
+int Gameplay::beginTurn(shared_ptr<Student> student) {
     cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
     cout << student;
 
@@ -436,6 +445,7 @@ void Gameplay::beginTurn(shared_ptr<Student> student) {
     int val;
     do {
         try{
+            cin >> input;
             //if user wants loaded
             if(input == "load") {
                 int invalid = true;
@@ -460,16 +470,18 @@ void Gameplay::beginTurn(shared_ptr<Student> student) {
                 } //end of while
                 //rollDice(val, false);
                 //if user wants fair            
+                break;
             } else if (input == "fair") {
-                val = -1; 
+                val = -1;
+                break;
             } else {
                 throw new InvalidInputException(input);
             }
-            rollDice(val);
         } catch (InvalidInputException& e) { //invalid input for what to do
             cerr << e.what() << endl;
         } //end of try catch
-    } while (input != "roll"); //end of while loop
+    } while (true); //end of while loop
+    return val;
 
 }//end of function
 
@@ -480,9 +492,10 @@ void Gameplay::endTurn() {
 
 void Gameplay::play() {
     while (!gameOver()) {
-        beginTurn(curPlayer); // rolls dice
+        int val = beginTurn(curPlayer); // rolls dice
 // TODO: process the dice roll
-        distributeResource(); // TODO
+        int roll = rollDice(val);
+        distributeResource(roll); // TODO
         while (true) {
             cout << "> "; 
             string line; 

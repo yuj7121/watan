@@ -15,7 +15,7 @@ class Observer {
   
   //virtual void notify(Criteria &c) = 0; 
   //virtual void notify(Tile &t) = 0; 
-  virtual ~Observer() = 0; 
+  virtual ~Observer() = default; 
 };
 
 #endif

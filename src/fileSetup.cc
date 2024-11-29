@@ -44,3 +44,6 @@ void FileSetup::setupResources() {
     }
 }
 
+void FileSetup::setup(shared_ptr<Board> b) {
+    // TODO: impl is required.
+}

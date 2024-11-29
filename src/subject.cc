@@ -1,5 +1,6 @@
 #include "subject.h"
 #include "observer.h"
+#include <iostream>
 using namespace std; 
 
 void Subject::attach(shared_ptr<Observer> o) {

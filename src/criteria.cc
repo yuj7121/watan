@@ -3,10 +3,10 @@
 #include "tile.h"
 #include "student.h"
 
-Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, shared_ptr<Student> owner)
+Criteria::Criteria(int index, CompletionType level, vector<shared_ptr<Goal>> &adjGoals, Student * owner)
     : index{index}, level{CompletionType::NONE}, adjGoals{adjGoals}, owner{nullptr} {}
 
-bool Criteria::playCriteria(shared_ptr<Student>player, bool startOfGame) {
+bool Criteria::playCriteria(Student *player, bool startOfGame) {
     if (level == CompletionType::NONE) {
         return complete(player, startOfGame);
     } else {
@@ -16,7 +16,7 @@ bool Criteria::playCriteria(shared_ptr<Student>player, bool startOfGame) {
     return false; 
 }
 
-bool Criteria::complete(shared_ptr<Student>player, bool startOfGame) {
+bool Criteria::complete(Student *player, bool startOfGame) {
     if (adjacentCriteriaExist()) {
         return false;
     }
@@ -31,7 +31,7 @@ bool Criteria::complete(shared_ptr<Student>player, bool startOfGame) {
     return true;
 }
 
-bool Criteria::canImprove(shared_ptr<Student>player) const {
+bool Criteria::canImprove(Student *player) const {
     if (level == CompletionType::EXAM) return false;
     if (!isOwnedBy(player)) return false;
     return true;
@@ -57,7 +57,7 @@ bool Criteria::adjacentCriteriaExist() const {
     return false;
 }
 
-bool Criteria::adjacentGoalOwner(shared_ptr<Student> player) const {
+bool Criteria::adjacentGoalOwner(Student * player) const {
     for (auto g : adjGoals) {
         if (g->isOwnedBy(player)) {
             return true;
@@ -68,7 +68,7 @@ bool Criteria::adjacentGoalOwner(shared_ptr<Student> player) const {
 
 int Criteria::getIndex() const { return index; }
 
-shared_ptr<Student> Criteria::getOwner() const { return owner; }
+Student * Criteria::getOwner() const { return owner; }
 
 int Criteria::getCompletionLevel() const { 
     if (level == CompletionType::ASSIGNMENT) return 1; 
@@ -77,9 +77,10 @@ int Criteria::getCompletionLevel() const {
     return 0; 
 }
 
-bool Criteria::isOwnedBy(shared_ptr<Student> player) const { return owner == player; }
+bool Criteria::isOwnedBy(shared_ptr<Student> player) const { return isOwnedBy(player.get()); }
+bool Criteria::isOwnedBy(Student * player) const { return owner == player; }
 
-void Criteria::addOwner(shared_ptr<Student> player) { owner = player; }
+void Criteria::addOwner(Student * player) { owner = player; }
 
 string Criteria::info() const {
     string output; 

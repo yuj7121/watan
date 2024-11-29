@@ -4,14 +4,14 @@
 
 using namespace std; 
 
-Goal::Goal(int index, shared_ptr<Student> owner)
+Goal::Goal(int index, Student *owner)
     : index{index}, owner{nullptr} {}
 
 int Goal::getIndex() const { return index; }
 
-shared_ptr<Student> Goal::getOwner() const { return owner; }
+Student *Goal::getOwner() const { return owner; }
 
-bool Goal::isOwnedBy(shared_ptr<Student> player) const {
+bool Goal::isOwnedBy(Student * player) const {
     return owner == player;
 }
 
@@ -35,7 +35,7 @@ void Goal::detachCriteria(std::shared_ptr<Criteria> c) {
 }
 
 // change to void function -> just throw with exception
-bool Goal::playGoal(shared_ptr<Student> player) {
+bool Goal::playGoal(Student *player) {
     bool adjacent = false;
 
     if (owner) {
@@ -54,7 +54,7 @@ bool Goal::playGoal(shared_ptr<Student> player) {
     return true;
 }
 
-void Goal::setOwner(shared_ptr<Student> s) {
+void Goal::setOwner(Student *s) {
     owner = s; 
 }
     

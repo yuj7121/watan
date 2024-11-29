@@ -12,7 +12,10 @@ int main (int argc, char* argv[]) {
 
     //get the command line and run appropriate functions from gameplay
     //  to set up the game
-    try {       
+    try {
+        if (argc < 2) {
+            throw InvalidCommandLineException("Usage: ./waton <-seed xxx> | <-load file> | <-board file>");
+        }
         for(int i = 1; i < argc; ++i){
             string curr{argv[i]};
             if(curr == "-seed") {
@@ -21,7 +24,7 @@ int main (int argc, char* argv[]) {
                     int seed = atoi(argv[i]);
                     game = make_shared<Gameplay>(seed); 
                 } catch (const invalid_argument& e) {
-                    throw new InvalidCommandLineException("not an integer");
+                    throw InvalidCommandLineException("not an integer");
                 }
             } else if (curr == "-load") {
                 ++i;
@@ -30,11 +33,12 @@ int main (int argc, char* argv[]) {
                 ++i;
                 game = make_shared<Gameplay>(Gameplay::SetupType::LoadFromBoard, argv[i]);
             } else {
-                throw new InvalidCommandLineException("invalid commandline input");
+                throw InvalidCommandLineException("invalid commandline input");
             }
         }
     } catch (InvalidCommandLineException& e) {
         cerr << e.what() << endl;
+        exit(-1);
     }
 
     // Establish the observer pattern here 

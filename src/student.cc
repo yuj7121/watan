@@ -1,4 +1,5 @@
 #include "student.h"
+#include "exceptions.h"
 
 //ctor
 Student::Student(Colour colour) : colour{colour} {
@@ -164,8 +165,8 @@ string Student::save() const {
     for (auto &c : criterion) {
         ostringstream criteria;
         ostringstream level;
-        criteria << c.getIndex();
-        level << c.getCompletionLevel();
+        criteria << c->getIndex();
+        level << c->getCompletionLevel();
         output += " " + criteria.str() + " " + level.str();
     }
     return output;

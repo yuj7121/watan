@@ -13,7 +13,7 @@ void RandomSetup::setupResources() {
     std::shuffle(tilesValues.begin(), tilesValues.end(), rng);
 
     //set up the resource types and values for each tile
-    for(int i = 0; i < NUM_TILES; ++i){
+    for(int i = 0; i < NUM_TILES - 1; ++i){
         resourceTypes[i] = tilesTypes.at(i);
         if(tilesTypes.at(i) == 5){
             netflixDone = 1;
