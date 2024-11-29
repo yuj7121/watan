@@ -64,6 +64,7 @@ public:
     explicit InvalidCriteriaImprovementException(const string &note);
 };
 
+
 class InvalidGeesePlacementException : public logic_error {
 public:
     explicit InvalidGeesePlacementException(const string &note);
@@ -82,3 +83,4 @@ public:
 };
 
 #endif
+

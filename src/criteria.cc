@@ -105,3 +105,5 @@ string Criteria::info() const {
     }
     return output; 
 }
+
+

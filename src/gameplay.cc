@@ -227,10 +227,10 @@ void Gameplay::geeseLanded() {
         try{
             cout << "Choose where to place the GEESE." << endl << "> ";
             if(!(cin >> geeseHere)) {
-                throw new InvalidInputException("not an integer");
+                throw InvalidInputException("not an integer");
             } else {
                 if(geeseHere < 0 || geeseHere > 18) {
-                    throw new OutOfRangeInputException(std::to_string(geeseHere));
+                    throw OutOfRangeInputException(std::to_string(geeseHere));
                 } else if(geeseHere == theBoard->getGeese()) {
                     throw InvalidGeesePlacementException("Geese are already on this tile!");
                 } else {
@@ -287,13 +287,13 @@ void Gameplay::geeseLanded() {
             string str;
             cout << "Choose a student to steal from." << endl << "> ";
             if(!(cin >> str)) {
-                throw new InvalidInputException("Read failed.");
+                throw InvalidInputException("Read failed.");
             } else {
                 toSteal = convertColourInput(str);
                 if(toSteal == -1) {
-                    throw new InvalidInputException(str);
+                    throw InvalidInputException(str);
                 } else if(toSteal == curPlayer->getIndex()) {
-                    throw new InvalidInputException("You can't steal from yourself!");
+                    throw InvalidInputException("You can't steal from yourself!");
                 } else {
                     invalid = false;
                 }
@@ -413,12 +413,12 @@ void Gameplay::improve(int index) {
 void Gameplay::trade(shared_ptr<Student> offeringStudent, string colour, string give, string take) {
     shared_ptr<Student> receivingStudent = students.at(convertColourInput(colour));
     if(receivingStudent->getIndex() == curPlayer->getIndex()) {
-        throw new InvalidCommandException(""); 
+        throw InvalidCommandException(""); 
     }
     ResourceType giveType = stringToResourceType(give);
     ResourceType takeType = stringToResourceType(take);
     if(giveType == ResourceType::ERROR || takeType == ResourceType::ERROR) {
-        throw new InvalidCommandException(""); 
+        throw InvalidCommandException(""); 
     }
     trade(offeringStudent, receivingStudent, giveType, takeType); 
 }
@@ -471,7 +471,6 @@ void Gameplay::initialAssignments() {
             try {
                 shared_ptr<Student> tempStudent = students.at(i);
                 theBoard->sogBuyCriteria(tempStudent, index);
-                //cout << i << endl; 
             } catch (InvalidInputException &err) {
                 cout << err.what() << endl;
                 continue;
@@ -512,7 +511,6 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
         try{
             cout << "> ";
             cin >> input;
-            cout << "(1) input: " << input << endl;
             //if user wants loaded
             if (input == "load") {
                 int invalid = true;
@@ -546,14 +544,12 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
             } else if (input == "roll") {
                 return rollDice(val);
             } else {
-                cout << "input: " << input << endl;
                 throw InvalidInputException(input);
             }
         } catch (InvalidInputException& e) { //invalid input for what to do
             cerr << e.what() << endl;
         } //end of try catch
     } while (true); //end of while loop
-    // cout << "val = " << val << endl;
     return -1;
 }//end of function
 
@@ -600,14 +596,17 @@ void Gameplay::play() {
                     int index; 
                     iss >> index; 
                     if(index < 0 || index > NUM_CRITERION) {
-                        throw InvalidCommandException(""); 
+                        throw InvalidCommandException("Invalid command."); 
                     }
                     improve(index); 
                 } else if (cmd == "trade") {
-                    string colour, give, take; 
+                    string colour, give, take = ""; 
                     iss >> colour; 
                     iss >> give; 
                     iss >> take; 
+                    if(colour == "" || give == "" || take == ""){
+                        throw InvalidCommandException("Invalid command."); 
+                    }
                     trade(curPlayer, colour, give, take); 
                 } else if (cmd == "next") {
                     break; 
@@ -626,18 +625,20 @@ void Gameplay::play() {
                     throw InvalidCommandException("Invalid command."); 
                 } //end of it
             } catch (InvalidCommandException& e){
-                cerr << e.what() << endl << endl;
+                cerr << e.what() << endl;
             } catch (NonAdjacentPlacementException& e) {
-                cerr << e.what() << endl << endl;
+                cerr << e.what() << endl;
             } catch (AlreadyOwnedException& e) {
-                cerr << e.what() << endl << endl;
+                cerr << e.what() << endl;
             } catch (InsufficientResourcesException& e) {
-                cerr << e.what() << endl << endl;
+                cerr << e.what() << endl;
             } catch (InvalidCriteriaImprovementException& e) {
-                cerr << e.what() << endl << endl;
+                cerr << e.what() << endl;
             } //end of catch
         } //end of while
         endTurn();
     }
     save("backup.sv"); 
 }
+
+

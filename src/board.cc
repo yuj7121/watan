@@ -20,11 +20,13 @@ int Board::getGeese() const { return geesePosition; }
 // EFFECTS: Distributes resources to students based on the rolled number.
 void Board::tileRolled(const int roll) {
     int gained[NUM_STUDENTS][NUM_RESOURCE_TYPES] = {0};
+    //go thru each tile, chekc if it has the value
     for (unsigned int i = 0; i < NUM_TILES; i++) {
         const auto &tile = tiles[i];
+        //if this tile has the valeu same as the dice roll
         if (tile->getValue() == roll && tile->getResourceType() != ResourceType::NETFLIX) {
-            //cout << "tile ehrer" << roll << " index: " << tile->getIndex();
             const auto &criteriaIndices = CRITERION_PER_TILE[i];
+            //for each criteria that's part of that tile
             for (int criteriaIndex : criteriaIndices) {
                 const auto &crit = criteria[criteriaIndex];
                 if (crit->getOwner()) {
@@ -55,23 +57,23 @@ void Board::tileRolled(const int roll) {
 void Board::buyGoal(shared_ptr<Student> student, const int index) {
     auto &goal = goals[index];
     if (goal->getOwner() != nullptr) {
-        throw AlreadyOwnedException("Goal is already owned!");
+        throw AlreadyOwnedException("Goal is already owned!\n");
     }
     if (student->hasResources({ResourceType::STUDY, ResourceType::TUTORIAL})) {
         student->playGoal(goals.at(index));
         student->removeResources({ResourceType::STUDY, ResourceType::TUTORIAL});
     } else {
-        throw InsufficientResourcesException("Not enough resources to buy goal!");
+        throw InsufficientResourcesException("Not enough resources to buy goal!\n");
     }
 }
 
 void Board::sogBuyCriteria(shared_ptr<Student> student, const int index) {
     auto &crit = criteria[index];
     if (crit->getOwner() != nullptr) {
-        throw AlreadyOwnedException("Criteria is already owned!");
+        throw AlreadyOwnedException("Criteria is already owned!\n");
     }
     if (!(student->playCriteria(criteria.at(index), true))) {
-        throw AdjacentPlacementException("There is an adjacent criterion already owned!"); 
+        throw AdjacentPlacementException("There is an adjacent criterion already owned!\n"); 
     }
 }
 
@@ -81,17 +83,17 @@ void Board::sogBuyCriteria(shared_ptr<Student> student, const int index) {
 void Board::buyCriteria(shared_ptr<Student> student, const int index) {
     auto &crit = criteria[index];
     if (crit->getOwner() != nullptr) {
-        throw AlreadyOwnedException("Criteria is already owned!");
+        throw AlreadyOwnedException("Criteria is already owned!\n");
     }
     if (student->hasResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                          ResourceType::LECTURE, ResourceType::TUTORIAL})) {
         if (!(student->playCriteria(criteria.at(index), false))) {
-            throw AdjacentPlacementException("There is an adjacent criterion already owned!"); 
+            throw AdjacentPlacementException("There is an adjacent criterion already owned!\n"); 
         }
         student->removeResources({ResourceType::CAFFEINE, ResourceType::LAB,
                                             ResourceType::LECTURE, ResourceType::TUTORIAL});
     } else {
-        throw InsufficientResourcesException("Not enough resources to buy criteria!");
+        throw InsufficientResourcesException("Not enough resources to buy criteria!\n");
     }
 }
 
@@ -100,10 +102,10 @@ void Board::buyCriteria(shared_ptr<Student> student, const int index) {
 void Board::improveCriteria(shared_ptr<Student> student, const int index) {
     auto &crit = criteria[index];
     if (crit->getOwner() != student.get()) {
-        throw InvalidCriteriaImprovementException("Criteria is not owned by this student!");
+        throw InvalidCriteriaImprovementException("Criteria is not owned by this student!\n");
     }
     if (crit->getCompletionLevel() == 3) {
-        throw InvalidCriteriaImprovementException("Criteria is already fully upgraded!");
+        throw InvalidCriteriaImprovementException("Criteria is already fully upgraded!\n");
     }
     vector<ResourceType> cost;
     if (crit->getCompletionLevel() == 1) {
@@ -118,14 +120,14 @@ void Board::improveCriteria(shared_ptr<Student> student, const int index) {
         // crit->playCriteria(student, false);
         student->removeResources(cost);
     } else {
-        throw InsufficientResourcesException("Not enough resources to improve criteria!");
+        throw InsufficientResourcesException("Not enough resources to improve criteria!\n");
     }
 }
 
 // EFFECTS: this->geesePosition becomes the parameter index.
 void Board::moveGeese(const int index) {
     if (index == geesePosition) {
-        throw InvalidGeesePlacementException("Geese are already on this tile!");
+        throw InvalidGeesePlacementException("Geese are already on this tile!\n");
     }
     geesePosition = index;
 }

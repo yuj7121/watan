@@ -61,3 +61,4 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
     }
 
 }
+

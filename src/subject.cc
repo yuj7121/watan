@@ -27,3 +27,5 @@ void Subject::notifyObservers(GameEvent ge, Trade t) {
         ob->notify(ge, t);
     }
 }
+
+

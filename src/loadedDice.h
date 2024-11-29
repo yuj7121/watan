@@ -15,3 +15,4 @@ class LoadedDice : public Dice {
 };
 
 #endif
+

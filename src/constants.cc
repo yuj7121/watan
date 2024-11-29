@@ -165,3 +165,4 @@ const ResourceType studentResourceTypes[] = {ResourceType::CAFFEINE, ResourceTyp
 const CompletionType completionTypes[] = {CompletionType::NONE, CompletionType::ASSIGNMENT, CompletionType::MIDTERM, CompletionType::EXAM};
 
 
+

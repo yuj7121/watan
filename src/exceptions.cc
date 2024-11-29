@@ -47,3 +47,5 @@ InvalidCommandLineException::InvalidCommandLineException(const string& note)
 
 InvalidGeesePlacementException::InvalidGeesePlacementException(const string&note)
 : logic_error("EXCEPTION: Invalid geesse placement: " + note) {}
+
+

@@ -190,3 +190,5 @@ void Student::trade(shared_ptr<Student> receivingStudent, const ResourceType off
     receivingStudent->removeResource(requested);
     receivingStudent->addResource(offered);
 }
+
+

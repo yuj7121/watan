@@ -7,3 +7,4 @@ LoadedDice::LoadedDice(int rollValue) : rollValue{rollValue} {}
 int LoadedDice::roll() {
     return rollValue;
 }
+

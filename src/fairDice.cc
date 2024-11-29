@@ -8,3 +8,5 @@ int FairDice::roll() {
     uniform_int_distribution<> dist(1, 6);
     return dist(*generator) + dist(*generator);
 }
+
+

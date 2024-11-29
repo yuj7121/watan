@@ -6,6 +6,14 @@
 
 using namespace std;
 
+int toIn(const char *str)
+{
+    std::stringstream ss;
+    ss << str;
+    int i = -1;
+    ss >> i;
+    return i;
+}
 
 int main (int argc, char* argv[]) {
     shared_ptr<Gameplay> game;
@@ -21,7 +29,10 @@ int main (int argc, char* argv[]) {
             if(curr == "-seed") {
                 ++i;
                 try {
-                    int seed = atoi(argv[i]);
+                    int seed = toIn(argv[i]);
+                    if(seed == -1) {
+                        throw invalid_argument("");
+                    }
                     game = make_shared<Gameplay>(seed); 
                     game->initialAssignments();
 
@@ -65,3 +76,5 @@ int main (int argc, char* argv[]) {
     }
 
 }
+
+
