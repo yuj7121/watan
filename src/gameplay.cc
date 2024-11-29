@@ -59,7 +59,7 @@ void Gameplay::loadGame(const std::string file) {
     vector<vector<int>> studentResources(4, vector<int>(5));
     vector<vector<int>> studentGoals(4);
     vector<vector<pair<int, int>>> studentCriteria(4);
-	int curTurn, geese;
+	//int curTurn, geese;
     for (int i = 0; i < 7; ++i) {
         string line; 
         getline(f, line); 
@@ -454,7 +454,7 @@ void Gameplay::initialAssignments() {
 
 
 int Gameplay::beginTurn(shared_ptr<Student> student) {
-    cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
+    cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl << "< ";
 
     string input;
     int val;
