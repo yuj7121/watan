@@ -123,14 +123,12 @@ void Gameplay::loadGame(const std::string file) {
         for (int g : studentGoals.at(i)) {
             auto goal = theBoard->getGoals().at(g);
             students.at(i)->addGoal(goal);
-            cout << "Add goal to student #" << i + 1 << ": " << goal->getIndex() << endl;
         }
         for (pair<int, int> c : studentCriteria.at(i)) {
             auto criteria = theBoard->getCriteria().at(c.first);
             criteria->addOwner(students.at(i));
             criteria->setLevel(completionTypes[c.second]);
             students.at(i)->addCriterion(criteria);
-            cout << "Add criteria to student #" << i + 1 << ": " << criteria->getIndex() << ", " << criteria->getCompletionLevel() << endl;
         }
     }
 
@@ -356,6 +354,8 @@ bool Gameplay::gameOver() {
     for (int i = 0; i < 4; ++i) {
         if ((students[i])->calculatePoints() >= 10) {
             winnerIndex = i;
+            cout << "Student " << colourToString(students.at(i)->getColour())
+            << " is the winner!" << endl;
             return true;
 	    }
     }

@@ -77,7 +77,15 @@ bool Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
   //if they succeed in buying/updating the criteria
   if(criteria->playCriteria(this, startOfGame)) {
     //int index = criteria->getIndex();
-    criterion.emplace_back(criteria);
+    bool dupe = false;
+    for(auto it = criterion.begin(); it != criterion.end(); ++it){
+      if((*it)->getIndex() == criteria->getIndex()){
+        dupe = true;
+      }
+    }
+    if(!dupe){
+      criterion.emplace_back(criteria);
+    }
     return true; 
   }
   return false; 
