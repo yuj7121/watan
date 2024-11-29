@@ -307,10 +307,10 @@ void Gameplay::distributeResource(int roll) {
 }
 
 string Gameplay::curTurn() const { 
-    if (whoseTurn == 0) return "Blue";
-    else if (whoseTurn == 1) return "Red";
-    else if (whoseTurn == 2) return "Orange";
-    else if (whoseTurn == 3) return "Yellow";
+    if (whoseTurn == 0) return "Red";
+    else if (whoseTurn == 1) return "Orange";
+    else if (whoseTurn == 2) return "Yellow";
+    else if (whoseTurn == 3) return "Blue";
     else return "";
 }
 
@@ -326,7 +326,7 @@ bool Gameplay::gameOver() {
 }
 
 void Gameplay::board() { 
-    notifyObservers(GameEvent::BoardInfo); //TODO : Fix
+    notifyObservers(GameEvent::BoardInfo); 
 }
 
 void Gameplay::status() {
@@ -412,14 +412,14 @@ void Gameplay::save(string file) {
 
 void Gameplay::initialAssignments() {
     for(int i = 0; i < 2; ++i) {
-        // int start, end;
-        // if(i == 0) {
-        //     start = 0;
-        //     end = NUM_STUDENTS;
-        // } else {
-        //     start = NUM_STUDENTS - 1;
-        //     end = 0;            
-        // }
+        int start, end;
+        if(i == 0) {
+            start = 0;
+            end = NUM_STUDENTS;
+        } else {
+            start = NUM_STUDENTS - 1;
+            end = 0;            
+        }
         int j = 0;
         while(j < NUM_STUDENTS && j >= 0) {
             bool validInput = false;
@@ -430,7 +430,7 @@ void Gameplay::initialAssignments() {
                     << COLOUR_TO_STRING.at(students[j]->getColour())
                     << ", where do you want to complete an Assignment?" << endl;
                     if (!(cin >> input)) {
-                        throw new InvalidInputException("not an integer, try again.");
+                        throw InvalidInputException("not an integer, try again.");
                     } else {
                         validInput = true;
                         shared_ptr<Student> tempStudent = students.at(j);
@@ -503,16 +503,16 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
 }//end of function
 
 void Gameplay::endTurn() {
-    whoseTurn = (whoseTurn + 1) % 4; // TODO: constant of # of players 
+    whoseTurn = (whoseTurn + 1) % NUM_STUDENTS; // TODO: constant of # of players 
     curPlayer = students[whoseTurn];
 }
 
 void Gameplay::play() {
+    initialAssignments();
     while (!gameOver()) {
-        int val = beginTurn(curPlayer); // rolls dice
-// TODO: process the dice roll
+        int val = beginTurn(curPlayer);
         int roll = rollDice(val);
-        distributeResource(roll); // TODO
+        distributeResource(roll);
         while (true) {
             cout << "> "; 
             string line; 
