@@ -8,8 +8,9 @@ std::string resourceTypeToString(ResourceType r) { // move under the tile class 
         case ResourceType::STUDY: return "STUDY";
         case ResourceType::TUTORIAL: return "TUTORIAL";
         case ResourceType::NETFLIX: return "NETFLIX";
+        case ResourceType::ERROR: return "ERROR";
     }
-    return "Error";
+    return "ERROR";
 }
 
 ResourceType stringToResourceType(const std::string& str) {
