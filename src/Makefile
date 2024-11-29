@@ -21,7 +21,7 @@ EXEC = watan						# executable name
 .PHONY : clean					# not file names
 
 ${EXEC} : ${OBJECTS}				# link step
-	${CXX} ${CXXFLAGS} $^ -o $@ -lX11		
+	${CXX} ${CXXFLAGS} $^ -o $@ # -lX11		
 # additional object files before $^
 ${OBJECTS} : ${MAKEFILE_NAME}			# OPTIONAL : changes to this file => recompile
 

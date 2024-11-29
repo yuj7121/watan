@@ -13,12 +13,14 @@ void RandomSetup::setupResources() {
     std::shuffle(tilesValues.begin(), tilesValues.end(), rng);
 
     //set up the resource types and values for each tile
-    for(int i = 0; i < NUM_TILES - 1; ++i){
+    for(int i = 0; i < NUM_TILES; ++i){
         resourceTypes[i] = tilesTypes.at(i);
-        if(tilesTypes.at(i) == 5){
+        if(tilesTypes.at(i) == 5 && netflixDone == 0){
             netflixDone = 1;
+            resourceValues[i] = 7;
+        } else{
+            resourceValues[i] = tilesValues.at(i - netflixDone);
         }
-        resourceValues[i] = tilesValues.at(i + netflixDone);
     }
 }
 
