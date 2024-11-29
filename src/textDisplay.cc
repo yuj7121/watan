@@ -320,7 +320,7 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << endl;
 
     cout << printSpaces(20);
-    cout << printCriteria(b->getCriteria()[48]) << printHorizontalGoal(b->getGoals()[67) << printCriteria(b->getCriteria()[49])
+    cout << printCriteria(b->getCriteria()[48]) << printHorizontalGoal(b->getGoals()[67]) << printCriteria(b->getCriteria()[49])
         << printTileValue(18) << printCriteria(b->getCriteria()[50]) << printHorizontalGoal(b->getGoals()[68])
         << printCriteria(b->getCriteria()[51]) << endl;
 
@@ -337,7 +337,6 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printCriteria(b->getCriteria()[52]) << printHorizontalGoal(b->getGoals()[71]) << printCriteria(b->getCriteria()[53]);
     cout << endl;
 
-    return out; 
 }
 
 
