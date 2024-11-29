@@ -64,7 +64,7 @@ void Student::playGoal(shared_ptr<Goal> goal) {
 bool Student::playCriteria(shared_ptr<Criteria> criteria, bool startOfGame) {
   //if they succeed in buying/updating the criteria
   if(criteria->playCriteria(this, startOfGame)) {
-    int index = criteria->getIndex();
+    //int index = criteria->getIndex();
     criterion.emplace_back(criteria);
     return true; 
   }

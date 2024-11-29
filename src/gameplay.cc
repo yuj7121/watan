@@ -20,8 +20,8 @@ Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>(
 void Gameplay::initGame() {
     students.push_back(make_shared<Student>(Colour::BLUE));
     students.push_back(make_shared<Student>(Colour::RED));
-    students.push_back(make_shared<Student>(Colour::YELLOW));
     students.push_back(make_shared<Student>(Colour::ORANGE));
+    students.push_back(make_shared<Student>(Colour::YELLOW));
     curPlayer = students.at(whoseTurn);
     winnerIndex = -1;
 }
@@ -459,7 +459,6 @@ void Gameplay::initialAssignments() {
         } else if (i == 0 && reverse) {
             break; // all students have had their start turns
         }
-        cout << "ENDREACHED";
         reverse ? --i : ++i;
 
 	}
@@ -493,7 +492,7 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
                                 invalid = false;
                             }
                         } //end of if else block
-                    } catch (InvalidInputException& e) { // not an int
+                    } catch (const InvalidInputException& e) { // not an int
                         cerr << e.what() << endl;
                     } catch (OutOfRangeInputException& e) { //int out of range
                         cerr << e.what() << endl;
