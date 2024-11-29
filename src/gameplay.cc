@@ -3,12 +3,12 @@
 
 using namespace std; 
 
-Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>(seed)} {
+Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>(seed)}, whoseTurn{0} {
     newGame(seed); 
     initGame();
 }
 
-Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>()} {
+Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>()}, whoseTurn{0}{
     if (st == SetupType::LoadFromFile) {
         loadGame(fileName); 
     } else {
@@ -22,8 +22,7 @@ void Gameplay::initGame() {
     students.push_back(make_shared<Student>(Colour::RED));
     students.push_back(make_shared<Student>(Colour::YELLOW));
     students.push_back(make_shared<Student>(Colour::ORANGE));
-    curPlayer = students.at(0);
-    whoseTurn = 0;
+    curPlayer = students.at(whoseTurn);
     winnerIndex = -1;
 }
 
@@ -59,7 +58,7 @@ void Gameplay::loadGame(const std::string file) {
     vector<vector<int>> studentResources(4, vector<int>(5));
     vector<vector<int>> studentGoals(4);
     vector<vector<pair<int, int>>> studentCriteria(4);
-	int curTurn, geese;
+    int curTurn = 0;
     for (int i = 0; i < 7; ++i) {
         string line; 
         getline(f, line); 
@@ -68,23 +67,27 @@ void Gameplay::loadGame(const std::string file) {
         while (iss >> input) {
             // curTurn
             if (i == 0) {
-                curTurn = input; 
+                if(input >= 0 && input < NUM_STUDENTS) {
+                    curTurn = input;
+                }
             // studentData
-            } else if (i >= 1 && i <= 4) {
-                int playerIndex = i - 4; 
+           } else if (i >= 1 && i <= 4) {
+                int playerIndex = i - 1; 
                 vector<int> resources(5); 
                 for (int j = 0; j < 5; ++j) {
                     resources.at(j) = input; 
                     iss >> input; 
                 }
-                studentResources.at(playerIndex) = resources; 
+               studentResources.at(playerIndex) = resources; 
                 if (input == static_cast<int>('g')) iss >> input; 
                 // goals
                 vector<int> goals; 
                 while (input != static_cast<int>('c')) {
                     goals.emplace_back(input); 
-                    iss >> input; 
-                }
+                    if(!iss >> input){
+                        break;
+                    } 
+               }
                 studentGoals.at(playerIndex) = goals; 
                 if (input == static_cast<int>('c')) iss >> input; 
                 // criteria
@@ -100,11 +103,11 @@ void Gameplay::loadGame(const std::string file) {
                 shared_ptr<FileSetup> setup = std::make_shared<FileSetup>(file); 
                 setup->setup(theBoard); 
             } else {
-                geese = input; 
+                theBoard->moveGeese(input); //asddddddd
             }
         }
     }
-
+    whoseTurn = curTurn;
     // TODO: text display and board display
 }
 

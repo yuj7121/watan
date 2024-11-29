@@ -58,7 +58,7 @@ public:
     shared_ptr<Student> getCurPlayer() const; 
     int getGooseIndex() const; 
     string getLastErrorMessage() const; 
-    void play(); 
+    void play();  
 
 private: 
     // val = loaded dice value (type == false)
