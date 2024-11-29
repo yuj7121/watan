@@ -95,23 +95,24 @@ string Student::status() const {
   for (int i = 0; i < 5; ++i) {
     ostringstream val;
     if (i == 0) {
-      val << resources.at(ResourceType::CAFFEINE); 
+      // val << resources.at(ResourceType::CAFFEINE); 
+      val << getResource(ResourceType::CAFFEINE);
       output += val.str(); 
       output += " caffeines, ";
     } else if (i == 1) {
-      val << resources.at(ResourceType::LAB); 
+      val << getResource(ResourceType::LAB); 
       output += val.str(); 
       output += " labs, ";
     } else if (i == 2) {
-      val << resources.at(ResourceType::LECTURE); 
+      val << getResource(ResourceType::LECTURE); 
       output += val.str(); 
       output += " lectures, ";
     } else if (i == 3) {
-      val << resources.at(ResourceType::TUTORIAL); 
+      val << getResource(ResourceType::TUTORIAL); 
       output += val.str(); 
       output += " tutorials, ";
     } else if (i == 4) {
-      val << resources.at(ResourceType::STUDY); 
+      val << getResource(ResourceType::STUDY); 
       output += val.str(); 
       output += " studies.";
     } 
@@ -119,7 +120,7 @@ string Student::status() const {
   return output; 
 }
 
-string Student::criteria() const {
+string Student::criteriaInfo() const {
 	string output; 
   output = colourToString(colour) + " has completed: "; 
   for (auto c : criterion) {
@@ -137,19 +138,19 @@ string Student::save() const {
     for (int i = 0; i < 5; ++i) {
       ostringstream val;
       if (i == 0) {
-        val << resources.at(ResourceType::CAFFEINE); 
+        val << getResource(ResourceType::CAFFEINE); 
         output += val.str() + " ";
       } else if (i == 1) {
-        val << resources.at(ResourceType::LAB); 
+        val << getResource(ResourceType::LAB); 
         output += val.str() + " ";
       } else if (i == 2) {
-        val << resources.at(ResourceType::LECTURE); 
+        val << getResource(ResourceType::LECTURE); 
         output += val.str() + " ";
       } else if (i == 3) {
-        val << resources.at(ResourceType::TUTORIAL); 
+        val << getResource(ResourceType::TUTORIAL); 
         output += val.str() + " ";
       } else if (i == 4) {
-        val << resources.at(ResourceType::STUDY); 
+        val << getResource(ResourceType::STUDY); 
         output += val.str() + " ";
       } 
     }
@@ -170,10 +171,6 @@ string Student::save() const {
         output += " " + criteria.str() + " " + level.str();
     }
     return output;
-}
-
-string Student::steal(Student *from) {
-
 }
 
 void Student::trade(shared_ptr<Student> receivingStudent, const ResourceType offered, const ResourceType requested) {

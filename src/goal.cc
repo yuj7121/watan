@@ -61,8 +61,8 @@ void Goal::setOwner(Student *s) {
 
 string Goal::info() const {
     string output; 
-    Colour c = owner->getColour(); 
     if(owner) {
+        Colour c = owner->getColour(); 
         output = colourToString(c).substr(0, 1);
         output += "A"; 
     } else {

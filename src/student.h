@@ -45,9 +45,8 @@ class Student {
 
     int calculatePoints() const; 
     string status() const; 
-    string criteria() const; 
+    string criteriaInfo() const; 
     string save() const; 
-    string steal(Student * from); 
 };
 
 #endif

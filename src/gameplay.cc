@@ -3,12 +3,12 @@
 
 using namespace std; 
 
-Gameplay::Gameplay(int seed) {
+Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>(seed)} {
     newGame(seed); 
     initGame();
 }
 
-Gameplay::Gameplay(SetupType st, string fileName) {
+Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>()} {
     if (st == SetupType::LoadFromFile) {
         loadGame(fileName); 
     } else {
@@ -41,6 +41,10 @@ shared_ptr<Board> Gameplay::getBoard() const {
 
 shared_ptr<Student> Gameplay::getCurPlayer() const {
     return curPlayer; 
+}
+
+int Gameplay::getGooseIndex() const {
+    return theBoard->getGeese(); 
 }
 
 void Gameplay::newGame(int seed) {
@@ -283,13 +287,14 @@ void Gameplay::geeseLanded() {
 
 int Gameplay::rollDice(int val) {
     int roll; 
-    if (val = -1) { // fair dice
+    if (val == -1) { // fair dice
         dice = std::make_shared<FairDice>(eng); 
         roll = dice->roll(); 
     } else { // loaded dice 
         dice = std::make_shared<LoadedDice>(val); 
         roll = dice->roll(); 
     }
+    return roll; 
 }
 
 void Gameplay::distributeResource(int roll) {
@@ -407,14 +412,14 @@ void Gameplay::save(string file) {
 
 void Gameplay::initialAssignments() {
     for(int i = 0; i < 2; ++i) {
-        int start, end;
-        if(i == 0) {
-            start = 0;
-            end = NUM_STUDENTS;
-        } else {
-            start = NUM_STUDENTS - 1;
-            end = 0;            
-        }
+        // int start, end;
+        // if(i == 0) {
+        //     start = 0;
+        //     end = NUM_STUDENTS;
+        // } else {
+        //     start = NUM_STUDENTS - 1;
+        //     end = 0;            
+        // }
         int j = 0;
         while(j < NUM_STUDENTS && j >= 0) {
             bool validInput = false;
@@ -449,25 +454,25 @@ void Gameplay::initialAssignments() {
 
 int Gameplay::beginTurn(shared_ptr<Student> student) {
     cout << "Student " << COLOUR_TO_STRING.at(student->getColour()) << "'s turn." << endl;
-    cout << student;
 
     string input;
     int val;
     do {
         try{
             cin >> input;
+            cout << "(1) input: " << input << endl;
             //if user wants loaded
-            if(input == "load") {
+            if (input == "load") {
                 int invalid = true;
                 cout << "Input a roll between 2 and 12:" << endl;
                 while (invalid) {
                     try {
                         if(!(cin >> val)) {
-                            throw new InvalidInputException("not an integer");
+                            throw InvalidInputException("not an integer");
                         } else {
                             if(val < 2 || val > 12) {
                                 // throw invalidInputException instead 
-                                throw new OutOfRangeInputException(std::to_string(val));
+                                throw OutOfRangeInputException(std::to_string(val));
                             } else {
                                 invalid = false;
                             }
@@ -485,12 +490,14 @@ int Gameplay::beginTurn(shared_ptr<Student> student) {
                 val = -1;
                 break;
             } else {
-                throw new InvalidInputException(input);
+                cout << "input: " << input << endl;
+                throw InvalidInputException(input);
             }
         } catch (InvalidInputException& e) { //invalid input for what to do
             cerr << e.what() << endl;
         } //end of try catch
     } while (true); //end of while loop
+    // cout << "val = " << val << endl;
     return val;
 
 }//end of function
@@ -525,21 +532,21 @@ void Gameplay::play() {
                     int index;
                     iss >> index; 
                     if(index < 0 || index > NUM_GOALS) {
-                        throw new InvalidCommandException(""); 
+                        throw InvalidCommandException(""); 
                     }
                     achieve(index); 
                 } else if (cmd == "complete") {
                     int index;
                     iss >> index;
                     if(index < 0 || index > NUM_CRITERION) {
-                        throw new InvalidCommandException(""); 
+                        throw InvalidCommandException(""); 
                     }
                     complete(index); 
                 } else if (cmd == "improve") {
                     int index; 
                     iss >> index; 
                     if(index < 0 || index > NUM_CRITERION) {
-                        throw new InvalidCommandException(""); 
+                        throw InvalidCommandException(""); 
                     }
                     improve(index); 
                 } else if (cmd == "trade") {
@@ -555,14 +562,14 @@ void Gameplay::play() {
                     iss >> fileName; 
                     if (fileName == "") {
                         // TODO: throw exception?
-                        throw new InvalidCommandException(""); 
+                        throw InvalidCommandException(""); 
                     } else {
                         Gameplay::save(fileName); 
                     } 
                 } else if (cmd == "help") {
                     notifyObservers(GameEvent::Help); 
                 } else { 
-                    throw new InvalidCommandException(""); 
+                    throw InvalidCommandException(""); 
                 } 
             } catch (InvalidCommandException& e){
                 cerr << e.what() << endl;

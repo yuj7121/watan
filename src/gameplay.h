@@ -55,6 +55,7 @@ public:
     vector<shared_ptr<Student>> getStudents() const;
     shared_ptr<Board> getBoard() const; 
     shared_ptr<Student> getCurPlayer() const; 
+    int getGooseIndex() const; 
     string getLastErrorMessage() const; 
     void play(); 
 

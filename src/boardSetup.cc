@@ -8,7 +8,7 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
 
     //create goals
     for(int i = 0; i < NUM_GOALS; ++i) {
-        std::shared_ptr<Goal> curr {new Goal(i, nullptr)};
+        std::shared_ptr<Goal> curr = make_shared<Goal>(i, nullptr);
         b->goals.emplace_back(curr);
     }
     
@@ -19,13 +19,16 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
         for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
             adj.emplace_back((b->goals).at(*it));
         }
-        std::shared_ptr<Criteria> curr {new Criteria(i, CompletionType::NONE, adj, nullptr)};
+        std::shared_ptr<Criteria> curr = make_shared<Criteria>(i, CompletionType::NONE, adj, nullptr);
         b->criteria.emplace_back(curr);
     }
 
     //attatch adjacent criterions to each goal
     for(int i = 0; i < NUM_GOALS; ++i) {
-        for(auto it = (ADJ_GOAL_PER_CRITERIA.at(i)).begin(); it != (ADJ_GOAL_PER_CRITERIA.at(i)).end(); ++it) {
+        for(auto it = (ADJ_CRITERIA_PER_GOAL.at(i)).begin(); it != (ADJ_CRITERIA_PER_GOAL.at(i)).end(); ++it) {
+            auto a = b->goals.at(i); 
+            cout << *it << endl; 
+            auto c = (b->criteria).at(*it);
             (b->goals.at(i))->attachCriteria((b->criteria).at(*it));
         }
     }
@@ -59,4 +62,3 @@ void BoardSetup::setup(std::shared_ptr<Board> b) {
     }
 
 }
-

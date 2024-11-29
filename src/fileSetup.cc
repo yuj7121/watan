@@ -7,7 +7,7 @@ void FileSetup::setupResources() {
     try{
         file.open(fileName);
         if(file.fail()) {
-            throw new FileNotFoundException(fileName);
+            throw FileNotFoundException(fileName);
         }
     } catch (FileNotFoundException& e) {
         std::cerr << e.what() << endl;

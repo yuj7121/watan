@@ -18,7 +18,7 @@ int Tile::getValue() const { return value; }
 
 ResourceType Tile::getResourceType() const { return resource; }
 
-bool Tile::isValue(int val) { return val = value; }
+bool Tile::isValue(int val) { return val == value; }
 
 string Tile::save() const {
     string output;

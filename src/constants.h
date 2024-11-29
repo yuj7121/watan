@@ -40,7 +40,7 @@ extern const std::map<Colour, std::string> COLOUR_TO_STRING;
 #define NUM_STUDENTS 4
 #define NUM_TILES 19
 #define NUM_GOALS 72
-#define NUM_CRITERION 5
+#define NUM_CRITERION 54
 #define NOT_IN_PLAY -1
 
 extern const std::vector<std::vector<int>> TILE_ROWS;
@@ -55,4 +55,3 @@ extern const std::vector<std::vector<int>> ADJ_CRITERIA_PER_GOAL;
 
 
 #endif
-

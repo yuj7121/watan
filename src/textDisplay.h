@@ -11,12 +11,6 @@
 
 class Gameplay; 
 
-struct printTile { 
-    int index; 
-    int value; 
-    string resource; 
-};
-
 class TextDisplay : public Observer {
     shared_ptr<Gameplay> gp; 
     void help() const;
@@ -25,6 +19,7 @@ class TextDisplay : public Observer {
     string printTileResource(int index) const; 
     string printTileValue(int index) const; 
     string printGoose(int index) const; 
+    string printGoal(shared_ptr<Goal> g) const;
     string printCriteria(shared_ptr<Criteria> c) const; 
     string printHorizontalGoal(shared_ptr<Goal> g) const; 
     void printBoard(shared_ptr<Board> b) const; 

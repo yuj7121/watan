@@ -29,10 +29,13 @@ void TextDisplay::notify(GameEvent ge) {
             cout << (*it)->status();  
         }
     } else if (ge == GameEvent::PlayerCriteria) {
-        cout << gp->getState().students.criteria();
+        for (auto it = gp->getState().students.begin(); it != gp->getState().students.end(); ++it) {
+            cout << (*it)->criteriaInfo();  
+        }
     } else if (ge == GameEvent::BoardInfo) {
         // cout << gp->getBoard();
-        cout << gp->getState().theBoard;
+        // cout << gp->getState().theBoard;
+        printBoard(gp->getState().theBoard);
     } else if (ge == GameEvent::Achieve) {
         /*
         if (gp->getLastErrorMessage() == "") {
@@ -109,12 +112,10 @@ string printTileBottom(bool left = true, bool right = true) {
     return output; 
 }
 
-
-
 string TextDisplay::printTileIndex(int index) const {
     string output; 
     ostringstream oss; 
-    int thisIndex = resources[index].index; 
+    int thisIndex = gp->getBoard()->getTiles()[index]->getIndex(); // resources[index].index; 
     oss << thisIndex;
     if (thisIndex < 10) { 
         output = " " + oss.str(); 
@@ -125,13 +126,15 @@ string TextDisplay::printTileIndex(int index) const {
 }
 
 string TextDisplay::printTileResource(int index) const {
-    return "/" + printSpaces(5) + resources[index].resource + printSpaces(9-resources[index].resource.length()) + "\\";
+    // return "/" + printSpaces(5) + resources[index].resource + printSpaces(9-resources[index].resource.length()) + "\\";
+    string r = resourceTypeToString(gp->getBoard()->getTiles()[index]->getResourceType());
+    return "/" + printSpaces(5) + r + printSpaces(9-r.length()) + "\\";
 }
 
 string TextDisplay::printTileValue(int index) const { 
     string output; 
     ostringstream oss; 
-    int thisValue = resources[index].value; 
+    int thisValue = gp->getBoard()->getTiles()[index]->getValue(); // resources[index].value; 
     oss << thisValue; 
     if (thisValue == 7) { //netflix, no value
         output = " "; 
@@ -146,7 +149,7 @@ string TextDisplay::printTileValue(int index) const {
 string TextDisplay::printGoose(int index) const { 
     string output; 
     output = "\\" + printSpaces(5); 
-    if (index == gooseIndex) {
+    if (index == gp->getGooseIndex()) {
         output += "GEESE" + printSpaces(4); 
     } else {
         output += printSpaces(9) + "/"; 
@@ -162,7 +165,10 @@ string TextDisplay::printHorizontalGoal(shared_ptr<Goal> g) const {
     return "--" + g->info() + "--"; 
 }
 
-// todo : out CHANGED TO cout, td. CHANGED TO b->
+string TextDisplay::printGoal(shared_ptr<Goal> g) const {
+    return g->info(); 
+}
+
 void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printSpaces(35); 
     cout << printCriteria(b->getCriteria()[0]) << printHorizontalGoal(b->getGoals()[0]) << printCriteria(b->getCriteria()[1]) << endl; 
@@ -171,11 +177,12 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printTileTop(1, 1) << endl; 
 
     cout << printSpaces(33); 
-    cout << b->getGoals()[1] << printTileIndex(0) << b->getGoals()[2] << endl; 
+    cout << printGoal(b->getGoals()[1]) << printTileIndex(0) << printGoal(b->getGoals()[2]) << endl; 
 
     cout << printSpaces(33); 
     cout << printTileResource(0) << endl; 
 
+// line 5
     cout << printSpaces(20); 
     cout << printCriteria(b->getCriteria()[2]) << printHorizontalGoal(b->getGoals()[3]) << printCriteria(b->getCriteria()[3]) << printTileValue(0) 
         << printCriteria(b->getCriteria()[4]) << printHorizontalGoal(b->getGoals()[4]) << printCriteria(b->getCriteria()[5]) << endl; 
@@ -184,8 +191,8 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printTileTop(1, 0) << printGoose(0) << printTileTop(0, 1) << endl; 
 
     cout << printSpaces(18); 
-    cout << b->getGoals()[5] << printTileIndex(1) << b->getGoals()[6] << printSpaces(12) << b->getGoals()[7] 
-        << printTileIndex(2) << b->getGoals()[8] << endl; 
+    cout << printGoal(b->getGoals()[5]) << printTileIndex(1) << printGoal(b->getGoals()[6]) << printSpaces(12) << printGoal(b->getGoals()[7]) 
+        << printTileIndex(2) << printGoal(b->getGoals()[8]) << endl; 
 
     cout << printSpaces(18);
     cout << printTileResource(1) << printTileBottom(0, 0) << printTileResource(2) << endl;
@@ -201,9 +208,9 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
         + printGoose(2) << printTileTop(0, 1) << endl;
     
     cout << printSpaces(3);
-    cout << b->getGoals()[12] << printTileIndex(3) << b->getGoals()[13] << printSpaces(12)
-        << b->getGoals()[14] << printTileIndex(4) << b->getGoals()[15] << printSpaces(12)
-        << b->getGoals()[16] << printTileIndex(5) << b->getGoals()[17] << endl;
+    cout << printGoal(b->getGoals()[12]) << printTileIndex(3) << printGoal(b->getGoals()[13]) << printSpaces(12)
+        << printGoal(b->getGoals()[14]) << printTileIndex(4) << printGoal(b->getGoals()[15]) << printSpaces(12)
+        << printGoal(b->getGoals()[16]) << printTileIndex(5) << printGoal(b->getGoals()[17]) << endl;
 
     cout << printSpaces(3);
     cout << printTileResource(3) << printTileBottom(0, 0) << printTileResource(4)
@@ -220,9 +227,9 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
 
 // line 15
     cout << printSpaces(3);
-    cout << b->getGoals()[20] << printSpaces(12) << b->getGoals()[21] << printTileIndex(6)
-        << b->getGoals()[22] << printSpaces(12) << b->getGoals()[23] << printTileIndex(7)
-        << b->getGoals()[24] << printSpaces(12) << b->getGoals()[25] << endl;
+    cout << printGoal(b->getGoals()[20]) << printSpaces(12) << printGoal(b->getGoals()[21]) << printTileIndex(6)
+        << printGoal(b->getGoals()[22]) << printSpaces(12) << printGoal(b->getGoals()[23]) << printTileIndex(7)
+        << printGoal(b->getGoals()[24]) << printSpaces(12) << printGoal(b->getGoals()[25]) << endl;
 
     cout << printSpaces(5);
     cout << printTileBottom(1, 0) << printTileResource(6) << printTileBottom(0, 0)
@@ -239,9 +246,9 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
         << printGoose(7) << printTileTop(0, 1) << endl;
 
     cout << printSpaces(3);
-    cout << b->getGoals()[29] << printTileIndex(8) << b->getGoals()[30] << printSpaces(12)
-        << b->getGoals()[31] << printTileIndex(9) << b->getGoals()[32] << printSpaces(12)
-        << b->getGoals()[33] << printTileIndex(10) << b->getGoals()[34] << endl;
+    cout << printGoal(b->getGoals()[29]) << printTileIndex(8) << printGoal(b->getGoals()[30]) << printSpaces(12)
+        << printGoal(b->getGoals()[31]) << printTileIndex(9) << printGoal(b->getGoals()[32]) << printSpaces(12)
+        << printGoal(b->getGoals()[33]) << printTileIndex(10) << printGoal(b->getGoals()[34]) << endl;
 // line 20
     cout << printSpaces(3);
     cout << printTileResource(8) << printTileBottom(0, 0) << printTileResource(9)
@@ -257,9 +264,9 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
         <<  printTileTop(0, 0) << printGoose(10) << endl;
 
     cout << printSpaces(3);
-    cout << b->getGoals()[37] << printSpaces(12) << b->getGoals()[38] << printTileIndex(11)
-        << b->getGoals()[39] << printSpaces(12) << b->getGoals()[40] << printTileIndex(12)
-        << b->getGoals()[41] << printSpaces(12) << b->getGoals()[42] << endl;
+    cout << printGoal(b->getGoals()[37]) << printSpaces(12) << printGoal(b->getGoals()[38]) << printTileIndex(11)
+        << printGoal(b->getGoals()[39])<< printSpaces(12) << printGoal(b->getGoals()[40]) << printTileIndex(12)
+        << printGoal(b->getGoals()[41]) << printSpaces(12) << printGoal(b->getGoals()[42]) << endl;
 
     cout << printSpaces(5);
     cout << printTileBottom(1, 0) << printTileResource(11) << printTileBottom(0, 0)
@@ -276,9 +283,9 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
         << printGoose(12) << printTileTop(0, 1) << endl;
 
     cout << printSpaces(3);
-    cout << b->getGoals()[46] << printTileIndex(13) << b->getGoals()[47] << printSpaces(12)
-        << b->getGoals()[48] << printTileIndex(14) << b->getGoals()[49] << printSpaces(12)
-        << b->getGoals()[50] << printTileIndex(15) << b->getGoals()[51] << endl;
+    cout << printGoal(b->getGoals()[46]) << printTileIndex(13) << printGoal(b->getGoals()[47]) << printSpaces(12)
+        << printGoal(b->getGoals()[48]) << printTileIndex(14) << printGoal(b->getGoals()[49]) << printSpaces(12)
+        << printGoal(b->getGoals()[50]) << printTileIndex(15) << printGoal(b->getGoals()[51]) << endl;
 
     cout << printSpaces(3);
     cout << printTileResource(13) << printTileBottom(0, 0) << printTileResource(14)
@@ -288,15 +295,15 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
         << printHorizontalGoal(b->getGoals()[52]) << printCriteria(b->getCriteria()[38]) << printTileValue(14)
         << printCriteria(b->getCriteria()[39]) << printHorizontalGoal(b->getGoals()[53]) << printCriteria(b->getCriteria()[40])
         << printTileValue(15) << printCriteria(b->getCriteria()[41]) << endl;
-// tile 30
+// line 30
     cout << printSpaces(3);
     cout << printGoose(13) << printTileTop(0, 0) << printGoose(14)
         <<  printTileTop(0, 0) << printGoose(15) << endl;
 
     cout << printSpaces(3);
-    cout << b->getGoals()[54] << printSpaces(12) << b->getGoals()[55] << printTileIndex(16)
-        << b->getGoals()[56] << printSpaces(12) << b->getGoals()[57] << printTileIndex(17)
-        << b->getGoals()[58] << printSpaces(12) << b->getGoals()[59] << endl;
+    cout << printGoal(b->getGoals()[54]) << printSpaces(12) << printGoal(b->getGoals()[55]) << printTileIndex(16)
+        << printGoal(b->getGoals()[56]) << printSpaces(12) << printGoal(b->getGoals()[57]) << printTileIndex(17)
+        << printGoal(b->getGoals()[58]) << printSpaces(12) << printGoal(b->getGoals()[59]) << endl;
 
     cout << printSpaces(5);
     cout << printTileBottom(1, 0) << printTileResource(16) << printTileBottom(0, 0)
@@ -312,8 +319,8 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printGoose(16) << printTileTop(0, 0) << printGoose(17) << endl;
 
     cout << printSpaces(18);
-    cout << b->getGoals()[63] << printSpaces(12) << b->getGoals()[64] << printTileIndex(18)
-        << b->getGoals()[65] << printSpaces(12) << b->getGoals()[66] << endl;
+    cout << printGoal(b->getGoals()[63]) << printSpaces(12) << printGoal(b->getGoals()[64]) << printTileIndex(18)
+        << printGoal(b->getGoals()[65]) << printSpaces(12) << printGoal(b->getGoals()[66]) << endl;
 
     cout << printSpaces(20);
     cout << printTileBottom(1, 0) << printTileResource(18) << printTileBottom(0, 1);
@@ -328,7 +335,7 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << printGoose(18) << endl;
 
     cout << printSpaces(33);
-    cout << b->getGoals()[69] << printSpaces(12) << b->getGoals()[70] << endl;
+    cout << printGoal(b->getGoals()[69]) << printSpaces(12) << printGoal(b->getGoals()[70]) << endl;
 // line 40
     cout << printSpaces(35);
     cout << printTileBottom(1,1) << endl;
@@ -338,5 +345,3 @@ void TextDisplay::printBoard(shared_ptr<Board> b) const {
     cout << endl;
 
 }
-
-

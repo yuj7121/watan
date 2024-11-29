@@ -9,7 +9,7 @@ class Board;
 class Student;
 
 struct GameState {
-    std::vector<std::shared_ptr<Student>> students;
+    std::vector<std::shared_ptr<Student>> &students;
     std::shared_ptr<Board> theBoard;
     shared_ptr<Student> curPlayer; 
 };

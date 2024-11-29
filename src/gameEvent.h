@@ -2,13 +2,13 @@
 #define GAMEEVENT_H
 
 enum GameEvent { 
-    BoardInfo, // TODO: change GameEvent:: ones 
+    BoardInfo, 
     PlayersStatus, 
     PlayerCriteria, 
-    Achieve, // who: curStudent ; what: 
+    Achieve,
     Complete, 
     Improve, 
-    TradeResource, // change
+    TradeResource,
     Help, 
     ResourceDistribution, 
     StealResource,
