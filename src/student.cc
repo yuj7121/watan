@@ -108,13 +108,14 @@ string Student::status() const {
       output += val.str(); 
       output += " studies.";
     } 
+    output += "\n";
   }
   return output; 
 }
 
 string Student::criteriaInfo() const {
 	string output; 
-  output = colourToString(colour) + " has completed: "; 
+  output = colourToString(colour) + " has completed: \n"; 
   for (auto c : criterion) {
     ostringstream oss; 
     oss << c->getIndex() << " "; 

@@ -6,6 +6,8 @@ using namespace std;
 Gameplay::Gameplay(int seed) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>(seed)}, whoseTurn{0} {
     newGame(seed); 
     initGame();
+    srand(seed);
+    theBoard->moveGeese(std::rand() % 18);
 }
 
 Gameplay::Gameplay(SetupType st, string fileName) : theBoard{make_shared<Board>()}, eng{make_shared<default_random_engine>()}, whoseTurn{0}{
@@ -431,7 +433,7 @@ void Gameplay::initialAssignments() {
 				try {
 					shared_ptr<Student> tempStudent = students.at(i);
                     theBoard->sogBuyCriteria(tempStudent, index);
-                    cout << i << endl; 
+                    //cout << i << endl; 
 				} catch (InvalidInputException &err) {
 					cout << err.what() << endl;
 					continue;
@@ -540,6 +542,7 @@ void Gameplay::play() {
                     board(); 
                 } else if (cmd == "status") {
                     status(); 
+                    cout << endl;
                 } else if (cmd == "criteria") {
                     criteria(); 
                 } else if (cmd == "achieve") {
@@ -576,25 +579,25 @@ void Gameplay::play() {
                     iss >> fileName; 
                     if (fileName == "") {
                         // TODO: throw exception?
-                        throw InvalidCommandException(""); 
+                        throw InvalidCommandException("file name not valid"); 
                     } else {
                         Gameplay::save(fileName); 
                     } 
                 } else if (cmd == "help") {
                     notifyObservers(GameEvent::Help); 
                 } else { 
-                    throw InvalidCommandException(""); 
+                    throw InvalidCommandException("Invalid command."); 
                 } //end of it
             } catch (InvalidCommandException& e){
-                cerr << e.what() << endl;
+                cerr << e.what() << endl << endl;
             } catch (NonAdjacentPlacementException& e) {
-                cerr << e.what() << endl;
+                cerr << e.what() << endl << endl;
             } catch (AlreadyOwnedException& e) {
-                cerr << e.what() << endl;
+                cerr << e.what() << endl << endl;
             } catch (InsufficientResourcesException& e) {
-                cerr << e.what() << endl;
+                cerr << e.what() << endl << endl;
             } catch (InvalidCriteriaImprovementException& e) {
-                cerr << e.what() << endl;
+                cerr << e.what() << endl << endl;
             } //end of catch
         } //end of while
         endTurn();
